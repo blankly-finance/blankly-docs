@@ -1,0 +1,11 @@
+node_modules
+*.iml
+.idea
+*.log*
+.nuxt
+.vscode
+.DS_Store
+coverage
+sw.*
+.env
+/dist/_nuxt/

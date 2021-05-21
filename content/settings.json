@@ -1,0 +1,10 @@
+{
+  "title": "blankly.docs",
+  "url": "https://docs.blankly.finance",
+  "logo": {
+    "light": "/logo-light.svg",
+    "dark": "/logo-dark.svg"
+  },
+  "github": "blankly.docs",
+  "twitter": "@EmersonDove"
+}
