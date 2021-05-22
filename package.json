@@ -3,13 +3,14 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "nuxt",
+    "dev": "MINIMAL=1 CSB=1 nuxt",
     "build": "nuxt build",
     "start": "nuxt start",
     "generate": "nuxt generate"
   },
   "dependencies": {
-    "@nuxt/content-theme-docs": "^0.10.1",
-    "nuxt": "^2.15.2"
+    "@nuxt/content-theme-docs": "0.7.2",
+    "@babel/preset-env": "7.12.17",
+    "nuxt": "2.14.7"
   }
 }

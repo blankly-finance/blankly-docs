@@ -2,26 +2,62 @@
 title: Introduction
 description: ''
 position: 1
-category: ''
-features:
-  - Feature 1
-  - Feature 2
-  - Feature 3
+category: Introduction
 ---
 
-<img src="./preview.png" class="light-img" width="1280" height="640" alt=""/>
-<img src="./preview-dark.png" class="dark-img" width="1280" height="640" alt=""/>
+[comment]: <> (<img src="./icon.svg" width="100" height="100" alt=""/>)
 
-[Module]() for [NuxtJS](https://nuxtjs.org).
+[comment]: <> ([Module]&#40;&#41; for [NuxtJS]&#40;https://nuxtjs.org&#41;.)
 
 <alert type="success">
 
-Your documentation has been created successfully!
+Welcome to the Blankly documentation
 
 </alert>
 
+# We're in the business of making professional tools available to everyone.
+
+We originally started the Blankly trading module in December 2020. Far before it took the form as it is today, it was just a way of learning how to make requests to API endpoints and mess with the outputs. Today it's a complete development platform with hundreds of users.
+
+We try to avoid complex docker configurations, Gradle scripts, or complex configurations. We want our modules to be usable out of the box but still provide infinite customization and powerful abilities. Our goal is to write code so simple and powerful that anyone - from the python beginner to the professional developer - can take advantage of features previously inaccessible.
+
+[comment]: <> (<list :items="features"></list>)
+
+[comment]: <> (<p class="flex items-center">Enjoy light and dark mode:&nbsp;<app-color-switcher class="inline-flex ml-2"></app-color-switcher></p>)
+
 ## Features
+- Full REST API support for non-margin accounts on listed exchanges
 
-<list :items="features"></list>
+- Ticker websocket support
 
-<p class="flex items-center">Enjoy light and dark mode:&nbsp;<app-color-switcher class="inline-flex ml-2"></app-color-switcher></p>
+- Order book websocket support
+
+- Fully multiprocessed bots with flexible arguments.
+
+- Quickstart access for interacting with exchanges
+
+- Support for multiple portfolios on multiple exchanges, all independently
+
+- Multi-process communication
+
+- Long term and high resolution historical data downloads as pandas dataframes
+
+- Single pip module (`pip install Blankly`)
+
+- Asynchronous callbacks from ticker feeds
+
+- ZeroRPC server to report to Javascript or React **
+
+- Easy access to raw API calls
+
+- Customizable circular buffer websocket feeds
+
+- Support for coinbase pro's sandbox mode
+
+- Run scheduled functions natively
+
+- Logs for websocket feeds
+
+- Status management for purchases
+
+- Interface that allows calls to each supported exchange to be identical
