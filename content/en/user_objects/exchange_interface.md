@@ -7,6 +7,7 @@ category: User Objects
 
 # Interface
 
+
 ## Theory
 
 The interface class provides consistent access to the supported exchanges.
