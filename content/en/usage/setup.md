@@ -98,7 +98,13 @@ if __name__ == "__main__":
 
 Interested in contributing or see a feature we need? The best way is to 
 1. Fork the module on [GitHub](https://github.com/Blankly-Finance/Blankly)
-2. Download the fork
-3. Place it as a directory inside your project
-4. Import normally to your scripts & make your changes
-5. Under `lgpl` make sure to open-source your changes!
+2. Place it as a directory inside your project
+```
+Project
+|-Blankly
+|-Keys.json
+|-Settings.json
+|-script.py
+```
+3. Import normally to your scripts & make your changes
+4. Under `lgpl` make sure to open-source your changes!
