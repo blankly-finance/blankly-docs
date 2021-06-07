@@ -43,11 +43,11 @@ Welcome to the Blankly documentation
 
 <list :items="features"></list>
 
-# We're in the business of making professional tools available to everyone.
+# We're making quantitative finance more accessible for everyone
 
-We originally started the Blankly trading module in December 2020. Far before it took the form as it is today, it was just a way of learning how to make requests to API endpoints and mess with the outputs. Today it's a complete development platform with hundreds of users.
+We originally started the Blankly trading module in December 2020. Far before it took the form as it is today, it was just a way of learning how to make requests to API endpoints and mess with the outputs. Today it's a complete quantitative development platform with hundreds of users.
 
-We try to avoid complex docker configurations, Gradle scripts, or complex configurations. We want our modules to be usable out of the box but still provide infinite customization and powerful abilities. Our goal is to write code so simple and powerful that anyone - from the python beginner to the professional developer - can take advantage of features previously inaccessible.
+We try to avoid complex docker configurations, Gradle scripts, or complex configurations. We want our module to be usable out of the box but still provide infinite customization and powerful abilities. Our goal is to write code so simple and powerful that anyone - from the python beginner to the professional developer - can take advantage of features previously inaccessible. We can't wait to see what you make and how you contribute. Thanks for being a part of the Blankly family.
 
 [comment]: <> (<list :items="features"></list>)
 
