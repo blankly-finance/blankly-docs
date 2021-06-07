@@ -53,7 +53,7 @@ Get all trading pairs currently on the exchange.
 
 ### Response
 
-```json
+```python
 [
   {
     "currency_id": "BTC-USD",
@@ -88,7 +88,7 @@ Get all trading pairs currently on the exchange.
 
 If `currency='BTC'`:
 
-```json
+```python
 [
   {
     "currency": "BTC",
@@ -101,7 +101,7 @@ If `currency='BTC'`:
 
 ‌If `currency=None`:
 
-```json
+```python
 {
   "currency": "BTC",
   "available": 2.3,
@@ -222,3 +222,118 @@ Get info about a particular order. If the objects returned by placing orders are
 
 ### Response
 
+```python
+{
+  'id': 'dfa936a4-ea8b-4dbf-bb99-b2b632a5370a', 
+  'price': 10000.0, 
+  'size': 1.0, 
+  'product_id': 'BTC-USD', 
+  'side': 'buy', 
+  'type': 'limit', 
+  'status': 'open'
+}
+```
+
+| Key        | Description                                                  | Type  |
+| ---------- | ------------------------------------------------------------ | ----- |
+| id         | Exchange-specific order identifier                           | str   |
+| price      | Price the limit is set at                                    | float |
+| size       | Size of the limit (in base currency)                         | float |
+| product_id | Identifier for the product the order is on                   | str   |
+| side       | Describes if the order is buying or selling                  | str   |
+| type       | Open orders can be "market," "limit," or "stop." This shows which of those types is valid | str   |
+| status     | Order status can be "open" "pending" or "closed"             | str   |
+
+## get_fees() -> dict
+
+Get the maker and taker fee rates of a particular exchange.
+
+### Response
+
+```python
+{
+  "maker_fee_rate": 0.0050,
+  "taker_fee_rate": 0.0050
+}
+```
+
+| Key            | Description                           | Type  |
+| -------------- | ------------------------------------- | ----- |
+| maker_fee_rate | Exchange maker fee rate. (89% = 0.89) | float |
+| taker_fee_rate | Exchange taker fee rate. (89% = 0.89) | float |
+
+## get_product_history(product_id, epoch_start, epoch_stop, granularity) -> pandas.DataFrame
+
+Download historical data with rows of *at least* `time (epoch seconds)`, `low`', `high`, `open`, `close`, `volume` as columns.
+
+### Arguments
+
+| Arg         | Description                                                  | Examples               | Type  |
+| ----------- | ------------------------------------------------------------ | ---------------------- | ----- |
+| product_id  | The identifier for the product to order                      | "BTC-USD" or "XLM-USD" | str   |
+| epoch_start | Starting download time in epoch                              | 1591389962             | float |
+| epoch_stop  | Ending download time in epoch                                | 1622925962             | float |
+| granularity | Resolution in seconds in each candle (ex: 60 = 1 per minute, 3600 = 1 per hour) | 3600                   | int   |
+
+### Response
+
+Pandas dataframe with at least these columns.
+
+| time       | low     | high    | open    | close   | volume        |
+| ---------- | ------- | ------- | ------- | ------- | ------------- |
+| 1591110000 | 9270.0  | 9602.0  | 9583.36 | 9464.46 | 5979.77327365 |
+| 1591113600 | 9417.38 | 9510.94 | 9464.44 | 9478.95 | 1185.12835638 |
+
+## get_market_limits(product_id)
+
+Find the limits that the exchange puts on purchases.
+
+### Arguments
+
+| Arg        | Description                             | Examples               | Type |
+| ---------- | --------------------------------------- | ---------------------- | ---- |
+| product_id | The identifier for the product to order | "BTC-USD" or "XLM-USD" | str  |
+
+### Response
+
+```python
+{
+	'base_currency': 'BTC',
+  'quote_currency': 'USD',
+  'base_min_size': 0.001,
+  'base_max_size': 10000.0,
+  'quote_increment': 0.01,
+  'base_increment': 1e-08,
+  'market': 'BTC-USD',
+  'min_price': 0.0,
+  'max_price': -1.0,
+  'max_orders': -1,
+}
+```
+
+| Key             | Description                                                  | Type  |
+| --------------- | ------------------------------------------------------------ | ----- |
+| base_currency   | The base currency of this market                             | str   |
+| quote_currency  | The quote currency of this market                            | str   |
+| base_min_size   | The minimum size to buy of base                              | float |
+| base_max_size   | The maximum amount of base currency to buy                   | float |
+| quote_increment | The resolution of the quote currency when placing orders     | float |
+| base_increment  | The resolution of the base increment when placing orders     | float |
+| market          | The trading pair that the market limits correspond to        | str   |
+| min_price       | The minimum limit price that can be set                      | float |
+| max_price       | The maximum price that the limit can be set                  | float |
+| max_orders      | The maximum number of orders that the exchange allows on a currency pair | float |
+
+## get_price(currency_pair) -> float
+
+Get the quoted price of the trading pair.
+
+### Arguments
+
+| Arg        | Description                             | Examples               | Type |
+| ---------- | --------------------------------------- | ---------------------- | ---- |
+| product_id | The identifier for the product to order | "BTC-USD" or "XLM-USD" | str  |
+
+### Response
+
+- Returns a `float` which is the price of they trading pair, such as `53000` or `35000`.
