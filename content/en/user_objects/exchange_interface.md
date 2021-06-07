@@ -21,7 +21,7 @@ This means a few things about the information through the Interface:
 
 # Rest API Functions
 
-## get_calls()
+## `get_calls()`
 
 Get the direct RESTful exchange object that the interface is using. 
 
@@ -35,7 +35,7 @@ You can also create linting by assigning it one of these types depending on whic
 - `from Blankly.exchanges.Binance.Binance_API import API	`
 - `from Blankly.exchanges.Alpaca.Alpaca_API import API`
 
-## get_exchange_type()
+## `get_exchange_type()`
 
 Determine which exchange an interface is running on.
 
@@ -47,7 +47,7 @@ Determine which exchange an interface is running on.
 | `binance`         | The interface is running on Binance      | str  |
 | `alpaca`          | The interface is running on Alpaca       | str  |
 
-## get_products()
+## `get_products()`
 
 Get all trading pairs currently on the exchange.
 
@@ -76,7 +76,7 @@ Get all trading pairs currently on the exchange.
 | base_max_size  | Largest amount of base currency that can be bought on the exchange | float |
 | base_increment | The finest resolution the base currency can be ordered in    | float |
 
-## get_account(currency=None)
+## `get_account(currency=None)`
 
 ### Arguments
 
@@ -115,7 +115,7 @@ If `currency='BTC'`:
 | available | Amount of account asset that is free to be placed on orders or sold | float |
 | hold      | Amount of account asset that is currently on orders, or generally unavailable. | float |
 
-## market_order(product_id, side, funds) -> MarketOrder
+## `market_order(product_id, side, funds) -> MarketOrder`
 
 Create a new live market order.
 
@@ -131,7 +131,7 @@ Create a new live market order.
 
 A `market_order` object. Documentation is pending.
 
-## limit_order(product_id, side, price, size) -> LimitOrder
+## `limit_order(product_id, side, price, size) -> LimitOrder`
 
 Create a new live limit order on your exchange.
 
@@ -148,7 +148,7 @@ Create a new live limit order on your exchange.
 
 A `limit_order` object. Documentation is pending.
 
-## cancel_order(currency_id, order_id) -> dict
+## `cancel_order(currency_id, order_id) -> dict`
 
 Cancel a particular order.
 
@@ -172,7 +172,7 @@ Cancel a particular order.
 | -------- | ---------------------------- | ---- |
 | order_id | The id of the canceled order | str  |
 
-## get_open_orders(product_id=None)
+## `get_open_orders(product_id=None)`
 
 Get a full list of open orders
 
@@ -209,7 +209,7 @@ Get a full list of open orders
 | type       | Open orders can be "market," "limit," or "stop." This shows which of those types is valid | str   |
 | status     | Order status can be "open" "pending" or "closed"             | str   |
 
-## get_order(currency_id, order_id) -> dict
+## `get_order(currency_id, order_id) -> dict`
 
 Get info about a particular order. If the objects returned by placing orders are saved, this function shouldn't need to be used.
 
@@ -244,7 +244,7 @@ Get info about a particular order. If the objects returned by placing orders are
 | type       | Open orders can be "market," "limit," or "stop." This shows which of those types is valid | str   |
 | status     | Order status can be "open" "pending" or "closed"             | str   |
 
-## get_fees() -> dict
+## `get_fees() -> dict`
 
 Get the maker and taker fee rates of a particular exchange.
 
@@ -262,7 +262,7 @@ Get the maker and taker fee rates of a particular exchange.
 | maker_fee_rate | Exchange maker fee rate. (89% = 0.89) | float |
 | taker_fee_rate | Exchange taker fee rate. (89% = 0.89) | float |
 
-## get_product_history(product_id, epoch_start, epoch_stop, granularity) -> pandas.DataFrame
+## `get_product_history(product_id, epoch_start, epoch_stop, granularity) -> pandas.DataFrame`
 
 Download historical data with rows of *at least* `time (epoch seconds)`, `low`', `high`, `open`, `close`, `volume` as columns.
 
@@ -284,7 +284,7 @@ Pandas dataframe with at least these columns.
 | 1591110000 | 9270.0  | 9602.0  | 9583.36 | 9464.46 | 5979.77327365 |
 | 1591113600 | 9417.38 | 9510.94 | 9464.44 | 9478.95 | 1185.12835638 |
 
-## get_market_limits(product_id)
+## `get_market_limits(product_id)`
 
 Find the limits that the exchange puts on purchases.
 
@@ -298,7 +298,7 @@ Find the limits that the exchange puts on purchases.
 
 ```python
 {
-	'base_currency': 'BTC',
+  'base_currency': 'BTC',
   'quote_currency': 'USD',
   'base_min_size': 0.001,
   'base_max_size': 10000.0,
@@ -324,7 +324,7 @@ Find the limits that the exchange puts on purchases.
 | max_price       | The maximum price that the limit can be set                  | float |
 | max_orders      | The maximum number of orders that the exchange allows on a currency pair | float |
 
-## get_price(currency_pair) -> float
+## `get_price(currency_pair) -> float`
 
 Get the quoted price of the trading pair.
 
