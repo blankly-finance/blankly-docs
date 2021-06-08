@@ -27,7 +27,7 @@ A scheduler can be created by calling `Blankly.Scheduler`:
 | ------------------ | -------------------------------------------------- | --------- |
 | A scheduler object | `scheduler = Blankly.Scheduler(price_event, '2m')` | Scheduler |
 
-## Built-in Functions
+## Utility Functions
 
 ## `start(force=False)`
 
@@ -69,7 +69,7 @@ Get the callback function that the scheduler is attached to.
 
 ### Response
 
-| Description                                               | Examples      | Type     |
-| --------------------------------------------------------- | ------------- | -------- |
-| The callable object passed in during object construction. | `price_event` | callable |
+| Description                                               | Examples               | Type     |
+| --------------------------------------------------------- | ---------------------- | -------- |
+| The callable object passed in during object construction. | `price_event` callable | callable |
 
