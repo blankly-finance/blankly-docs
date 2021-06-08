@@ -9,8 +9,10 @@
     "generate": "nuxt generate"
   },
   "dependencies": {
-    "@nuxt/content-theme-docs": "0.7.2",
     "@babel/preset-env": "7.12.17",
-    "nuxt": "2.14.7"
+    "@nuxt/content-theme-docs": "0.7.2",
+    "nuxt": "2.14.7",
+    "rehype-katex": "^5.0.0",
+    "remark-math": "^4.0.0"
   }
 }
