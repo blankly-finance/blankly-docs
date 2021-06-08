@@ -5,9 +5,7 @@ position: 1
 category: User Objects
 ---
 
-# Interface
-
-## Theory
+# Theory
 
 The interface class provides a consistent way of interacting with the supported exchanges.
 

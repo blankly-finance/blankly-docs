@@ -1,11 +1,9 @@
 ---
 title: Utilities
 description: 'Useful utility functions built into blankly'
-position: 3
+position: 1
 category: Utilities
 ---
-
-# Utility Functions
 
 These are useful utility functions that simplify interactions with the blankly module.
 
