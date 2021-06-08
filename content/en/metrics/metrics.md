@@ -4,7 +4,6 @@ description: 'Useful metrics built into blankly'
 position: 4
 category: Indicators & Metrics
 ---
-# Metrics
 
 ## Overview
 
