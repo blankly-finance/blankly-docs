@@ -5,7 +5,8 @@ position: 2
 category: Orders
 order_docs: orders/order
 ---
-The market order response inherits from the `order` object, found [here](/orders/order). This means that all of those functions, as well as these work on this response.
+
+The market order response inherits from the `order` object, found [here](/orders/order). This means that all the functions described in that document will also work here.
 
 ## `get_funds() -> float`
 

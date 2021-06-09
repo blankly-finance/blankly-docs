@@ -11,7 +11,7 @@ Metrics form the backbone of quantitative models and building good trading bots.
 
 **Note: We highly recommend backtesting and using the built-in Blankly metrics to measure performance before putting any amount of money towards your model**
 
-This page details a little bit more about what metrics Blankly provides, what their purposes are, and how you can get up and using them as soon as possible. 
+This page details a bit more about what metrics Blankly provides, what their purposes are, and how you can get up and using them as soon as possible. 
 
 *As always, if you have any metrics that you'd like to be added, or an implementation for one, we'd love a PR!*
 
@@ -31,7 +31,7 @@ CAGR = \big (\frac{end \ value}{start \ value}\big )^{1 / years}
 $$
 With this, you can get an accurate determination of how much money your model is expected to make over a period of time, annualized, and compare it to other models and assets. 
 
-*Typically the S&P500 achives an 8% CAGR, so if you're able to beat that, then you're already beating the market.*
+*Typically the S&P500 achieves an 8% CAGR, so if you're able to beat that, then you're already beating the market.*
 
 ### `cum_returns(start_value, end_value)`
 
