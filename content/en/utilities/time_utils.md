@@ -17,6 +17,19 @@ Convert a string interval to a number time.
 | -------- | ------------------------------------------ | ---------------- | ---- |
 | interval | String with a scalar and a magnitude unit. | `'1m'` or `'2h'` | str  |
 
+**Supported units:**
+
+- 's' = seconds
+- 'm' = minute
+- 'h' = hour
+- 'd' = day
+- 'w' = week
+- 'M' = month
+- 'y' = year
+- 'D' = decade
+- 'c' = century
+- 'l' = millennium
+
 ### Response
 
 | Description                                                | Examples        | Type  |
