@@ -2,7 +2,7 @@
 title: Exchange Interface
 description: 'Information on the usage of the exchange interface class'
 position: 1
-category: User Objects
+category: API
 ---
 
 # Theory
