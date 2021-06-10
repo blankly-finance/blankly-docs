@@ -5,6 +5,9 @@ position: 3
 category: Websockets
 ---
 
+The ticker object inherits from the `Websocket Manager` object, found [here](/websockets/websocket_manager). This means that all the functions described in that document will also work here.
+
+
 One of the most common areas of confusion with our code comes from mistaking what "ticker" means in the context of websockets. 
 In finance, people often use the term tickers to describe the identifier for a certain stock or trading asset, like "BTC-USD" or "AAPL."
 **In the context of websockets, a "tick" actually means an update - generally a change of price. The ticker manager organizes the price events you're watching across different exchanges and assets.**
@@ -18,3 +21,38 @@ compared to making simple REST requests on a set interval. This is especially tr
 A ticker manager can be created by calling `ticker = Blankly.TickerManager(default_exchange, default_currency)`
 
 Because these websocket objects are designed to work across currencies and exchanges, specifying a default exchange and currency for the object to behave on can make interaction significantly simpler.
+
+This call will also automatically switch channels to use the correct subscription for your exchange.
+
+| Arg              | Description                                                  | Examples                        | Type |
+| ---------------- | ------------------------------------------------------------ | ------------------------------- | ---- |
+| default_exchange | Fill with a default exchange for the manager to use when no overrides are given later. | `'coinbase_pro'` or `'binance'` | str  |
+| default_currency | Fill with a default asset for the manager to use when no overrides are given later. | `'BTC-USD'` or `'XLM-USD'`      | str  |
+
+### Response
+
+| Description              | Examples                                                     | Type          |
+| ------------------------ | ------------------------------------------------------------ | ------------- |
+| A `TickerManager` object | `manager = Blankly.TickerManager('coinbase_pro', 'BTC-USD')` | TickerManager |
+
+## Functions
+
+## `create_ticker(callback, log=None, currency_id=None, override_exchange=None)`
+
+Create a new price event websocket feed.
+
+### Arguments
+
+| Arg               | Description                                                  | Examples                         | Type     |
+| ----------------- | ------------------------------------------------------------ | -------------------------------- | -------- |
+| callback          | Function with argument that accepts a single json-type message. | `price_event` function reference | callable |
+| log               | Optionally fill this with a path to a log file to enable logging. | `'./btc_log.csv'`                | str      |
+| currency_id       | Override the default currency id and create the websocket this currency. | `'BTC-USD'` or `'XLM-USD'`       | str      |
+| override_exchange | Override the default exchange and create the websocket on this exchange. | `'coinbase_pro'` or '`binance`'  | str      |
+
+### Response
+
+| Description             | Examples                                         | Type   |
+| ----------------------- | ------------------------------------------------ | ------ |
+| A blankly Ticker object | `websocket = Blankly.create_ticker(price_event)` | Ticker |
+
