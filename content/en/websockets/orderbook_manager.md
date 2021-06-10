@@ -45,11 +45,11 @@ This will also construct orderbooks within the object that can be reported to yo
 
 ### Response
 
-| Description                 | Examples                                                     | Type             |
-| --------------------------- | ------------------------------------------------------------ | ---------------- |
-| A `OrderbookManager` object | `manager = Blankly.OrderbookManager('coinbase_pro', 'BTC-USD')` | OrderbookManager |
+| Description                  | Examples                                                     | Type             |
+| ---------------------------- | ------------------------------------------------------------ | ---------------- |
+| An `OrderbookManager` object | `manager = Blankly.OrderbookManager('coinbase_pro', 'BTC-USD')` | OrderbookManager |
 
-## Functions
+# Functions
 
 ## `create_orderbook(callback, currency_id=None, override_exchange=None)`
 

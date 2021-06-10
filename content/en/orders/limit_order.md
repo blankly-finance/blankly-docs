@@ -8,6 +8,8 @@ order_docs: orders/order
 
 The limit order response inherits from the `order` object, found [here](/orders/order). This means that all the functions described in that document will also work here.
 
+# Functions
+
 ## `get_price() -> float`
 
 Get the price that this limit order is set at.

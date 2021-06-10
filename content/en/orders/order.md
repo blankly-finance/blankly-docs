@@ -15,7 +15,7 @@ Assign the object returned from an interface order to a variable:
 
 `order = interface.market_order('BTC-USD', 'buy', 10)`
 
-## Utility Functions
+# Functions
 
 ## `get_response() -> dict`
 

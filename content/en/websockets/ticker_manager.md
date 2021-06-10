@@ -33,7 +33,7 @@ This call will also automatically switch channels to use the correct subscriptio
 | ------------------------ | ------------------------------------------------------------ | ------------- |
 | A `TickerManager` object | `manager = Blankly.TickerManager('coinbase_pro', 'BTC-USD')` | TickerManager |
 
-## Functions
+# Functions
 
 ## `create_ticker(callback, log=None, currency_id=None, override_exchange=None)`
 
