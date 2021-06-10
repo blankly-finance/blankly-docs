@@ -22,6 +22,8 @@ Because these websocket objects are designed to work across currencies and excha
 
 This call will also automatically switch channels to use the correct subscription for your exchange.
 
+### Arguments
+
 | Arg              | Description                                                  | Examples                        | Type |
 | ---------------- | ------------------------------------------------------------ | ------------------------------- | ---- |
 | default_exchange | Fill with a default exchange for the manager to use when no overrides are given later. | `'coinbase_pro'` or `'binance'` | str  |
