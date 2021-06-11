@@ -82,3 +82,21 @@ To emphasize this point, if you use the `.append_callback()` function found in t
 | callback          | Function with argument that accepts a single json-type message. | `price_event` function reference | callable |
 | currency_id       | Override the default currency id and create the websocket this currency. | `'BTC-USD'` or `'XLM-USD'`       | str      |
 | override_exchange | Override the default exchange and create the websocket on this exchange. | `'coinbase_pro'` or '`binance`'  | str      |
+
+## `get_most_recent_orderbook(override_currency_id=None, override_exchange=None)`
+
+Get the most recent orderbook under a currency and exchange.
+
+### Arguments
+
+| Arg               | Description                                                  | Examples                        | Type |
+| ----------------- | ------------------------------------------------------------ | ------------------------------- | ---- |
+| currency_id       | Override the default currency id and create the websocket this currency. | `'BTC-USD'` or `'XLM-USD'`      | str  |
+| override_exchange | Override the default exchange and create the websocket on this exchange. | `'coinbase_pro'` or '`binance`' | str  |
+
+### Response
+
+| Description             | Examples                                                     | Type |
+| ----------------------- | ------------------------------------------------------------ | ---- |
+| An orderbook dictionary | `{"buy": {35600: 3.4,23400: 1.5},"sell": {54000: 2.1,45000: 5.3}}` | dict |
+
