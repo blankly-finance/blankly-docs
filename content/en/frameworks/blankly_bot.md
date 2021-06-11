@@ -21,3 +21,47 @@ Although they run independently, messages & updates can be sent between bots thr
 
 `BlanklyBot` inherits from the `Blankly.BlanklyBot` class. This inheritance is what makes the magic happen, and what is called when actually setting up the module.
 
+### Provided Instance Variables
+
+- `self.exchange_type`: Type of exchange i.e "binance" or "coinbase_pro"
+- `self.currency_pair`: The default trading pair or identifier for the market (`'BTC-USD'`)
+- `self.initial_state`: Information about the account the model is defaulted to running on.
+- `self.user_preferences`: User preferences read in from [settings.json](/usage/settings.json)
+- `self.Interface`: An [interface](/API/exchange_interface) pre-authenticated & setup for running on the default exchange
+- `self.direct_calls`: The [direct calls](/frameworks/exchange#get_direct_calls---api) object for the given exchange
+- `self.coinbase_pro_direct`: If you know that you're using Coinbase Pro, use this for IDE autofill. This is set equal to `self.direct_calls`
+- `self.binance_direct`: If you know that you're using Binance, use this for IDE autofill. This is set equal to `self.direct_calls`
+- `self.Ticker_Manager`: A [ticker manager](/websockets/ticker_manager) for easy price event generation
+- `self.Orderbook_Manager`: An [orderbook manager](/websockets/orderbook_manager) for easy orderbook generation.
+
+# Functions
+
+## `get_state()`
+
+Get the shared memory dictionary state.
+
+### Response
+
+| Description                                                  | Examples             | Type |
+| ------------------------------------------------------------ | -------------------- | ---- |
+| This returns the dictionary that is shared between this process and the main. | `{'heartbeat': 425}` | dict |
+
+## `update_state(key, value)`
+
+Write a key/value pair to the shared memory dictionary.
+
+### Arguments
+
+| Arg   | Description            | Examples | Type      |
+| ----- | ---------------------- | -------- | --------- |
+| key   | Key to set a value for | `'stop'` | immutable |
+| value | Value for that key     | `True`   | any       |
+
+## `remove_key(key)`
+
+Remove key in the shared state dictionary.
+
+| Arg  | Description                       | Examples | Type      |
+| ---- | --------------------------------- | -------- | --------- |
+| key  | Key to remove from the dictionary | `'stop'` | immutable |
+
