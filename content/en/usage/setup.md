@@ -24,19 +24,19 @@ Make sure you're using a supported version of python. The module is currently te
 ### Required Files
 
 In the working directory of your project (normally the root), Blankly needs two files:
-1. Settings.json
-```json[Settings.json]
+1. settings.json
+```json[settings.json]
 {
   "settings": {
     "account_update_time": 5000,
-    "paper_trade": true,
     "use_sandbox": true,
+    "use_sandbox_websockets": false,
     "binance_tld": "us",
     "websocket_buffer_size": 10000
   }
 }
 ```
-2. Keys.json
+2. keys.json
 ```json[Keys.json]
 {
     "coinbase_pro": {
@@ -59,8 +59,8 @@ The standard project structure is
 ```
 Project
 |-script.py
-|-Keys.json
-|-Settings.json
+|-keys.json
+|-settings.json
 ```
 You can find each of these files in the "examples" folder of our GitHub.
 
@@ -102,8 +102,8 @@ Interested in contributing or see a feature we need? The best way is to
 ```
 Project
 |-Blankly
-|-Keys.json
-|-Settings.json
+|-keys.json
+|-settings.json
 |-script.py
 ```
 3. Import normally to your scripts & make your changes
