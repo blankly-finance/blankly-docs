@@ -11,7 +11,7 @@ Strategies created using the class can be instantly ***backtested, paper traded,
 
 ## Creation
 
-The object requires an authenticated [`exchange`](/frameworks/exchange) object to function:
+The object requires an authenticated [`exchange`](/core/exchange) object to function:
 
 ```python
 # Authenticate coinbase pro strategy
@@ -25,7 +25,7 @@ strategy = Blankly.Strategy(coinbase_pro)
 
 | Arg           | Description                                                  | Examples                   | Type     |
 | ------------- | ------------------------------------------------------------ | -------------------------- | -------- |
-| exchange      | An [`exchange`](/frameworks/exchange) object                 | `Blankly.Coinbase_Pro`     | Exchange |
+| exchange      | An [`exchange`](/core/exchange) object                 | `Blankly.Coinbase_Pro`     | Exchange |
 | currency_pair | Optionally fill this to create a default for the websocket managers | `'BTC-USD'` or `'XLM-USD'` | str      |
 
 ### Response

@@ -28,7 +28,7 @@ Although they run independently, messages & updates can be sent between bots thr
 - `self.initial_state`: Information about the account the model is defaulted to running on.
 - `self.user_preferences`: User preferences read in from [settings.json](/usage/settings.json)
 - `self.Interface`: An [interface](/API/exchange_interface) pre-authenticated & setup for running on the default exchange
-- `self.direct_calls`: The [direct calls](/frameworks/exchange#get_direct_calls---api) object for the given exchange
+- `self.direct_calls`: The [direct calls](/core/exchange#get_direct_calls---api) object for the given exchange
 - `self.coinbase_pro_direct`: If you know that you're using Coinbase Pro, use this for IDE autofill. This is set equal to `self.direct_calls`
 - `self.binance_direct`: If you know that you're using Binance, use this for IDE autofill. This is set equal to `self.direct_calls`
 - `self.Ticker_Manager`: A [ticker manager](/websockets/ticker_manager) for easy price event generation
