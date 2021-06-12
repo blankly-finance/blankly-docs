@@ -1,7 +1,7 @@
 ---
 title: Exceptions
 description: 'Exceptions raised in the Blankly module'
-position: 4
+position: 16
 category: Utilities
 ---
 

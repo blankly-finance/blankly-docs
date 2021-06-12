@@ -1,8 +1,8 @@
 ---
 title: Exchange
 description: 'Authenticate and interact with a representation of your exchange.'
-position: 3
-category: Frameworks
+position: 7
+category: Framework
 ---
 
 The exchange object is designed to be an easy & homogeneous way to interact with each exchange or brokerage added to Blankly. Each object will contain a similar set of baseline functions outlined here.

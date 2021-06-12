@@ -1,7 +1,7 @@
 ---
 title: settings.json
 description: 'Key/value descriptions for settings.json'
-position: 2
+position: 3
 category: Usage
 ---
 

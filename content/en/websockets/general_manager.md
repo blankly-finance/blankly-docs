@@ -1,7 +1,7 @@
 ---
 title: General Manager
 description: 'Generalized websocket manager for connecting to any user-specified channels'
-position: 2
+position: 20
 category: Websockets
 ---
 

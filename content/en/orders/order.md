@@ -1,7 +1,7 @@
 ---
 title: Order
 description: 'General order type which other orders inherit from'
-position: 1
+position: 8
 category: Orders
 ---
 

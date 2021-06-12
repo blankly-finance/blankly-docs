@@ -1,7 +1,7 @@
 ---
 title: Setup
 description: 'Description for how to setup and use Blankly'
-position: 1
+position: 2
 category: Usage
 ---
 
@@ -84,8 +84,8 @@ if __name__ == "__main__":
     # Define our interface in case we want to make our own API calls
     interface = coinbase_pro.get_interface()
 
-    # Use our strategy helper on coinbase pro
-    coinbase_strategy = Blankly.StrategyHelper(coinbase_pro)
+    # Create a strategy on coinbase pro
+    coinbase_strategy = Blankly.Strategy(coinbase_pro)
 
     # Run the price event function every time we check for a new price - in this case we specify 15 seconds
     coinbase_strategy.add_price_event(price_event, currency_pair='BTC-USD', resolution='15s')
