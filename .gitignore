@@ -9,3 +9,4 @@ coverage
 sw.*
 .env
 /dist/_nuxt/
+*.cache
