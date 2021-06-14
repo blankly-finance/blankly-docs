@@ -6,7 +6,8 @@
     "dev": "MINIMAL=1 CSB=1 nuxt",
     "build": "nuxt build",
     "start": "nuxt start",
-    "generate": "nuxt generate"
+    "generate": "nuxt generate",
+    "deploy": "nuxt generate && firebase deploy --only hosting:docs"
   },
   "dependencies": {
     "@babel/preset-env": "7.12.17",
@@ -14,5 +15,8 @@
     "nuxt": "2.14.7",
     "rehype-katex": "^5.0.0",
     "remark-math": "^4.0.0"
+  },
+  "devDependencies": {
+    "@nuxtjs/google-analytics": "^2.4.0"
   }
 }
