@@ -14,7 +14,7 @@ export default theme({
         body: true,
       },
       {
-        src: "/__/firebase/8.6.7/firebase-analytics.jss",
+        src: "/__/firebase/8.6.7/firebase-analytics.js",
         body: true,
       },
       {
