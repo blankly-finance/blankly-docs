@@ -29,21 +29,14 @@ features:
 	
 ---
 
-[comment]: <> (<img src="./icon.svg" width="100" height="100" alt=""/>)
-
-[comment]: <> ([Module]&#40;&#41; for [NuxtJS]&#40;https://nuxtjs.org&#41;.)
-
 ## We're making quantitative finance more accessible for everyone
 
 We originally started the Blankly trading module in December 2020. Far before it took the form as it is today, it was just a way of learning how to make requests to API endpoints and mess with the outputs. Today it's a complete quantitative development platform with hundreds of users.
 
+Blankly aims to remove the barriers when developing quantitative models. Writing well tested & stable code can be time consuming and difficult. Many current solutions also often force you to use online IDEs or only allow limited API calls through their servers. They diminish the user experience in an effort to hide the source code. Blankly doesn't do that. We give you the same tools for free and the code that makes it work. We allow you to build how you want and run anywhere. 
 We try to avoid complex docker configurations, Gradle scripts, or complex configurations. We want our module to be usable out of the box but still provide infinite customization and powerful abilities. Our goal is to write code so simple and powerful that anyone - from the python beginner to the professional developer - can take advantage of features previously inaccessible. We can't wait to see what you make and how you contribute. Thanks for being a part of the Blankly family.
+
+
 ## Features
 
 <list :items="features"></list>
-
-
-
-[comment]: <> (<list :items="features"></list>)
-
-[comment]: <> (<p class="flex items-center">Enjoy light and dark mode:&nbsp;<app-color-switcher class="inline-flex ml-2"></app-color-switcher></p>)
