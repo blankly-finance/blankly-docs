@@ -80,7 +80,7 @@ Get all trading pairs currently on the exchange.
 
 | Arg      | Description                                                  | Examples       | Type |
 | -------- | ------------------------------------------------------------ | -------------- | ---- |
-| currency | Optionally fill with a specific account value to filter for. | "BTC" or "USD" | str  |
+| currency | Optionally fill with a specific account value to filter for | "BTC" or "USD" | str  |
 
 ### Response
 
@@ -111,7 +111,7 @@ If `currency='BTC'`:
 | --------- | ------------------------------------------------------------ | ----- |
 | currency  | Currency or asset this account is associated with            | str   |
 | available | Amount of account asset that is free to be placed on orders or sold | float |
-| hold      | Amount of account asset that is currently on orders, or generally unavailable. | float |
+| hold      | Amount of account asset that is currently on orders, or generally unavailable | float |
 
 ## `market_order(product_id, side, funds) -> MarketOrder`
 
@@ -123,7 +123,7 @@ Create a new live market order.
 | ---------- | ------------------------------------------------------------ | ---------------------- | ----- |
 | product_id | Identifier for the product to order                          | "BTC-USD" or "XLM-EUR" | str   |
 | side       | Buy or sell your position                                    | "buy" or "sell"        | str   |
-| funds      | Amount of **quote** to buy or sell. This means "USD" or "EUR." <br />Note that this is opposite of limit order, which uses size. <br / <br />Buying 10 dollars of "BTC-USD" would have args: ("BTC-USD", "buy", 10) | 10.5 or 351.2          | float |
+| funds      | Amount of **quote** to buy or sell. This means "USD" or "EUR." Note that this is opposite of limit order, which uses size. Buying 10 dollars of "BTC-USD" would have args: ("BTC-USD", "buy", 10). | 10.5 or 351.2          | float |
 
 ### Response
 
@@ -139,7 +139,7 @@ Create a new live limit order on your exchange.
 | ---------- | ------------------------------------------------------------ | ---------------------- | ----- |
 | product_id | Identifier for the product to order                          | "BTC-USD" or "XLM-EUR" | str   |
 | side       | Create a buy or sell position                                | "buy" or "sell"        | str   |
-| price      | Price to place the order at. In general, be careful to place your order on the correct side of the order book. | 32000 or 15000         | float |
+| price      | Price to place the order at. In general, be careful to place your order on the correct side of the order book | 32000 or 15000         | float |
 | size       | Amount of **base** to buy or sell. This means "BTC" or "XLM." Note that this is opposite of market order, which uses funds.<br />Buying 2.3 bitcoin at 20k dollars would have args: ("BTC-USD", "buy", 20000, 2.3) | 2.3 or .001            | float |
 
 ### Response
@@ -172,7 +172,7 @@ Cancel a particular order.
 
 ## `get_open_orders(product_id=None)`
 
-Get a full list of open orders
+Get a full list of open orders.
 
 ### Arguments
 
@@ -204,7 +204,7 @@ Get a full list of open orders
 | size       | Size of the limit (in base currency)                         | float |
 | product_id | Identifier for the product the order is on                   | str   |
 | side       | Describes if the order is buying or selling                  | str   |
-| type       | Open orders can be "market," "limit," or "stop." This shows which of those types is valid | str   |
+| type       | Open orders can be "market," "limit," or "stop." This shows which of those types is valid. | str   |
 | status     | Order status can be "open" "pending" or "closed"             | str   |
 
 ## `get_order(currency_id, order_id) -> dict`
@@ -334,4 +334,4 @@ Get the quoted price of the trading pair.
 
 ### Response
 
-- Returns a `float` which is the price of they trading pair, such as `53000` or `35000`.
+- Returns a `float` which is the price of the trading pair, such as `53000` or `35000`.

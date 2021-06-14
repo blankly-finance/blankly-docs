@@ -1,5 +1,5 @@
 ---
-title: Limit order
+title: Limit Order
 description: 'Order specific functions from market order.'
 position: 10
 category: Orders

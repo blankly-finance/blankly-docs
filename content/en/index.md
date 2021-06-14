@@ -7,7 +7,7 @@ features:
     - Full REST API support for non-margin accounts on listed exchanges
     - Ticker websocket support
     - Order book websocket support
-    - Fully multiprocessed bots with flexible arguments.
+    - Fully multiprocessed bots with flexible arguments
     - Quickstart access for interacting with exchanges
     - Support for multiple portfolios on multiple exchanges, all independently
     - Multi-process communication
@@ -17,7 +17,7 @@ features:
     - ZeroRPC server to report to Javascript or React **
     - Easy access to raw API calls
     - Customizable circular buffer websocket feeds
-    - Support for coinbase pro & binance sandbox modes
+    - Support for Coinbase Pro & Binance sandbox modes
     - Instant paper trade wrapper for supported exchanges
     - Run scheduled functions natively
     - Logs for websocket feeds
