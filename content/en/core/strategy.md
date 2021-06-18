@@ -63,19 +63,20 @@ Add a orderbook events to the strategy. This will pass a price as well as a full
 | resolution    | Resolution to send prices to the user function.              | `3600` or `'15s'`                                            | str or float |
 | init          | Fill this with a callback function to allow a setup for the state variable. | Pass a function like `setup` with arguments that are `setup(currency_pair, state)` | callable     |
 
-## `backtest(initial_values: dict = None, to: str = None, start_date: str = None, end_date: str = None, save: bool = False, settings_path: str = None, **kwargs)`
+## `backtest(initial_values: dict = None, to: str = None, start_date: str = None, end_date: str = None, save: bool = False, settings_path: str = None, optional_indicator: typing.Callable = None, **kwargs)`
 
 Turn this strategy into a backtest
 
 ### Arguments
 
-| Arg            | Description                                                  | Examples                                                     | Type  |
-| -------------- | ------------------------------------------------------------ | ------------------------------------------------------------ | ----- |
-| initial_values | Optional dictionary of initial value sizes                   | `{ 'BTC': 3, 'USD': 5650}`                                   | dict  |
-| to             | Optionally declare an amount of time before now to backtest  | `'5y'` or `'10h'`                                            | str   |
-| start_date     | Optionally override argument "to" by specifying a start date | `'03/06/2018'`                                               | str   |
-| end_date       | Optionally end the backtest at a date                        | `'03/06/2018'`                                               | str   |
-| save           | Optionally save the price data references to the data required for the backtest as well as     overriden settings | `'True'` or `'False'`                                        | bool  |
-| settings_path  | Optional path to the backtest.json file.                     | `'./backtest.json'`                                          | str   |
-| **kwargs       | Use these `**kwargs` to set any of the backtesting `settings` defined in [`backtest.json`](/usage/backtest.json). | `strategy.backtest(use_price='open')`. You can also specify `save=True` to write these directly to `backtest.json`: | kwarg |
+| Arg                | Description                                                  | Examples                                                     | Type     |
+| ------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ | -------- |
+| initial_values     | Optional dictionary of initial value sizes                   | `{ 'BTC': 3, 'USD': 5650}`                                   | dict     |
+| to                 | Optionally declare an amount of time before now to backtest  | `'5y'` or `'10h'`                                            | str      |
+| start_date         | Optionally override argument "to" by specifying a start date | `'03/06/2018'`                                               | str      |
+| end_date           | Optionally end the backtest at a date                        | `'03/06/2018'`                                               | str      |
+| save               | Optionally save the price data references to the data required for the backtest as well as     overriden settings | `'True'` or `'False'`                                        | bool     |
+| settings_path      | Optional path to the backtest.json file.                     | `'./backtest.json'`                                          | str      |
+| optional_indicator | A user defined callback function to run at the end of the backtest. Takes 1 dataframe parameter. | `price_event(dataframe): pass`                               | callable |
+| **kwargs           | Use these `**kwargs` to set any of the backtesting `settings` defined in [`backtest.json`](/usage/backtest.json). | `strategy.backtest(use_price='open')`. You can also specify `save=True` to write these directly to `backtest.json`: | kwarg    |
 
