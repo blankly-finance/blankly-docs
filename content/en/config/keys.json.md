@@ -3,7 +3,7 @@ title: keys.json
 description: 'Description for keys.json'
 position: 4
 version: 1.0
-category: Usage
+category: Config
 ---
 
 The `keys.json` file follows this format.

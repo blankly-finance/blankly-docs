@@ -1,14 +1,12 @@
 ---
-title: Setup
+title: Installation
 description: 'Description for how to setup and use Blankly'
 position: 2
 version: 1.0
-category: Usage
+category: Getting Started
 ---
 
-Check the [GitHub](https://github.com/Blankly-Finance/Blankly) for more information about develop & setup.
-
-## Easy Installation
+## Installing the Package
 
 ### Download
 
