@@ -3,7 +3,7 @@ title: settings.json
 description: 'Key/value descriptions for settings.json'
 position: 3
 version: 1.0
-category: Usage
+category: Config
 ---
 
 The `settings.json` file follows this format:

@@ -3,7 +3,7 @@ title: backtest.json
 description: 'Key/value descriptions for backtest.json'
 position: 5
 version: 1.0
-category: Usage
+category: Config
 ---
 
 The `backtest.json` file follows this format:
