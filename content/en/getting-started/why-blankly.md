@@ -149,7 +149,7 @@ def buy_or_sell(price, currency_pair, state):
     decision: bool = model(price)
     interface: Interface = state.interface
     variables = state.variables
-    if decision and not variables['has_order']:
+    if decision and variables['order_amt'] == 0:
         # buy using all of our cash
         interface.market_order('buy', 
             currency_pair, interface.cash)
