@@ -66,10 +66,10 @@ def price_event(price, currency_pair, state: StrategyState):
     prev_diff = diff[-2]
     curr_diff = diff[-1]
     # comparing prev diff with current diff will show a cross
-    if slope_sma50 > 0 and curr_diff > 0 and prev_diff < 0 and not variables['has_bought']:
+    if slope_sma50 > 0 and curr_diff >= 0 and prev_diff < 0 and not variables['has_bought']:
         interface.market_order('buy', currency_pair, interface.cash)
         variables['has_bought'] = true
-    else if slope_sma50 < 0 and curr_diff < 0 and prev_diff > 0 and variables['has_bought']:
+    else if slope_sma50 < 0 and curr_diff <= 0 and prev_diff > 0 and variables['has_bought']:
         curr_value = interface.account[currency_pair]['available'] * price
         interface.market_order('sell', currency_pair, curr_value)
         variables['has_bought'] = false
