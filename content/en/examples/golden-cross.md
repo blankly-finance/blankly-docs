@@ -1,5 +1,5 @@
 ---
-title: Golden Cross Strategy
+title: The Golden Cross
 description: 'Implementing the golden cross using Blankly'
 position: 12
 category: Examples
