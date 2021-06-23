@@ -49,9 +49,11 @@ def price_event(price: float, ticker: str, state: StrategyState):
     # buy or sell based on that decision
     if decision:
         interface.market_order('buy', 0.25 * interface.cash)
-        state.variables['has_buy_order'] = true
-    else if state.variables['has_buy_order'] && !decision:
-        interface.market_order('sell', 0.25 * interface.cash)
+        state.variables['has_buy_order'] = True
+    else if state.variables['has_buy_order'] and not decision:
+        amt = interface.account[currency_pair]['available']
+        interface.market_order('sell', amt)
+        state.variables['has_buy_order'] = False
 
 c = Blankly.Alpaca()
 s = Strategy(c)
