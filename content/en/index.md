@@ -38,6 +38,4 @@ Blankly aims to remove the barriers when developing quantitative models. Writing
 We try to avoid complex docker configurations, Gradle scripts, or complex configurations. We want our module to be usable out of the box but still provide infinite customization and powerful abilities. Our goal is to write code so simple and powerful that anyone - from the python beginner to the professional developer - can take advantage of features previously inaccessible. We can't wait to see what you make and how you contribute. Thanks for being a part of the Blankly family.
 
 
-## Features
-
 <list :items="features"></list>
