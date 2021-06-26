@@ -2,6 +2,7 @@
 title: Exchange Interface
 description: 'Information on the usage of the exchange interface class'
 position: 21
+version: 1.0
 category: API
 ---
 

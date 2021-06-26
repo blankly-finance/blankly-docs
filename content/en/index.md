@@ -2,6 +2,7 @@
 title: Introduction
 description: ''
 position: 1
+version: 1.0
 category: Introduction
 features:
     - Full REST API support for non-margin accounts on listed exchanges

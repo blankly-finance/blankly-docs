@@ -2,6 +2,7 @@
 title: Indicators
 description: 'Useful metrics built into blankly'
 position: 12
+version: 1.0
 category: Metrics & Indicators
 ---
 
