@@ -2,6 +2,7 @@
 title: Setup
 description: 'Description for how to setup and use Blankly'
 position: 2
+version: 1.0
 category: Usage
 ---
 
