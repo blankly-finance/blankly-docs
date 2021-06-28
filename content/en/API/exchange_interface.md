@@ -88,31 +88,30 @@ Get all trading pairs currently on the exchange.
 If `currency='BTC'`:
 
 ```python
-[
-  {
-    "currency": "BTC",
-    "available": 2.3,
-    "hold": 0.2
-  },
-  ...
-]
-```
-
-‌If `currency=None`:
-
-```python
 {
-  "currency": "BTC",
   "available": 2.3,
   "hold": 0.2
 }
 ```
 
-| Key       | Description                                                  | Type  |
-| --------- | ------------------------------------------------------------ | ----- |
-| currency  | Currency or asset this account is associated with            | str   |
-| available | Amount of account asset that is free to be placed on orders or sold | float |
-| hold      | Amount of account asset that is currently on orders, or generally unavailable | float |
+‌If `currency=None`:
+
+```python
+"BTC": {
+	"available": 2.3,
+  "hold": 0.2
+},
+"USD": {
+  "available": 4352,
+  "hold": 23
+}
+```
+
+| Key                      | Description                                                  | Type  |
+| ------------------------ | ------------------------------------------------------------ | ----- |
+| `BTC` or `USD` (example) | Currency or asset this account is associated with            | str   |
+| available                | Amount of account asset that is free to be placed on orders or sold | float |
+| hold                     | Amount of account asset that is currently on orders, or generally unavailable | float |
 
 ## `market_order(product_id, side, funds) -> MarketOrder`
 

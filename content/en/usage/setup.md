@@ -56,6 +56,8 @@ In the working directory of your project (normally the root), Blankly needs two 
 }
 ```
 
+The repository shows the keys as `keys_example.json` - *you have to rename that to* `keys.json` (so you don't accidentally commit to VCS).
+
 The standard project structure is
 ```
 Project
