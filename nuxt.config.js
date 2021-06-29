@@ -21,6 +21,10 @@ export default theme({
         src: "/__/firebase/init.js",
         body: true,
       },
+      {
+        src: "/analytics_init.js",
+        body: true,
+      },
     ]
   },
   content: {
