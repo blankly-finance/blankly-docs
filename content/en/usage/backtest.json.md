@@ -36,6 +36,7 @@ The `backtest.json` file follows this format:
     "save_initial_account_value": false,
     "show_progress_during_backtest": false,
     "cache_location": "./price_caches"
+    "resample_account_value_for_metrics": "1d"
   }
 }
 ```
@@ -48,13 +49,15 @@ The `backtest.json` file follows this format:
 
 ### Settings
 
-| Key                           | Description                                                  | Type |
-| ----------------------------- | ------------------------------------------------------------ | ---- |
-| use_price                     | Which price to use in the downloaded price data. This can be `"high"`, `"low"`, `"open"`, `"close"` | str  |
-| smooth_prices                 | This will create lines that connect the different price points, designed to mimic higher resolution data. | bool |
-| GUI_output                    | Show the bokeh GUI output. Disable this if rapidly or continually backtesting. | bool |
-| show_tickers_with_zero_delta  | Exclude all assets that had no change in their account values. Including all assets can make the GUI output slow and laggy, so this is disabled by default. | bool |
-| save_initial_account_value    | Write an extra line in the data frame that has all the initial account values before running any user-defined function. | bool |
-| show_progress_during_backtest | This draws a progress bar in the terminal. Keep this disabled if printing while backtesting because it can clutter output. | bool |
-| cache_location                | The path to the *folder* which will contain the price caches saved for backtesting. | str  |
+| Key                                | Description                                                  | Type        |
+| ---------------------------------- | ------------------------------------------------------------ | ----------- |
+| use_price                          | Which price to use in the downloaded price data. This can be `"high"`, `"low"`, `"open"`, `"close"` | str         |
+| smooth_prices                      | This will create lines that connect the different price points, designed to mimic higher resolution data. | bool        |
+| GUI_output                         | Show the bokeh GUI output. Disable this if rapidly or continually backtesting. | bool        |
+| show_tickers_with_zero_delta       | Exclude all assets that had no change in their account values. Including all assets can make the GUI output slow and laggy, so this is disabled by default. | bool        |
+| save_initial_account_value         | Write an extra line in the data frame that has all the initial account values before running any user-defined function. | bool        |
+| show_progress_during_backtest      | This draws a progress bar in the terminal. Keep this disabled if printing while backtesting because it can clutter output. | bool        |
+| cache_location                     | The path to the *folder* which will contain the price caches saved for backtesting. | str         |
+| resample_account_value_for_metrics | Because backtest data can be input at a variety of resolutions, account value often needs to be recalculated at consistent intervals for use in metrics & indicators. This setting allows the specification of that consistent interval. The value can be set to `False` to skip any recalculation. | str or bool |
+|                                    |                                                              |             |
 
