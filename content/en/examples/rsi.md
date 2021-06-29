@@ -30,15 +30,33 @@ from Blankly import Strategy, StrategyState, Interface
 from Blankly import Alpaca
 from Blankly.indicators import rsi
 
+def init(currency_pair, state: StrategyState):
+    # run on a new price event to initialize variables
+    pass
+
 def price_event(price, currency_pair, state: StrategyState):
     # we'll come back to this soon
     pass
 
 alpaca = Alpaca()
 s = Strategy(alpaca)
-s.add_price_event(price_event, 'MSFT', resolution='15m')
-s.variables["has_bought"] = false
+s.add_price_event(price_event, 'MSFT', resolution='15m', init=init)
 s.run()
+```
+
+### Initializing Variables and History
+
+In order to speed things up, we should make one call to get the historical data that we need and append data as new prices come in. 
+We can actually easily do this on initialization and make sure the proper data is passed in to the proper price events:
+
+```python
+def init(currency_pair, state: StrategyState):
+    interface: Interface = state.interface
+    resolution: str = state.resolution
+    variables = state.variables
+    # initialize the historical data
+    variables['history'] = interface.get_product_history(currency_pair, 150, resolution)['close']
+    variables['has_bought'] = False
 ```
 
 ### Implementing the Price Event
@@ -55,17 +73,17 @@ def price_event(price, currency_pair, state: StrategyState):
     resolution: str = state.resolution
     variables = state.variables
 
-    history = interface.get_product_history(currency_pair, 150, resolution)
+    variables['history'].append(price)
 
     rsi = rsi(history, period=14)
     # comparing prev diff with current diff will show a cross
     if rsi < 30 and not variables['has_bought']:
         interface.market_order('buy', currency_pair, interface.cash)
-        variables['has_bought'] = true
-    else if rsi > 70 and variables['has_bought']:
+        variables['has_bought'] = True
+    elif rsi > 70 and variables['has_bought']:
         curr_value = interface.account[currency_pair]['available'] * price
         interface.market_order('sell', currency_pair, curr_value)
-        variables['has_bought'] = false
+        variables['has_bought'] = False
 ```
 
 ### Adding it All Together
@@ -80,7 +98,15 @@ One thing you'll begin to realize as you continue to develop with Blankly is tha
 
 from Blankly import Strategy, StrategyState, Interface
 from Blankly import Alpaca
-from Blankly.indicators import sma
+from Blankly.indicators import rsi
+
+def init(currency_pair, state: StrategyState):
+    interface: Interface = state.interface
+    resolution: str = state.resolution
+    variables = state.variables
+    # initialize the historical data
+    variables['history'] = interface.get_product_history(currency_pair, 150, resolution)['close']
+    variables['has_bought'] = False
 
 def price_event(price, currency_pair, state: StrategyState):
     interface: Interface = state.interface
@@ -88,21 +114,23 @@ def price_event(price, currency_pair, state: StrategyState):
     resolution: str = state.resolution
     variables = state.variables
 
-    history = interface.get_product_history(currency_pair, 150, resolution)
+    variables['history'].append(price)
 
     rsi = rsi(history, period=14)
     # comparing prev diff with current diff will show a cross
     if rsi < 30 and not variables['has_bought']:
         interface.market_order('buy', currency_pair, interface.cash)
-        variables['has_bought'] = true
-    else if rsi > 70 and variables['has_bought']:
+        variables['has_bought'] = True
+    elif rsi > 70 and variables['has_bought']:
         curr_value = interface.account[currency_pair]['available'] * price
         interface.market_order('sell', currency_pair, curr_value)
-        variables['has_bought'] = false
+        variables['has_bought'] = False
 
 alpaca = Alpaca()
 s = Strategy(alpaca)
-s.add_price_event(price_event, 'MSFT', resolution='1d')
-s.variables["has_bought"] = false
+# creating an init allows us to run the same function for 
+# different tickers and resolutions
+s.add_price_event(price_event, 'MSFT', resolution='15m', init=init)
+s.add_price_event(price_event, 'AAPL', resolution='1d', init=init)
 s.backtest(to='2y')
 ```
