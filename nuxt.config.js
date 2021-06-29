@@ -10,11 +10,11 @@ export default theme({
     ],
     script: [
       {
-        src: "/__/firebase/8.6.7/firebase-app.js",
+        src: "/__/firebase/8.6.8/firebase-app.js",
         body: true,
       },
       {
-        src: "/__/firebase/8.6.7/firebase-analytics.js",
+        src: "/__/firebase/8.6.8/firebase-analytics.js",
         body: true,
       },
       {
