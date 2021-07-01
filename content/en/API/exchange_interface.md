@@ -260,6 +260,27 @@ Get the maker and taker fee rates of a particular exchange.
 | maker_fee_rate | Exchange maker fee rate. (89% = 0.89) | float |
 | taker_fee_rate | Exchange taker fee rate. (89% = 0.89) | float |
 
+## `history(product_id, to, granularity) -> pandas.DataFrame`
+
+Download historical data with rows of *at least* `time (epoch seconds)`, `low`', `high`, `open`, `close`, `volume` as columns. This is a wrapper for `get_product_history()`, and exists to allow users to more easily download product history from right now.
+
+### Arguments
+
+| Arg         | Description                                                  | Examples                  | Type         |
+| ----------- | ------------------------------------------------------------ | ------------------------- | ------------ |
+| product_id  | The identifier for the product to order                      | "BTC-USD" or "XLM-USD"    | str          |
+| to          | Time from exactly now to begin downloading from (`'1y'` would download the last year of data at the granularity resolution). | 86453 or `'1y'` or '`2h`' | float or str |
+| granularity | Resolution in seconds in each candle (ex: 60 = 1 per minute, 3600 = 1 per hour) | 3600                      | int          |
+
+### Response
+
+Pandas dataframe with at least these columns.
+
+| time       | low     | high    | open    | close   | volume        |
+| ---------- | ------- | ------- | ------- | ------- | ------------- |
+| 1591110000 | 9270.0  | 9602.0  | 9583.36 | 9464.46 | 5979.77327365 |
+| 1591113600 | 9417.38 | 9510.94 | 9464.44 | 9478.95 | 1185.12835638 |
+
 ## `get_product_history(product_id, epoch_start, epoch_stop, granularity) -> pandas.DataFrame`
 
 Download historical data with rows of *at least* `time (epoch seconds)`, `low`', `high`, `open`, `close`, `volume` as columns.
