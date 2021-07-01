@@ -335,3 +335,81 @@ Get the quoted price of the trading pair.
 ### Response
 
 - Returns a `float` which is the price of the trading pair, such as `53000` or `35000`.
+
+# Rest API Properties
+
+These properties can be used as shortcuts for making API calls. These are built-in abstractions of the previous methods that provide functionality that is common when developing bots & models.
+
+*Each of these performs API requests*
+
+## `.account -> dict`
+
+The equivalent of performing `.get_account()` with no arguments,
+
+### Response
+
+```python
+"BTC": {
+	"available": 2.3,
+  "hold": 0.2
+},
+"USD": {
+  "available": 4352,
+  "hold": 23
+}
+```
+
+| Key                      | Description                                                  | Type  |
+| ------------------------ | ------------------------------------------------------------ | ----- |
+| `BTC` or `USD` (example) | Currency or asset this account is associated with            | str   |
+| available                | Amount of account asset that is free to be placed on orders or sold | float |
+| hold                     | Amount of account asset that is currently on orders, or generally unavailable | float |
+
+## `.orders -> list`
+
+The equivalent of performing a `get_open_orders()` request with no arguments.
+
+### Response
+
+```python
+[
+	{
+		'id': 'dfa936a4-ea8b-4dbf-bb99-b2b632a5370a', 
+		'price': 10000.0, 
+		'size': 1.0, 
+		'product_id': 'BTC-USD', 
+		'side': 'buy', 
+		'type': 'limit', 
+		'status': 'open'
+	},
+	...
+]
+```
+
+| Key        | Description                                                  | Type  |
+| ---------- | ------------------------------------------------------------ | ----- |
+| id         | Exchange-specific order identifier                           | str   |
+| price      | Price the limit is set at                                    | float |
+| size       | Size of the limit (in base currency)                         | float |
+| product_id | Identifier for the product the order is on                   | str   |
+| side       | Describes if the order is buying or selling                  | str   |
+| type       | Open orders can be "market," "limit," or "stop." This shows which of those types is valid. | str   |
+| status     | Order status can be "open" "pending" or "closed"             | str   |
+
+## `.cash -> dict`
+
+Get the amount of cash (generally the quote currency) inside the portfolio. This default quote can be set in the `settings.json` file for each exchange independently. This is used as a shortcut for easily determining buying power when making a transaction. This property is configurable because users may be using a variety of cash quotes such as `USD`, `USDT`, `USDC` or `EUR`. See [here](/usage/settings.json#format)
+
+### Response
+
+```python
+{
+  "available": 2.3,
+  "hold": 0.2
+}
+```
+
+| Key       | Description                                                  | Type  |
+| --------- | ------------------------------------------------------------ | ----- |
+| available | Amount of account asset that is free to be placed on orders or sold | float |
+| hold      | Amount of account asset that is currently on orders, or generally unavailable | float |

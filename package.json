@@ -7,7 +7,7 @@
     "build": "nuxt build",
     "start": "nuxt start",
     "generate": "nuxt generate",
-    "deploy": "nuxt generate && firebase deploy --only hosting:docs"
+    "deploy": "nuxt generate && firebase deploy"
   },
   "dependencies": {
     "@babel/preset-env": "7.12.17",
