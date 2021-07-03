@@ -31,3 +31,12 @@ Get the quantity (or size) of the limit order.
 | ------------------------------------------------------------ | --------------- | ----- |
 | Size describes the amount of base currency ("BTC" of "BTC-USD") which is being bought or sold. | `1.3` or `.001` | float |
 
+## `get_time_in_force() -> str`
+
+Get the time in force setting for the order.	
+
+### Response
+
+| Description                                                  | Examples | Type |
+| ------------------------------------------------------------ | -------- | ---- |
+| The time in force represents how the exchange should treat the order lifecycle | `GTC`    | str  |

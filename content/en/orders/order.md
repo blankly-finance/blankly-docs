@@ -10,6 +10,8 @@ Order types are returned when placing or creating new orders on Blankly. This ob
 
 `LimitOrder`, `MarketOrder` and `StopOrder` all inherit from this class.
 
+Every order type can be printed to yield a unique string. This allows an easy overview of each order type and the parameters that they need.
+
 ## Creation
 
 Assign the object returned from an interface order to a variable:
@@ -148,16 +150,6 @@ Query the exchange for the order status.
 | funds      | Post-fees funds exchanged in the order                       | float |
 | type       | The order type. Note that this is an example market order, which contains different keys than a limit order. | str   |
 | status     | Where the order is in the exchange lifecycle                 | str   |
-
-## `get_time_in_force() -> str`
-
-Get the time in force setting for the order.	
-
-### Response
-
-| Description                                                  | Examples | Type |
-| ------------------------------------------------------------ | -------- | ---- |
-| The time in force represents how the exchange should treat the order lifecycle | `GTC`    | str  |
 
 ## `get_type() -> str`
 
