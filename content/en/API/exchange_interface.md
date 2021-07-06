@@ -17,6 +17,23 @@ This means a few things about the information through the Interface:
 - **Pre-typed.** Information guaranteed by the interface comes pre-casted. Most information sent from API's comes as strings, but the interface class converts these for easy access.
 - **Less Detailed.** Different exchanges give different data. We try to pick out the most important bits of information to conecrate on maintaining, but some of it will end up in the `exchange_specific` tag on the dictionary returned.
 - **Multiple API Calls**. Sometimes to accumulate the data required to tell the user everything they need to know, it requires multiple API calls to be run in the background.
+- **Supports Paper Trading & Backtesting**. To use paper trading & backtesting features all calls must be run through the interface. 
+
+The interface can grow and change based on user feedback - if you see an important feature we're missing, tell us in the GitHub issues page.
+
+## Creation
+
+Interfaces are pre-generated when an `exchange` object is created. They can then be accessed by using `.get_interface()` on an exchange:
+
+```python
+import Blankly
+
+exchange = Blankly.Coinbase_Pro()  # This can be .Binance() or .Alpaca() or anything else supported
+
+interface = exchange.get_interface()  # Use the getter
+
+print(interface.get_account())
+```
 
 # Rest API Functions
 
@@ -417,20 +434,14 @@ The equivalent of performing a `get_open_orders()` request with no arguments.
 | type       | Open orders can be "market," "limit," or "stop." This shows which of those types is valid. | str   |
 | status     | Order status can be "open" "pending" or "closed"             | str   |
 
-## `.cash -> dict`
+## `.cash -> float`
 
 Get the amount of cash (generally the quote currency) inside the portfolio. This default quote can be set in the `settings.json` file for each exchange independently. This is used as a shortcut for easily determining buying power when making a transaction. This property is configurable because users may be using a variety of cash quotes such as `USD`, `USDT`, `USDC` or `EUR`. See [here](/usage/settings.json#format)
 
 ### Response
 
-```python
-{
-  "available": 2.3,
-  "hold": 0.2
-}
-```
+A single float which represents the size value of the account defined in `settings.json`.
 
-| Key       | Description                                                  | Type  |
-| --------- | ------------------------------------------------------------ | ----- |
-| available | Amount of account asset that is free to be placed on orders or sold | float |
-| hold      | Amount of account asset that is currently on orders, or generally unavailable | float |
+```python
+5931.533
+```
