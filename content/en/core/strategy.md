@@ -16,7 +16,7 @@ The object requires an authenticated [`exchange`](/core/exchange) object to func
 
 ```python
 # Authenticate coinbase pro strategy
-coinbase_pro = Blankly.Coinbase_Pro()
+coinbase_pro = Blankly.CoinbasePro()
 
 # Use our strategy helper on coinbase pro
 strategy = Blankly.Strategy(coinbase_pro)
@@ -26,7 +26,7 @@ strategy = Blankly.Strategy(coinbase_pro)
 
 | Arg           | Description                                                  | Examples                   | Type     |
 | ------------- | ------------------------------------------------------------ | -------------------------- | -------- |
-| exchange      | An [`exchange`](/core/exchange) object                 | `Blankly.Coinbase_Pro`     | Exchange |
+| exchange      | An [`exchange`](/core/exchange) object                 | `exchange = Blankly.CoinbasePro()`     | Exchange |
 | currency_pair | Optionally fill this to create a default for the websocket managers | `'BTC-USD'` or `'XLM-USD'` | str      |
 
 ### Response
@@ -45,7 +45,7 @@ Add a price event to the strategy. This will pass a price as well as a `price_ev
 
 | Arg           | Description                                                  | Examples                                                     | Type         |
 | ------------- | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------ |
-| callback      | A callback function to add a price event for                 | `Blankly.Coinbase_Pro`                                       | Exchange     |
+| callback      | A callback function to add a price event for                 | `price_event`                                                | Callable     |
 | currency_pair | Fill this to inform the price_event which price to provide   | `'BTC-USD'` or `'XLM-USD'`                                   | str          |
 | resolution    | Resolution to send prices to the user function.              | `3600` or `'15s'`                                            | str or float |
 | init          | Fill this with a callback function to allow a setup for the state variable. | Pass a function like `setup` with arguments that are `setup(currency_pair, state)` | callable     |
@@ -58,7 +58,7 @@ Add a orderbook events to the strategy. This will pass a price as well as a full
 
 | Arg           | Description                                                  | Examples                                                     | Type         |
 | ------------- | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------ |
-| callback      | A callback function to add a price event for                 | `Blankly.Coinbase_Pro`                                       | Exchange     |
+| callback      | A callback function to add a price event for                 | `price_event`                                                | Callable     |
 | currency_pair | Fill this to inform the price_event which price to provide   | `'BTC-USD'` or `'XLM-USD'`                                   | str          |
 | resolution    | Resolution to send prices to the user function.              | `3600` or `'15s'`                                            | str or float |
 | init          | Fill this with a callback function to allow a setup for the state variable. | Pass a function like `setup` with arguments that are `setup(currency_pair, state)` | callable     |

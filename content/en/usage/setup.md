@@ -82,7 +82,7 @@ def price_event(price, currency_pair):
 
 if __name__ == "__main__":
     # Authenticate coinbase pro strategy
-    coinbase_pro = Blankly.Coinbase_Pro()
+    coinbase_pro = Blankly.CoinbasePro()
 
     # Define our interface in case we want to make our own API calls
     interface = coinbase_pro.get_interface()

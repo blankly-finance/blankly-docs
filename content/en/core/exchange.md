@@ -14,7 +14,7 @@ Because this is designed to work with each exchange, the creation is different d
 
 **Coinbase Pro**
 
-`exchange = Blankly.Coinbase_Pro()`
+`exchange = Blankly.CoinbasePro()`
 
 **Binance**
 
@@ -36,7 +36,7 @@ Because this is designed to work with each exchange, the creation is different d
 
 | Description        | Examples                             | Type             |
 | ------------------ | ------------------------------------ | ---------------- |
-| An exchange object | `scheduler = Blankly.Coinbase_Pro()` | Exchange object. |
+| An exchange object | `scheduler = Blankly.CoinbasePro()` | Exchange object. |
 
 # Functions
 
