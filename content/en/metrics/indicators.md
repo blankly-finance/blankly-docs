@@ -1,6 +1,6 @@
 ---
 title: Indicators
-description: 'Useful metrics built into blankly'
+description: 'Indicators to quickly develop better price events'
 position: 12
 version: 1.0
 category: Metrics & Indicators
@@ -8,121 +8,541 @@ category: Metrics & Indicators
 
 ## Overview
 
-Metrics form the backbone of quantitative models and building good trading bots. It's how we measure performance at an individual model level and at a portfolio level. Whether it's as simple as what's the potential upside, vs measuring risk vs reward, we can use metrics to objectively determine which one to put our money on. 
+Indicators are a central part of developing strong quantitative models. As we know, price data is noisy, unpredictable, and constantly changing. Using indicators that have been backed by years of research have shown to improve performance and ultimately have become the backbone of many modern quantitative models. Whether it's starting with the most basic [golden cross](https://www.investopedia.com/terms/g/goldencross.asp#:~:text=Key%20Takeaways,indicating%20a%20bearish%20price%20movement.), or using deep learning with inputs including RSI, TEMA, and more, indicators are extremely useful to know about and to learn. 
 
-**Note: We highly recommend backtesting and using the built-in Blankly metrics to measure performance before putting any amount of money towards your model**
+Blankly has implemented a multitude of indicators for your own use and development. Specifically, we take the [`tulipy`](https://pypi.org/project/newtulipy/) library and wrap it with Blankly data and Strategies for backtest.
 
-This page details a bit more about what metrics Blankly provides, what their purposes are, and how you can get up and using them as soon as possible. 
+*As always, if you have any indicators that you'd like to be added, or an implementation for one, we'd love a PR!*
 
-*As always, if you have any metrics that you'd like to be added, or an implementation for one, we'd love a PR!*
+## Moving Averages
 
-## Overall Return Metrics
+Moving averages are just as they sound: they are moving ("rolling window") averages ("aggregating data points together"). The point of moving averages is to greatly improve the quality of data points. As we mentioned before, price data is extremely noisy, with constant ups and downs, moving averages "smooth" out the data so it's very clear to see a specific trend. In Blankly, we offer a multitude of various types of moving averages. We describe them below. 
 
-Return metrics are as they sound: metrics that tell you how much your model actually made. We offer two primary return metrics including: `cagr(start_value, end_value, years)` and `cum_returns(start-value, end_value)`. 
+### `sma(data, period=50, use_series=False)`
 
-### `cagr(start_value, end_value, years)`
+#### Arguments
 
-Compound Annualized Growth Rate (CAGR) or otherwise known as the Annualized Return is a metric that is utilized to determine the average annual rate at which your money has increased over time. 
+| Arg        | Description                               | Examples           | Type                       |
+| ---------- | ----------------------------------------- | ------------------ | -------------------------- |
+| data       | Data to pass                              | BTC-USD Price Data | Float[], np.arr, pd.Series |
+| period     | The period/window of the moving average   | 50, 100            | int                        |
+| use_series | Whether or not to return as a `pd.Series` | True, False        | bool                       |
 
-**Keep in mind that this is an average and not necessarily what you make every year**
+#### Returns
 
-The formula is calculated as follows: 
-$$
-CAGR = \big (\frac{end \ value}{start \ value}\big )^{1 / years}
-$$
-With this, you can get an accurate determination of how much money your model is expected to make over a period of time, annualized, and compare it to other models and assets. 
+| Description                       | Examples               | Type                       |
+| --------------------------------- | ---------------------- | -------------------------- |
+| Array-Like of The Rolling Average | [2.25, 2.35, 2.45 ...] | Float[], np.arr, pd.Series |
 
-*Typically the S&P500 achieves an 8% CAGR, so if you're able to beat that, then you're already beating the market.*
+The simple moving average (SMA) is the simplest type of moving average, it takes a time series (f.e. price data) and divides it up into windows defined by the period. Then it averages all of those points to produce one point. Thus, if you have 250 total data points, you will be returned $250 / 5 = 5$ data points. A common use-case for the SMA is the golden cross or the MACD strategies where we look fro the crossing of various simple moving averages (for example the 50 day SMA and the 100 day SMA) to see trend changes. The longer the period, the "harder" it is to change (the less it follows local market changes). 
 
-### `cum_returns(start_value, end_value)`
+### `ema(data, period=50, use_series=False)`
 
-Cumulative returns calculates your total returns regardless of annualization. It simply takes the start and the end value and calculates your total percent return. 
-$$
-Cumulative \ Returns = \frac{(end \ value - start \ value)}{start \ value}
-$$
+#### Arguments
 
+| Arg        | Description                               | Examples           | Type                       |
+| ---------- | ----------------------------------------- | ------------------ | -------------------------- |
+| data       | Data to pass                              | BTC-USD Price Data | Float[], np.arr, pd.Series |
+| period     | The period/window of the moving average   | 50, 100            | int                        |
+| use_series | Whether or not to return as a `pd.Series` | True, False        | bool                       |
 
-## Risk vs Reward Ratios
+#### Returns
 
-Building models is all about risk vs reward, it's important to build models that not only win big, but also lose less than other ones. It's much better (on the heart at least) to have a model that makes a couple of small wins, than one big one (0.5% every day for 365 days is still a whopping 182.5% return). Let's take a look on how quants model this.
+| Description                                  | Examples               | Type                       |
+| -------------------------------------------- | ---------------------- | -------------------------- |
+| Array-Like of The Exponential Moving Average | [2.25, 2.35, 2.45 ...] | Float[], np.arr, pd.Series |
 
-### `sharpe(returns, n=252, risk_free_rate=None)`
+Exponential moving average (EMA) is calculated a little differently than the SMA, the key difference between the SMA and the EMA is that the EMA places greater weight and value to more recent data points in the dataset. However, the premise for looking at crossovers and divergences with moving averages stays the same. 
 
-The sharpe ratio is perhaps one of the most often-used risk vs reward ratios out there. It takes the average returns over a given timespan, subtracts it by the risk free rate (i.e. the rate at which you're guaranteed a certain return, this is typically set at 0.15% for Treasury bills), and divides it by the standard deviation. You can think of it as "how much am I making" over "how much grit do I have to muster". A higher sharpe ratio, the more reward you get for your risk. 
+<alert type="info">Note, we default to using a smoothing factor of 2 for all EMA calculations</alert>
 
-In our implementation, we annualize the sharpe ratio depending on the frequency of your orders, defaulting to 252 (252 trading days for stocks). 
-$$
-Annualized \ Sharpe \ Ratio = \sqrt{n} \cdot \frac{avg \ return - risk \ free \ rate}{std \ of 
-\ returns}
-$$
+For more information, check out [investopedia](https://www.investopedia.com/terms/e/ema.asp)
 
+### `vwma(data, volume_data, period=50, use_series=False)`
 
-### `sortino(returns, n=252, risk_free_rate=None)`
+#### Arguments
 
-The sortino ratio is very similar to the sharpe ratio with one key difference: we only compare the volatility of the losing trades. The sortino ratio says "why penalize a model if it's making 2% on this trade and 120% on the next if it's losing only 2% on every bad trade". Thus instead of the standard deviation of all trades (both good and bad), the sortino ratio only looks at the standard deviation of losing trades (sold or covered at a loss). 
+| Arg         | Description                               | Examples            | Type                       |
+| ----------- | ----------------------------------------- | ------------------- | -------------------------- |
+| data        | Data to pass                              | BTC-USD Price Data  | Float[], np.arr, pd.Series |
+| volume_data | Volume Data                               | BTC-USD Volume Data | Float[], np.arr, pd.Series |
+| period      | The period/window of the moving average   | 50, 100             | int                        |
+| use_series  | Whether or not to return as a `pd.Series` | True, False         | bool                       |
 
-In our implementation, we annualize the sortino ratio depending on the frequency of your orders, defaulting to 252 (252 trading days for stocks). 
-$$
-Annualized \ Sortino \ Ratio = \sqrt{n} \cdot \frac{avg \ return - risk \ free \ rate}{std \ of \ negative  \ returns}
-$$
+#### Returns
 
-### `calmar(returns, n=252, risk_free_rate=None)`
+| Description                                      | Examples               | Type                       |
+| ------------------------------------------------ | ---------------------- | -------------------------- |
+| Array-Like of The Volume Weighted Moving Average | [2.25, 2.35, 2.45 ...] | Float[], np.arr, pd.Series |
 
-The calmar ratio takes the average returns and compares it to the worst case scenario (i.e. the maximum drawdown if you keep reading) of all the returns. Instead of analyzing all the trades, it primarily looks at the worst case scenario and bases risk on that. If the maximum drawdown is low, then the calmar ratio is fairly high. 
-$$
-Annualized \ Sortino \ Ratio = \sqrt{n} \cdot \frac{avg \ return - risk \ free \ rate}{|maximum \ drawdown|}
-$$
+This is a moving average that makes more weight for the days that have higher volume than others. Check out [Investopedia](https://www.investopedia.com/terms/v/vwap.asp)
 
-### `var(initial_value, returns, alpha)`
+### `wma(data, period=50, use_series=False)`
 
-Value at Risk attempts to measure how much capital (or value) is at risk at any given point in the portfolio. It is a metric that's dependent on a confidence interval (i.e. to what confidence do I know the answer to how much value is at risk). To do this, we take all your returns and make a normal distribution, then at the specified `alpha`, we determine how much value may be at risk based on that amount of return (positive returns and negative returns treated equally). 
+#### Arguments
 
-For more information, check out [Investopedia](https://www.investopedia.com/terms/v/var.asp)
+| Arg        | Description                               | Examples           | Type                       |
+| ---------- | ----------------------------------------- | ------------------ | -------------------------- |
+| data       | Data to pass                              | BTC-USD Price Data | Float[], np.arr, pd.Series |
+| period     | The period/window of the moving average   | 50, 100            | int                        |
+| use_series | Whether or not to return as a `pd.Series` | True, False        | bool                       |
 
-### `cvar(initial_value, returns, alpha)`
+#### Returns
 
-Conditional Value at Risk improves on Value at Risk by determining the expected short fall, i.e. what is the average loss upon exceeding a certain level of confidence (i.e. `alpha`). 
+| Description                               | Examples               | Type                       |
+| ----------------------------------------- | ---------------------- | -------------------------- |
+| Array-Like of The Weighted Moving Average | [2.25, 2.35, 2.45 ...] | Float[], np.arr, pd.Series |
 
-For more information, check out [Investopedia](https://www.investopedia.com/terms/c/conditional_value_at_risk.asp)
+A weighted moving average is very similar to the EMA, however their weighting function for recent points is different. Namely WMAs are linear weighting and EMA is exponential weighting. Check out this great article by [Investopedia](https://www.investopedia.com/ask/answers/071414/whats-difference-between-moving-average-and-weighted-moving-average.asp)
 
-### `max_drawdown(returns)`
+### `zlema(data, period=50, use_series=False)`
 
-Max drawdown attempts to seek out the largest peak to trough across returns. It helps you determine how big of a swing you're expected to have while trading with your model and is used in calculations including the Calmar Ratio. We take your returns, and determine the largest peak to trough and return it to you. 
-$$
-Max \ Drawdown = \frac{Trough \ Value - Peak \ Value} {Peak \ Value}
-$$
+#### Arguments
 
+| Arg        | Description                               | Examples           | Type                       |
+| ---------- | ----------------------------------------- | ------------------ | -------------------------- |
+| data       | Data to pass                              | BTC-USD Price Data | Float[], np.arr, pd.Series |
+| period     | The period/window of the moving average   | 50, 100            | int                        |
+| use_series | Whether or not to return as a `pd.Series` | True, False        | bool                       |
 
-## General Statistics
+#### Returns
 
-Finally, we offer general statistics that can help you along your journey including variance, volatility and market beta.  
+| Description                    | Examples               | Type                       |
+| ------------------------------ | ---------------------- | -------------------------- |
+| Array-Like of The Zero-Lag EMA | [2.25, 2.35, 2.45 ...] | Float[], np.arr, pd.Series |
 
-### `variance(returns, n=None)`
+The zero-lag exponential moving average reduces aspects of "lag", check out these [docs](https://tulipindicators.org/zlema)
 
-Variance is a measure of how "spread out" returns are relative to the mean, the higher the variance of returns, the more dispersed the returns are. The square root of the variance is the the standard deviation. 
+### `hma(data, period=50, use_series=False)`
 
-We offer the ability to annualize the variance by passing in `n` as a parameter where `n` is the frequency of trades. 
+#### Arguments
 
-### `volatility(returns, n=None)`
+| Arg        | Description                               | Examples           | Type                       |
+| ---------- | ----------------------------------------- | ------------------ | -------------------------- |
+| data       | Data to pass                              | BTC-USD Price Data | Float[], np.arr, pd.Series |
+| period     | The period/window of the moving average   | 50, 100            | int                        |
+| use_series | Whether or not to return as a `pd.Series` | True, False        | bool                       |
 
-Volatility is the standard deviation of your returns and is a common measure to see how spread out your returns are, this can be coupled with the many ratios and variance from above. 
+#### Returns
 
-We offer the ability to annualize the variance by passing in `n` as a parameter where `n` is the frequency of trades. 
+| Description           | Examples               | Type                       |
+| --------------------- | ---------------------- | -------------------------- |
+| Array-Like of The HMA | [2.25, 2.35, 2.45 ...] | Float[], np.arr, pd.Series |
 
-### `beta(returns, market_base_returns)`
+Similar to the ZLEMA, the Hull Moving Average (HMA) modifies the Weighted Moving Average, check out these [docs](https://tulipindicators.org/hma)
 
-Beta is a way to measure how volatile your model is relative to a base model of returns (i.e. something like the S&P500, a Vanguard Index, etc.), we give you full flexibility of choosing your return base as long as the values are consistent, we then calculate the beta, the beta is defined as the covariance between the returns and their standard deviation. For more information see [Investopedia](https://www.investopedia.com/terms/b/beta.asp)
-$$
-\beta = \frac{Cov(returns, market \ returns)}{Var(market \ returns)}
-$$
+### `trima(data, period=50, use_series=False)`
 
-## In Summary
+#### Arguments
 
-We are continually adding more and more metrics as we go, but we'd love for your feedback and help in making more, if you have one that should be included, submit a PR and we'll take a look at it right away. 
+| Arg        | Description                               | Examples           | Type                       |
+| ---------- | ----------------------------------------- | ------------------ | -------------------------- |
+| data       | Data to pass                              | BTC-USD Price Data | Float[], np.arr, pd.Series |
+| period     | The period/window of the moving average   | 50, 100            | int                        |
+| use_series | Whether or not to return as a `pd.Series` | True, False        | bool                       |
 
-We hope that these metrics provide a comprehensive method of determining which models to use and implement. 
+#### Returns
 
+| Description             | Examples               | Type                       |
+| ----------------------- | ---------------------- | -------------------------- |
+| Array-Like of The TRIMA | [2.25, 2.35, 2.45 ...] | Float[], np.arr, pd.Series |
 
+The Triangle Moving Average (TRIMA) puts more weight on the middle items in the dataset and less weight on the new and old data within a single period. Info [here](https://tulipindicators.org/trima)
 
+### `kaufman_adaptive_ma(data, period=50, use_series=False)`
 
+#### Arguments
+
+| Arg        | Description                               | Examples           | Type                       |
+| ---------- | ----------------------------------------- | ------------------ | -------------------------- |
+| data       | Data to pass                              | BTC-USD Price Data | Float[], np.arr, pd.Series |
+| period     | The period/window of the moving average   | 50, 100            | int                        |
+| use_series | Whether or not to return as a `pd.Series` | True, False        | bool                       |
+
+#### Returns
+
+| Description            | Examples               | Type                       |
+| ---------------------- | ---------------------- | -------------------------- |
+| Array-Like of The KAMA | [2.25, 2.35, 2.45 ...] | Float[], np.arr, pd.Series |
+
+The KAMA adjusts its weighting relative to the current market conditions of noise. Check out [this](https://tulipindicators.org/kama)
+
+### `macd(data, short_period=12, long_period=26, signal_period=9)`
+
+#### Arguments
+
+| Arg           | Description                                    | Examples           | Type                       |
+| ------------- | ---------------------------------------------- | ------------------ | -------------------------- |
+| data          | Data to pass                                   | BTC-USD Price Data | Float[], np.arr, pd.Series |
+| short_period  | The period/window of the short moving average  | 50, 100            | int                        |
+| long_period   | The period/window of the longer moving average | 150, 200           | Int                        |
+| signal_period | The period/window to use as the signal         | 9                  | int                        |
+| use_series    | Whether or not to return as a `pd.Series`      | True, False        | bool                       |
+
+#### Returns
+
+| Description                    | Examples                   | Type                       |
+| ------------------------------ | -------------------------- | -------------------------- |
+| Array-Like of The MACD signals | [-2.25, 0, 2.25, 1.25 ...] | Float[], np.arr, pd.Series |
+
+The MACD (Moving Average Convergence and Divergence) is a way of looking at two different moving averages and identifying key characteristics of price movements relative to the crossing and diverging of the two moving averages. It utilizes the exponential moving average, subtracting the `long_period` from the `short_period` and using that to compare against the `signal_period`. Check out this in [Investopedia](https://www.investopedia.com/terms/m/macd.asp).
+
+## Oscillators
+
+Oscillators vary in moving averages in that instead of trying to smooth out the data, they attempt to capture the noise and volatility in the price data. Just as the name states, these indicators attempt to capture how much prices oscillates. 
+
+### `rsi(data, period = 14, round_rsi = False, use_series=False)`
+
+#### Arguments
+
+| Arg        | Description                               | Examples           | Type                       |
+| ---------- | ----------------------------------------- | ------------------ | -------------------------- |
+| data       | Data to pass                              | BTC-USD Price Data | Float[], np.arr, pd.Series |
+| period     | The period/window to use                  | 14, 50, 100        | int                        |
+| round_rsi  | Whether to round to two decimal places    | True, False        | Bool                       |
+| use_series | Whether or not to return as a `pd.Series` | True, False        | bool                       |
+
+#### Returns
+
+| Description           | Examples         | Type                       |
+| --------------------- | ---------------- | -------------------------- |
+| Array-Like of The RSI | [30, 45.5, 55.5] | Float[], np.arr, pd.Series |
+
+The Relative Strength Index is perhaps one of the most commonly used oscillators. The RSI attempts to capture the momentum of recent price changes (how strong is the current uptrend and or how week is the downtrend). The RSI is calculated as shown here by [Investopedia](https://www.investopedia.com/terms/r/rsi.asp)
+
+### `aroon_oscillator(high_data, low_data, period=14, use_series=False)`
+
+#### Arguments
+
+| Arg        | Description                               | Examples           | Type                       |
+| ---------- | ----------------------------------------- | ------------------ | -------------------------- |
+| high_data  | Price Data Highs                          | BTC-USD Price Data | Float[], np.arr, pd.Series |
+| low_data   | Price Data Lows                           | BTC-USD Price Data | Float[], np.arr, pd.Series |
+| period     | The period/window to use                  | True, False        | Bool                       |
+| use_series | Whether or not to return as a `pd.Series` | True, False        | bool                       |
+
+#### Returns
+
+| Description                        | Examples         | Type                       |
+| ---------------------------------- | ---------------- | -------------------------- |
+| Array-Like of The Aroon Oscillator | [30, 45.5, 55.5] | Float[], np.arr, pd.Series |
+
+The aroon oscillator utilizes the aroon indicator to determine the current strength of a given trend. A value greater than zero signifies an uptrend and a value less than 0 signifies a downtrend. For more info, see [here](https://www.investopedia.com/terms/a/aroonoscillator.asp).
+
+<alert>Blankly makes it extremely easy to get OHLCV data at your prescribed resolution, recall that `interface.history()` returns a dataframe with `open, close, high, low, volume` that users can grab and utilize for these oscillators and moving averages.</alert>
+
+#### Example Use
+
+```python
+from Blankly.strategy import Strategy
+from Blankly import Alpaca, Interface
+from Blankly.metrics import aroon_oscillator
+
+def price_event(price, symbol, state):
+  interface: Interface = state.interface
+  history = interface.history(symbol, 500, resolution=state.resolution)
+  h = history['high']
+  l = history['low']
+  oscillation = aroon_oscillator(h, l)
+  ...
+a = Alpaca()
+s = Strategy(a)
+s.add_price_event(price_event, resolution='30m')
+```
+
+### `chande_momentum_oscillator(data, period=14, use_series=False)` 
+
+#### Arguments
+
+| Arg        | Description                               | Examples           | Type                       |
+| ---------- | ----------------------------------------- | ------------------ | -------------------------- |
+| data       | Price Data                                | BTC-USD Price Data | Float[], np.arr, pd.Series |
+| period     | The period/window to use                  | True, False        | Bool                       |
+| use_series | Whether or not to return as a `pd.Series` | True, False        | bool                       |
+
+#### Returns
+
+| Description                                  | Examples         | Type                       |
+| -------------------------------------------- | ---------------- | -------------------------- |
+| Array-Like of The Chande Momentum Oscillator | [30, 45.5, 55.5] | Float[], np.arr, pd.Series |
+
+The chande momentum oscillator takes the sum of all recent gains, the sum of all recent losses and then divides that by the sum of all recent price movements (sum of all gains + losses). The formula is described by [Investopedia](https://www.investopedia.com/terms/c/chandemomentumoscillator.asp)
+
+### `absolute_price_oscillator(data, short_period=12, long_period=26, use_series=False)`
+
+#### Arguments
+
+| Arg          | Description                               | Examples           | Type                       |
+| ------------ | ----------------------------------------- | ------------------ | -------------------------- |
+| data         | Price Data                                | BTC-USD Price Data | Float[], np.arr, pd.Series |
+| short_period | Short Period EMA                          | 25, 50             | int                        |
+| long_period  | Long Period EMA                           | 75, 100            | int                        |
+| use_series   | Whether or not to return as a `pd.Series` | True, False        | bool                       |
+
+#### Returns
+
+| Description                                 | Examples         | Type                       |
+| ------------------------------------------- | ---------------- | -------------------------- |
+| Array-Like of The Absolute Price Oscillator | [30, 45.5, 55.5] | Float[], np.arr, pd.Series |
+
+The absolute price oscillator helps detect the difference between two EMAs and expresses the results as an absolute value. More information can be seen [here](https://www.fidelity.com/learning-center/trading-investing/technical-analysis/technical-indicator-guide/apo)
+
+### `percentage_price_oscilator(data, short_period=12, long_period=26, use_series=False)`
+
+#### Arguments
+
+| Arg          | Description                               | Examples           | Type                       |
+| ------------ | ----------------------------------------- | ------------------ | -------------------------- |
+| data         | Price Data                                | BTC-USD Price Data | Float[], np.arr, pd.Series |
+| short_period | Short Period EMA                          | 25, 50             | int                        |
+| long_period  | Long Period EMA                           | 75, 100            | int                        |
+| use_series   | Whether or not to return as a `pd.Series` | True, False        | bool                       |
+
+#### Returns
+
+| Description                                   | Examples         | Type                       |
+| --------------------------------------------- | ---------------- | -------------------------- |
+| Array-Like of The Percentage Price Oscillator | [30, 45.5, 55.5] | Float[], np.arr, pd.Series |
+
+The same as the absolute price, but returns values as a percentage difference.
+
+### `stochastic_oscillator(high_data, low_data, close_data, pct_k_period=14, pct_k_slowing_period=3, pct_d_period=3, use_series=False)`
+
+#### Arguments
+
+| Arg                  | Description                               | Examples           | Type                       |
+| -------------------- | ----------------------------------------- | ------------------ | -------------------------- |
+| high_data            | High Price Data                           | BTC-USD Price Data | Float[], np.arr, pd.Series |
+| low_data             | Low Price Data                            | BTC-USD Price Data | Float[], np.arr, pd.Series |
+| close_data           | Close Price Data                          | BTC-USD Price Data | Float[], np.arr, pd.Series |
+| pct_k_period         | %K Period to Choose                       | 10, 15             | int                        |
+| pct_k_slowing_period | %K Slowing Period                         | 75, 100            | int                        |
+| pct_d_period         | %D Period                                 | 14, 23             | int                        |
+| use_series           | Whether or not to return as a `pd.Series` | True, False        | bool                       |
+
+#### Returns
+
+| Description                             | Examples         | Type                       |
+| --------------------------------------- | ---------------- | -------------------------- |
+| Array-Like of The Stochastic Oscillator | [30, 45.5, 55.5] | Float[], np.arr, pd.Series |
+
+The stochastic oscillator compares the closing data of a security to a range of varying prices over a specific time period. More information can be found on [Investopedia](https://www.investopedia.com/terms/s/stochasticoscillator.asp)
+
+### `stochastic_rsi(data, period=14, smooth_pct_k=3, smooth_pct_d=3, use_series=False)`
+
+#### Arguments
+
+| Arg          | Description                               | Examples           | Type                       |
+| ------------ | ----------------------------------------- | ------------------ | -------------------------- |
+| data         | Price Data                                | BTC-USD Price Data | Float[], np.arr, pd.Series |
+| period       | RSI Period                                | 10, 15             | Int                        |
+| smooth_pct_k | %K Smoothing Period                       | 10, 15             | Int                        |
+| smooth_pct_d | %D Smoothing Period                       | 10, 15             | int                        |
+| use_series   | Whether or not to return as a `pd.Series` | True, False        | bool                       |
+
+#### Returns
+
+| Description                             | Examples         | Type                       |
+| --------------------------------------- | ---------------- | -------------------------- |
+| Array-Like of The Stochastic Oscillator | [30, 45.5, 55.5] | Float[], np.arr, pd.Series |
+
+The stochastic RSI combines the RSI with the stochastic oscillators. More info can be found [here](https://www.investopedia.com/terms/s/stochrsi.asp).
+
+## Other Indicators
+
+### `bbands(data, period=14, stddev=2)`
+
+#### Arguments
+
+| Arg        | Description                                       | Examples           | Type                       |
+| ---------- | ------------------------------------------------- | ------------------ | -------------------------- |
+| data       | Price Data                                        | BTC-USD Price Data | Float[], np.arr, pd.Series |
+| period     | SMA Period                                        | 20                 | int                        |
+| stddev     | # of Standard Deviations Away from Moving Average | 2, 3               | int                        |
+| use_series | Whether or not to return as a `pd.Series`         | True, False        | bool                       |
+
+#### Returns
+
+| Description                          | Examples             | Type                       |
+| ------------------------------------ | -------------------- | -------------------------- |
+| 2D Array-Like of The Bollinger Bands | [[30, 25], [75, 55]] | Float[], np.arr, pd.Series |
+
+Bollinger Bands are a very popular technical indicator to measure the strength of an uptrend or downtrend. It is also a way to help determine trend reversals. View [Investopedia's Explanation](https://www.investopedia.com/terms/b/bollingerbands.asp).
+
+### `wad(high_data, low_data, close_data, use_series=False)`
+
+#### Arguments
+
+| Arg        | Description                               | Examples           | Type                       |
+| ---------- | ----------------------------------------- | ------------------ | -------------------------- |
+| high_data  | High Price Data                           | BTC-USD Price Data | Float[], np.arr, pd.Series |
+| low_data   | Low Price Data                            | BTC-USD Price Data | Float[], np.arr, pd.Series |
+| close_data | Close Price Data                          | BTC-USD Price Data | Float[], np.arr, pd.Series |
+| use_series | Whether or not to return as a `pd.Series` | True, False        | bool                       |
+
+#### Returns
+
+| Description       | Examples             | Type                       |
+| ----------------- | -------------------- | -------------------------- |
+| Array-Like of WAD | [[30, 25], [75, 55]] | Float[], np.arr, pd.Series |
+
+The Williams accumulation/distribution helps determine a trend direction. View [this](https://www.barchart.com/education/technical-indicators/accumulation_distribution_williams) for more info.
+
+### `wilders(data, period=50, use_series=False)`
+
+#### Arguments
+
+| Arg        | Description                               | Examples           | Type                       |
+| ---------- | ----------------------------------------- | ------------------ | -------------------------- |
+| data       | High Price Data                           | BTC-USD Price Data | Float[], np.arr, pd.Series |
+| period     | Period to Use                             | 50, 100            | Int                        |
+| use_series | Whether or not to return as a `pd.Series` | True, False        | bool                       |
+
+#### Returns
+
+| Description           | Examples     | Type                       |
+| --------------------- | ------------ | -------------------------- |
+| Array-Like of Wilders | [20, 25, 30] | Float[], np.arr, pd.Series |
+
+### `willr(high_data, low_data, close_data, period=50, use_series=False)`
+
+#### Arguments
+
+| Arg        | Description                               | Examples           | Type                       |
+| ---------- | ----------------------------------------- | ------------------ | -------------------------- |
+| high_data  | High Price Data                           | BTC-USD Price Data | Float[], np.arr, pd.Series |
+| low_data   | Low Price Data                            | BTC-USD Price Data | Float[], np.arr, pd.Series |
+| close_data | Close Price Data                          | BTC-USD Price Data | Float[], np.arr, pd.Series |
+| use_series | Whether or not to return as a `pd.Series` | True, False        | bool                       |
+
+#### Returns
+
+| Description           | Examples     | Type                       |
+| --------------------- | ------------ | -------------------------- |
+| Array-Like of Wilders | [20, 25, 30] | Float[], np.arr, pd.Series |
+
+The Williams %R is a measure similar to RSI and the stochastic oscillator where it measures overbought and oversold territory. More information is on [Investopedia](https://www.investopedia.com/terms/w/williamsr.asp)
+
+### `true_range(high_data, low_data, close_data, use_series=False)`
+
+#### Arguments
+
+| Arg        | Description                               | Examples           | Type                       |
+| ---------- | ----------------------------------------- | ------------------ | -------------------------- |
+| high_data  | High Price Data                           | BTC-USD Price Data | Float[], np.arr, pd.Series |
+| low_data   | Low Price Data                            | BTC-USD Price Data | Float[], np.arr, pd.Series |
+| close_data | Close Price Data                          | BTC-USD Price Data | Float[], np.arr, pd.Series |
+| use_series | Whether or not to return as a `pd.Series` | True, False        | bool                       |
+
+#### Returns
+
+| Description              | Examples     | Type                       |
+| ------------------------ | ------------ | -------------------------- |
+| Array-Like of True Range | [20, 25, 30] | Float[], np.arr, pd.Series |
+
+The true range takes the greatest of `high - close` and `low - close` for every data point
+
+### `average_true_range(high_data, low_data, close_data, period=50, use_series=False)`
+
+#### Arguments
+
+| Arg        | Description                               | Examples           | Type                       |
+| ---------- | ----------------------------------------- | ------------------ | -------------------------- |
+| high_data  | High Price Data                           | BTC-USD Price Data | Float[], np.arr, pd.Series |
+| low_data   | Low Price Data                            | BTC-USD Price Data | Float[], np.arr, pd.Series |
+| close_data | Close Price Data                          | BTC-USD Price Data | Float[], np.arr, pd.Series |
+| period     | Moving Average Period                     | 50, 100            | Int                        |
+| use_series | Whether or not to return as a `pd.Series` | True, False        | bool                       |
+
+#### Returns
+
+| Description              | Examples     | Type                       |
+| ------------------------ | ------------ | -------------------------- |
+| Array-Like of True Range | [20, 25, 30] | Float[], np.arr, pd.Series |
+
+The average true range takes the greatest of `high - close` and `low - close` for every data point and then takes a moving average of the points. More information can be found [here](https://www.investopedia.com/terms/a/atr.asp).
+
+## Statistics
+
+We offer a variety of general statistics as part of our indicators. All of our statistics are implemented so that they work on a period of data (i.e. they're rolling and return an Array-Like). 
+
+### `stddev_period(data, period=14, use_series=False)`
+
+#### Arguments
+
+| Arg        | Description                               | Examples           | Type                       |
+| ---------- | ----------------------------------------- | ------------------ | -------------------------- |
+| data       | Any Type of Array Data                    | BTC-USD Price Data | Float[], np.arr, pd.Series |
+| period     | Rolling Window                            | 50, 100            | Int                        |
+| use_series | Whether or not to return as a `pd.Series` | True, False        | bool                       |
+
+#### Returns
+
+| Description                      | Examples     | Type                       |
+| -------------------------------- | ------------ | -------------------------- |
+| Array-Like of Standard Deviation | [20, 25, 30] | Float[], np.arr, pd.Series |
+
+### `var_period(data, period=14, use_series=False)`
+
+#### Arguments
+
+| Arg        | Description                               | Examples           | Type                       |
+| ---------- | ----------------------------------------- | ------------------ | -------------------------- |
+| data       | Any Type of Array Data                    | BTC-USD Price Data | Float[], np.arr, pd.Series |
+| period     | Rolling Window                            | 50, 100            | Int                        |
+| use_series | Whether or not to return as a `pd.Series` | True, False        | bool                       |
+
+#### Returns
+
+| Description            | Examples     | Type                       |
+| ---------------------- | ------------ | -------------------------- |
+| Array-Like of Variance | [20, 25, 30] | Float[], np.arr, pd.Series |
+
+### `stderr_period(data, period=14, use_series=False)`
+
+#### Arguments
+
+| Arg        | Description                               | Examples           | Type                       |
+| ---------- | ----------------------------------------- | ------------------ | -------------------------- |
+| data       | Any Type of Array Data                    | BTC-USD Price Data | Float[], np.arr, pd.Series |
+| period     | Rolling Window                            | 50, 100            | Int                        |
+| use_series | Whether or not to return as a `pd.Series` | True, False        | bool                       |
+
+#### Returns
+
+| Description                  | Examples     | Type                       |
+| ---------------------------- | ------------ | -------------------------- |
+| Array-Like of Standard Error | [20, 25, 30] | Float[], np.arr, pd.Series |
+
+### `min_period(data, period, use_series=False)`
+
+#### Arguments
+
+| Arg        | Description                               | Examples           | Type                       |
+| ---------- | ----------------------------------------- | ------------------ | -------------------------- |
+| data       | Any Type of Array Data                    | BTC-USD Price Data | Float[], np.arr, pd.Series |
+| period     | Rolling Window                            | 50, 100            | Int                        |
+| use_series | Whether or not to return as a `pd.Series` | True, False        | bool                       |
+
+#### Returns
+
+| Description            | Examples     | Type                       |
+| ---------------------- | ------------ | -------------------------- |
+| Array-Like of Minimums | [20, 25, 30] | Float[], np.arr, pd.Series |
+
+### `max_period(data, period, use_series=False)`
+
+#### Arguments
+
+| Arg        | Description                               | Examples           | Type                       |
+| ---------- | ----------------------------------------- | ------------------ | -------------------------- |
+| data       | Any Type of Array Data                    | BTC-USD Price Data | Float[], np.arr, pd.Series |
+| period     | Rolling Window                            | 50, 100            | Int                        |
+| use_series | Whether or not to return as a `pd.Series` | True, False        | bool                       |
+
+#### Returns
+
+| Description            | Examples     | Type                       |
+| ---------------------- | ------------ | -------------------------- |
+| Array-Like of Maximums | [20, 25, 30] | Float[], np.arr, pd.Series |
 
