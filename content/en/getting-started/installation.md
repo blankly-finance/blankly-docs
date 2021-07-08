@@ -68,7 +68,7 @@ You can find each of these files in the "examples" folder of our GitHub.
 Using the module is quite easy now. Here is a very simple demo that shows some features:
 
 ```python[script.py]
-import Blankly
+import blankly
 
 
 def price_event(price, currency_pair):

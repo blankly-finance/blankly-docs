@@ -19,10 +19,10 @@ Current methods involve heavily using third-party packages including `yfinance` 
 Blankly makes it extremely easy by integrating with our interfaces that run on any exchange.
 
 ```python
-from Blankly import Alpaca, Coinbase_Pro, Binance
+from Blankly import Alpaca, CoinbasePro, Binance
 
 a = Alpaca()
-c = Coinbase_Pro()
+c = CoinbasePro()
 b = Binance()
 
 interface = a.interface
@@ -173,7 +173,7 @@ s.backtest(to='1y', callbacks=[sharpe])
 
 ### Traditionally
 
-In order to make our traditional code to work, we would need to create a separate function to work with a python package like `alpaca` or `Coinbase_Pro` that is completely different from our backtesting code. This leads to 1. a lot of unnecessary code duplication, 2. difficulty of maintaining code especially when switching across exchanges, and 3. makes it almost extremely difficult to make one strategy run on multiple tickers at the same time. 
+In order to make our traditional code to work, we would need to create a separate function to work with a python package like `alpaca` or `CoinbasePro` that is completely different from our backtesting code. This leads to 1. a lot of unnecessary code duplication, 2. difficulty of maintaining code especially when switching across exchanges, and 3. makes it almost extremely difficult to make one strategy run on multiple tickers at the same time. 
 
 ### Blankly
 Blankly's build and test environments are exactly the same, we can simply take our strategy defined in the previous example and immediately use it to run a real model by removing `.backtest()` 
@@ -223,7 +223,7 @@ If we wanted to change the exchange we just need to instantiate a new strategy:
 
 ```python
 
-coinbase_pro = Coinbase_Pro()
+coinbase_pro = CoinbasePro()
 s = Strategy(coinbase_pro)
 
 s.add_price_event(buy_or_sell, currency_pair='BTC-USD', resolution='1d')
@@ -248,7 +248,7 @@ With Blankly, you can create a library of price events and plug and chug.
 
 from price_events import rsi_strategy, macd_strategy
 
-coinbase_pro = Coinbase_Pro()
+coinbase_pro = CoinbasePro()
 s = Strategy(coinbase_pro)
 
 s.add_price_event(rsi_strategy, currency_pair='BTC-USD', resolution='1d')
