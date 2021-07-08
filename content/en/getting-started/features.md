@@ -13,7 +13,7 @@ features:
     - Support for multiple portfolios on multiple exchanges, all independently
     - Multi-process communication
     - Long term and high resolution historical data downloads as pandas dataframes
-    - Single pip module (`pip install Blankly`)
+    - Single pip module (`pip install blankly`)
     - Asynchronous callbacks from ticker feeds
     - ZeroRPC server to report to Javascript or React **
     - Easy access to raw API calls
