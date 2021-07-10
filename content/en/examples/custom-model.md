@@ -126,6 +126,6 @@ s = Strategy(alpaca)
 s.add_price_event(price_event, 'MSFT', resolution='1d', init=init)
 # decision_model = OrderDecisionModel() <-- global state can also be accessed in price event functions 
 # pricing_model = OrderPricingModel()
-s.backtest('2y')
+s.backtest(initial_values={'USD': 10000}, to='2y')
 
 ```

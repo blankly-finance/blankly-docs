@@ -132,5 +132,5 @@ s = Strategy(alpaca)
 # different tickers and resolutions
 s.add_price_event(price_event, 'MSFT', resolution='15m', init=init)
 s.add_price_event(price_event, 'AAPL', resolution='1d', init=init)
-s.backtest(to='2y')
+s.backtest(initial_values={'USD': 10000}, to='2y')
 ```
