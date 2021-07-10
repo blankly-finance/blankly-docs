@@ -32,24 +32,25 @@ from Blankly import Strategy, StrategyState, Interface
 from Blankly import Alpaca
 from Blankly.indicators import macd
 
-def price_event(price, currency_pair, state: StrategyState):
+def init(symbol, state: StrategyState):
+    # run on a new price event to initialize variables
+    pass
+
+def price_event(price, symbol, state: StrategyState):
     # we'll come back to this soon
     pass
 
 alpaca = Alpaca()
 s = Strategy(alpaca)
-s.add_price_event(price_event, 'MSFT', resolution='30m')
-s.variables["has_bought"] = false
+s.add_price_event(price_event, 'MSFT', resolution='30m', init=init)
 s.run()
 ```
 
-### Implementing the Price Event
+### Initializing Variables and History
 
-Now that we have the code set up, let's take a deep dive into how to implement this price event.
+In order to speed things up, we should make one call to get the historical data that we need and append data as new prices come in. We also need to initialize some variabels for the price event.
 
-We want to buy when the MACD crosses up (which means the slope of MACD must be positive), thus, we're going to analyze the difference between two points of the MACD to detect positive slope and the crossing up. We also want to note that the MACD may skip over zero (i.e. go from -0.00005 to 0.35), and in this case, we still want to buy when the MACD is 0.35. 
-
-We will use the 12 and 26 day EMA as our short and long periods and 9 as our signal period (see [Investopedia](https://www.investopedia.com/terms/m/macd.asp))
+We can actually easily do this on initialization and make sure the proper data is passed in to the proper price events:
 
 ```python
 
@@ -57,34 +58,55 @@ SHORT_PERIOD = 12
 LONG_PERIOD = 26
 SIGNAL_PERIOD = 9
 
-def price_event(price, currency_pair, state: StrategyState):
+def init(symbol, state: StrategyState):
+    interface: Interface = state.interface
+    resolution: str = state.resolution
+    variables = state.variables
+    # initialize the historical data
+    variables['history'] = interface.history(symbol, 800, resolution)['close']
+    variables['short_period'] = SHORT_PERIOD
+    variables['long_period'] = LONG_PERIOD
+    variables['signal_period'] = SIGNAL_PERIOD
+    variables['has_bought'] = False
+```
+
+### Implementing the Price Event
+
+Now that we have the code set up, let's take a deep dive into how to implement this price event.
+
+We want to buy when the MACD crosses above the MACD Signal Line (which means the slope of MACD must be positive), thus, we're going to analyze the difference between two points of the MACD to detect positive slope and the crossing up. We also want to note that the MACD may skip over the MACD Signal Line (i.e. go from -0.00005 to 0.35), and in this case, we still want to buy when the MACD is 0.35. 
+
+We will use the 12 and 26 day EMA as our short and long periods and 9 as our signal period (see [Investopedia](https://www.investopedia.com/terms/m/macd.asp))
+
+```python
+
+def price_event(price, symbol, state: StrategyState):
     interface: Interface = state.interface
     # allow the resolution to be any resolution: 15m, 30m, 1d, etc.
     resolution: str = state.resolution
     variables = state.variables
 
-    history = interface.get_product_history(currency_pair, 800, resolution)
-    macd_res = macd(history, short_period=variables['short_period'], long_period=variables['long_period'], signal_period=variables['signal_period'])
-
-    # alternatively, we can use variables, which allows us to integrate 
-    # this with any strategy with these constants defined during initial run time:
-    # macd_res = macd(history, short_period=variables['short_period'], long_period=variables['long_period'], signal_period=variables['signal_period'])
+    variables['history'].append(price)
+    macd_res, macd_signal, macd_histogram = macd(history, short_period=variables['short_period'], long_period=variables['long_period'], signal_period=variables['signal_period'])
 
     slope_macd = (macd_res[-1] - macd_res[-5]) / 5 # get the slope of the last 5 MACD_points
     prev_macd = macd_res[-2]
     curr_macd = macd_res[-1]
+    curr_signal_macd = macd_signal[-1]
     
-    # We want to make sure this works even if curr_macd does not equal 0
-
-    if slope_macd > 0 and curr_macd >= 0 and prev_macd < 0 and not variables['has_bought']:
+    # We want to make sure this works even if curr_macd does not equal the signal MACD
+    is_cross_up = slope_macd > 0 and curr_macd >= curr_signal_macd and prev_macd < curr_signal_macd
+    
+    is_cross_down = slope_macd < 0 and curr_diff <= curr_signal_macd and prev_macd > curr_signal_macd
+    if is_cross_up and not variables['has_bought']:
         # buy with all available cash
-        interface.market_order('buy', currency_pair, interface.cash)
+        interface.market_order('buy', symbol, interface.cash)
         variables['has_bought'] = true
-    else if slope_macd < 0 and curr_diff <= 0 and prev_macd > 0 and variables['has_bought']:
+    elif is_cross_down and variables['has_bought']:
         # sell all of the position
-        curr_value = interface.account[currency_pair]['available'] * price
-        interface.market_order('sell', currency_pair, curr_value)
-        variables['has_bought'] = false
+        curr_value = interface.account[symbol].available * price
+        interface.market_order('sell', symbol, curr_value)
+        variables['has_bought'] = False
 
 ```
 
@@ -106,38 +128,47 @@ SHORT_PERIOD = 12
 LONG_PERIOD = 26
 SIGNAL_PERIOD = 9
 
-def price_event(price, currency_pair, state: StrategyState):
+def init(symbol, state: StrategyState):
+    interface: Interface = state.interface
+    resolution: str = state.resolution
+    variables = state.variables
+    # initialize the historical data
+    variables['history'] = interface.history(symbol, 800, resolution)['close']
+    variables['short_period'] = SHORT_PERIOD
+    variables['long_period'] = LONG_PERIOD
+    variables['signal_period'] = SIGNAL_PERIOD
+    variables['has_bought'] = False
+
+def price_event(price, symbol, state: StrategyState):
     interface: Interface = state.interface
     # allow the resolution to be any resolution: 15m, 30m, 1d, etc.
     resolution: str = state.resolution
     variables = state.variables
 
-    history = interface.get_product_history(currency_pair, 800, resolution)
-    macd_res = macd(history, short_period=variables['short_period'], long_period=variables['long_period'], signal_period=variables['signal_period'])
-
-    # alternatively, we can use variables, which allows us to integrate 
-    # this with any strategy with these constants defined during initial run time:
-    # macd_res = macd(history, short_period=variables['short_period'], long_period=variables['long_period'], signal_period=variables['signal_period'])
+    variables['history'].append(price)
+    macd_res, macd_signal, macd_histogram = macd(history, short_period=variables['short_period'], long_period=variables['long_period'], signal_period=variables['signal_period'])
 
     slope_macd = (macd_res[-1] - macd_res[-5]) / 5 # get the slope of the last 5 MACD_points
     prev_macd = macd_res[-2]
     curr_macd = macd_res[-1]
+    curr_signal_macd = macd_signal[-1]
     
-    # We want to make sure this works even if curr_macd does not equal 0
+    # We want to make sure this works even if curr_macd does not equal the signal MACD
+    is_cross_up = slope_macd > 0 and curr_macd >= curr_signal_macd and prev_macd < curr_signal_macd
     
-    if slope_macd > 0 and curr_macd >= 0 and prev_macd < 0 and not variables['has_bought']:
+    is_cross_down = slope_macd < 0 and curr_diff <= curr_signal_macd and prev_macd > curr_signal_macd
+    if is_cross_up and not variables['has_bought']:
         # buy with all available cash
-        interface.market_order('buy', currency_pair, interface.cash)
+        interface.market_order('buy', symbol, interface.cash)
         variables['has_bought'] = true
-    else if slope_macd < 0 and curr_diff <= 0 and prev_macd > 0 and variables['has_bought']:
+    elif is_cross_down and variables['has_bought']:
         # sell all of the position
-        curr_value = interface.account[currency_pair]['available'] * price
-        interface.market_order('sell', currency_pair, curr_value)
-        variables['has_bought'] = false
+        curr_value = interface.account[symbol].available * price
+        interface.market_order('sell', symbol, curr_value)
+        variables['has_bought'] = False
 
 alpaca = Alpaca()
 s = Strategy(alpaca)
-s.add_price_event(price_event, 'MSFT', resolution='1d')
-s.variables["has_bought"] = false
-s.backtest(to='2y')
+s.add_price_event(price_event, 'MSFT', resolution='30m', init=init)
+s.backtest('2y')
 ```
