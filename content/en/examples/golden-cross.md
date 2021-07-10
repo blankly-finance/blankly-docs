@@ -31,15 +31,33 @@ from Blankly import Strategy, StrategyState, Interface
 from Blankly import Alpaca
 from Blankly.indicators import sma
 
-def price_event(price, currency_pair, state: StrategyState):
+def init(symbol, state: StrategyState):
+    # run on a new price event to initialize variables
+    pass
+
+def price_event(price, symbol, state: StrategyState):
     # we'll come back to this soon
     pass
 
 alpaca = Alpaca()
 s = Strategy(alpaca)
-s.add_price_event(price_event, 'MSFT', resolution='1d')
-s.variables["has_bought"] = false
+s.add_price_event(price_event, 'MSFT', resolution='1d', init=init)
 s.run()
+```
+
+### Initializing Variables and History
+
+In order to speed things up, we should make one call to get the historical data that we need and append data as new prices come in. 
+We can actually easily do this on initialization and make sure the proper data is passed in to the proper price events:
+
+```python
+def init(symbol, state: StrategyState):
+    interface: Interface = state.interface
+    resolution: str = state.resolution
+    variables = state.variables
+    # initialize the historical data
+    variables['history'] = interface.history(symbol, 800, resolution)['close']
+    variables['has_bought'] = False
 ```
 
 ### Implementing the Price Event
@@ -51,13 +69,13 @@ First, as we recall, we want to buy an entity when the 50-day SMA crosses the 20
 Traditionally, calculating an SMA would typically involve utilizing `numpy` or `pandas`. Blankly has done all the hard lifting for you AND returns the SMA as an array so that we can easily calculate the slope between any two points (we'll take a difference of 5)
 
 ```python
-def price_event(price, currency_pair, state: StrategyState):
+def price_event(price, symbol, state: StrategyState):
     interface: Interface = state.interface
     # allow the resolution to be any resolution: 15m, 30m, 1d, etc.
     resolution: str = state.resolution
     variables = state.variables
 
-    history = interface.get_product_history(currency_pair, 800, resolution)
+    variables['history'].append(price)
 
     sma50 = sma(history, period=50)
     sma200 = sma(history, period=200)
@@ -65,14 +83,16 @@ def price_event(price, currency_pair, state: StrategyState):
     slope_sma50 = (sma50[-1] - sma50[-5]) / 5 # get the slope of the last 5 SMA50 Data Points
     prev_diff = diff[-2]
     curr_diff = diff[-1]
+    is_cross_up = slope_sma50 > 0 and curr_diff >= 0 and prev_diff < 0
+    is_cross_down = slope_sma50 < 0 and curr_diff <= 0 and prev_diff > 0
     # comparing prev diff with current diff will show a cross
-    if slope_sma50 > 0 and curr_diff >= 0 and prev_diff < 0 and not variables['has_bought']:
-        interface.market_order('buy', currency_pair, interface.cash)
+    if is_cross_up and not variables['has_bought']:
+        interface.market_order('buy', symbol, interface.cash)
         variables['has_bought'] = true
-    else if slope_sma50 < 0 and curr_diff <= 0 and prev_diff > 0 and variables['has_bought']:
-        curr_value = interface.account[currency_pair]['available'] * price
-        interface.market_order('sell', currency_pair, curr_value)
-        variables['has_bought'] = false
+    elif is_cross_down and variables['has_bought']:
+        curr_value = interface.account[symbol].available * price
+        interface.market_order('sell', symbol, curr_value)
+        variables['has_bought'] = False
 ```
 
 ### Adding it All Together
@@ -85,13 +105,21 @@ from Blankly import Strategy, StrategyState, Interface
 from Blankly import Alpaca
 from Blankly.indicators import sma
 
-def price_event(price, currency_pair, state: StrategyState):
+def init(symbol, state: StrategyState):
+    interface: Interface = state.interface
+    resolution: str = state.resolution
+    variables = state.variables
+    # initialize the historical data
+    variables['history'] = interface.history(symbol, 800, resolution)['close']
+    variables['has_bought'] = False
+
+def price_event(price, symbol, state: StrategyState):
     interface: Interface = state.interface
     # allow the resolution to be any resolution: 15m, 30m, 1d, etc.
     resolution: str = state.resolution
     variables = state.variables
 
-    history = interface.get_product_history(currency_pair, 800, resolution)
+    variables['history'].append(price)
 
     sma50 = sma(history, period=50)
     sma200 = sma(history, period=200)
@@ -99,18 +127,19 @@ def price_event(price, currency_pair, state: StrategyState):
     slope_sma50 = (sma50[-1] - sma50[-5]) / 5 # get the slope of the last 5 SMA50 Data Points
     prev_diff = diff[-2]
     curr_diff = diff[-1]
+    is_cross_up = slope_sma50 > 0 and curr_diff >= 0 and prev_diff < 0
+    is_cross_down = slope_sma50 < 0 and curr_diff <= 0 and prev_diff > 0
     # comparing prev diff with current diff will show a cross
-    if slope_sma50 > 0 and curr_diff > 0 and prev_diff < 0 and not variables['has_bought']:
-        interface.market_order('buy', currency_pair, interface.cash)
+    if is_cross_up and not variables['has_bought']:
+        interface.market_order('buy', symbol, interface.cash)
         variables['has_bought'] = true
-    else if slope_sma50 < 0 and curr_diff < 0 and prev_diff > 0 and variables['has_bought']:
-        curr_value = interface.account[currency_pair]['available'] * price
-        interface.market_order('sell', currency_pair, curr_value)
-        variables['has_bought'] = false
+    elif is_cross_down and variables['has_bought']:
+        curr_value = interface.account[symbol].available * price
+        interface.market_order('sell', symbol, curr_value)
+        variables['has_bought'] = False
 
 alpaca = Alpaca()
 s = Strategy(alpaca)
-s.add_price_event(price_event, 'MSFT', resolution='1d')
-s.variables["has_bought"] = false
+s.add_price_event(price_event, 'MSFT', resolution='1d', init=init)
 s.backtest(to='2y')
 ```

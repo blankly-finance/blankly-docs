@@ -30,11 +30,11 @@ from Blankly import Strategy, StrategyState, Interface
 from Blankly import Alpaca
 from Blankly.indicators import rsi
 
-def init(currency_pair, state: StrategyState):
+def init(symbol, state: StrategyState):
     # run on a new price event to initialize variables
     pass
 
-def price_event(price, currency_pair, state: StrategyState):
+def price_event(price, symbol, state: StrategyState):
     # we'll come back to this soon
     pass
 
@@ -50,12 +50,12 @@ In order to speed things up, we should make one call to get the historical data 
 We can actually easily do this on initialization and make sure the proper data is passed in to the proper price events:
 
 ```python
-def init(currency_pair, state: StrategyState):
+def init(symbol, state: StrategyState):
     interface: Interface = state.interface
     resolution: str = state.resolution
     variables = state.variables
     # initialize the historical data
-    variables['history'] = interface.get_product_history(currency_pair, 150, resolution)['close']
+    variables['history'] = interface.history(symbol, 150, resolution)['close']
     variables['has_bought'] = False
 ```
 
@@ -67,7 +67,7 @@ First, as we recall, we want to buy an entity when the RSI is under 30 and sell 
 This is a very simple conditional statement. 
 
 ```python
-def price_event(price, currency_pair, state: StrategyState):
+def price_event(price, symbol, state: StrategyState):
     interface: Interface = state.interface
     # allow the resolution to be any resolution: 15m, 30m, 1d, etc.
     resolution: str = state.resolution
@@ -78,11 +78,11 @@ def price_event(price, currency_pair, state: StrategyState):
     rsi = rsi(history, period=14)
     # comparing prev diff with current diff will show a cross
     if rsi < 30 and not variables['has_bought']:
-        interface.market_order('buy', currency_pair, interface.cash)
+        interface.market_order('buy', symbol, interface.cash)
         variables['has_bought'] = True
     elif rsi > 70 and variables['has_bought']:
-        curr_value = interface.account[currency_pair]['available'] * price
-        interface.market_order('sell', currency_pair, curr_value)
+        curr_value = interface.account[symbol].available * price
+        interface.market_order('sell', symbol, curr_value)
         variables['has_bought'] = False
 ```
 
@@ -100,15 +100,15 @@ from Blankly import Strategy, StrategyState, Interface
 from Blankly import Alpaca
 from Blankly.indicators import rsi
 
-def init(currency_pair, state: StrategyState):
+def init(symbol, state: StrategyState):
     interface: Interface = state.interface
     resolution: str = state.resolution
     variables = state.variables
     # initialize the historical data
-    variables['history'] = interface.get_product_history(currency_pair, 150, resolution)['close']
+    variables['history'] = interface.history(symbol, 150, resolution)['close']
     variables['has_bought'] = False
 
-def price_event(price, currency_pair, state: StrategyState):
+def price_event(price, symbol, state: StrategyState):
     interface: Interface = state.interface
     # allow the resolution to be any resolution: 15m, 30m, 1d, etc.
     resolution: str = state.resolution
@@ -119,11 +119,11 @@ def price_event(price, currency_pair, state: StrategyState):
     rsi = rsi(history, period=14)
     # comparing prev diff with current diff will show a cross
     if rsi < 30 and not variables['has_bought']:
-        interface.market_order('buy', currency_pair, interface.cash)
+        interface.market_order('buy', symbol, interface.cash)
         variables['has_bought'] = True
     elif rsi > 70 and variables['has_bought']:
-        curr_value = interface.account[currency_pair]['available'] * price
-        interface.market_order('sell', currency_pair, curr_value)
+        curr_value = interface.account[symbol].available * price
+        interface.market_order('sell', symbol, curr_value)
         variables['has_bought'] = False
 
 alpaca = Alpaca()

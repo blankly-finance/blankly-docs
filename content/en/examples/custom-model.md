@@ -34,41 +34,51 @@ from Blankly import Strategy, StrategyState, Interface
 from Blankly import Alpaca
 from Blankly.indicators import sma
 
-def price_event(price, currency_pair, state: StrategyState):
+from models import OrderPricingModel, OrderDecisionModel
+
+def init(symbol, state: StrategyState):
+    # initialize this once and store it into state
+    variables = state.variables
+    variables['decision_model'] = OrderDecisionModel(symbol)
+    variables['pricing_model'] = OrderPricingModel(symbol)
+    variables["has_bought"] = False
+
+def price_event(price, symbol, state: StrategyState):
     # we'll come back to this soon
     pass
 
 alpaca = Alpaca()
 s = Strategy(alpaca)
-s.add_price_event(price_event, 'MSFT', resolution='1d')
-s.variables["has_bought"] = false
-# ... Initialize any other variables
+s.add_price_event(price_event, 'MSFT', resolution='1d', init=init)
 s.run()
 ```
 
 ### Implementing the Price Event
 
-As we mentioned before, we'll have two models: a `OrderDecisionModel` that will determine when to buy and an `OrderPricingModel` that will determine how much to buy. The `OrderDecisionModel` will take in the `currency_pair`. And the `OrderPricingModel` will take in the `price`, `currency_pair`, available cash, and the position size of that `currency_pair` in our account `interface.account`.
+As we mentioned before, we'll have two models: a `OrderDecisionModel` that will determine when to buy and an `OrderPricingModel` that will determine how much to buy. The `OrderDecisionModel` will take in the `symbol`. And the `OrderPricingModel` will take in the `price`, `symbol`, available cash, and the position size of that `symbol` in our account `interface.account`.
 
 ```python
-from models import OrderPricingModel, OrderDecisionModel
 
-def price_event(price, currency_pair, state: StrategyState):
+def price_event(price, symbol, state: StrategyState):
     interface: Interface = state.interface
     # allow the resolution to be any resolution: 15m, 30m, 1d, etc.
     resolution: str = state.resolution
     variables = state.variables
+    decision_model = variables['decision_model']
+    pricing_model = variables['pricing_model']
 
-    decision = OrderDecisionModel(currency_pair)
+    # make a decision to buy, sell, or hold
+    decision = decision_model(symbol)
 
     if decision == 0:
-        curr_value = interface.account[currency_pair]['available'] * price
-        amt_to_buy = OrderPricingModel(price, currency_pair, interface.cash, curr_value)
-        interface.market_order('buy', currency_pair, amt_to_buy)
+        curr_value = interface.account[symbol].available * price
+        # call pricing model to determine how much to buy
+        amt_to_buy = pricing_model(price, symbol, interface.cash, curr_value)
+        interface.market_order('buy', symbol, amt_to_buy)
     elif decision == 1:
-        curr_value = interface.account[currency_pair]['available'] * price
-        amt_to_sell = OrderPricingModel(price, currency_pair, interface.cash, curr_value)
-        interface.market_order('sell', currency_pair, amt_to_sell)
+        curr_value = interface.account[symbol].available * price
+        amt_to_sell = pricing_model(price, symbol, interface.cash, curr_value)
+        interface.market_order('sell', symbol, amt_to_sell)
 ```
 
 ### Adding it All Together
@@ -83,29 +93,39 @@ from Blankly.indicators import sma
 
 from models import OrderPricingModel, OrderDecisionModel
 
-def price_event(price, currency_pair, state: StrategyState):
+def init(symbol, state: StrategyState):
+    # initialize this once and store it into state
+    variables = state.variables
+    variables['decision_model'] = OrderDecisionModel(symbol)
+    variables['pricing_model'] = OrderPricingModel(symbol)
+    variables['has_bought'] = False
+
+def price_event(price, symbol, state: StrategyState):
     interface: Interface = state.interface
     # allow the resolution to be any resolution: 15m, 30m, 1d, etc.
     resolution: str = state.resolution
     variables = state.variables
+    decision_model = variables['decision_model']
+    pricing_model = variables['pricing_model']
 
-    decision = OrderDecisionModel(currency_pair)
+    # make a decision to buy, sell, or hold
+    decision = decision_model(symbol)
 
     if decision == 0:
-        curr_value = interface.account[currency_pair]['available'] * price
-        amt_to_buy = OrderPricingModel(price, currency_pair, interface.cash, curr_value)
-        interface.market_order('buy', currency_pair, amt_to_buy)
+        curr_value = interface.account[symbol].available * price
+        # call pricing model to determine how much to buy
+        amt_to_buy = pricing_model(price, symbol, interface.cash, curr_value)
+        interface.market_order('buy', symbol, amt_to_buy)
     elif decision == 1:
-        curr_value = interface.account[currency_pair]['available'] * price
-        amt_to_sell = OrderPricingModel(price, currency_pair, interface.cash, curr_value)
-        interface.market_order('sell', currency_pair, amt_to_sell)
+        curr_value = interface.account[symbol].available * price
+        amt_to_sell = pricing_model(price, symbol, interface.cash, curr_value)
+        interface.market_order('sell', symbol, amt_to_sell)
 
 alpaca = Alpaca()
 s = Strategy(alpaca)
-s.add_price_event(price_event, 'MSFT', resolution='1d')
-s.variables["has_bought"] = false
+s.add_price_event(price_event, 'MSFT', resolution='1d', init=init)
 # decision_model = OrderDecisionModel() <-- global state can also be accessed in price event functions 
 # pricing_model = OrderPricingModel()
-s.backtest(to='2y')
+s.backtest('2y')
 
 ```
