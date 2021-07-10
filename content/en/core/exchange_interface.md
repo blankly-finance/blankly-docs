@@ -6,7 +6,7 @@ version: 1.0
 category: API
 ---
 
-# Theory
+## Theory
 
 The interface class provides a consistent way of interacting with the supported exchanges.
 
@@ -35,9 +35,9 @@ interface = exchange.get_interface()  # Use the getter
 print(interface.get_account())
 ```
 
-# Rest API Functions
+## Rest API Functions
 
-## `get_calls()`
+### `get_calls()`
 
 Get the direct RESTful exchange object that the interface is using. 
 
@@ -51,11 +51,11 @@ You can also create linting by assigning it one of these types depending on whic
 - `from Blankly.exchanges.interfaces.binance.binance_api import API	`
 - `from Blankly.exchanges.interfaces.alpaca.alpaca_api import API`
 
-## `get_exchange_type()`
+### `get_exchange_type()`
 
 Determine which exchange an interface is running on.
 
-### Response
+#### Response
 
 | Possible Response | Description                              | Type |
 | ----------------- | ---------------------------------------- | ---- |
@@ -63,11 +63,11 @@ Determine which exchange an interface is running on.
 | `binance`         | The interface is running on Binance      | str  |
 | `alpaca`          | The interface is running on Alpaca       | str  |
 
-## `get_products()`
+### `get_products()`
 
 Get all trading pairs currently on the exchange.
 
-### Response
+#### Response
 
 ```python
 [
@@ -92,15 +92,15 @@ Get all trading pairs currently on the exchange.
 | base_max_size  | Largest amount of base currency that can be bought on the exchange | float |
 | base_increment | The finest resolution the base currency can be ordered in    | float |
 
-## `get_account(currency=None)`
+### `get_account(currency=None)`
 
-### Arguments
+#### Arguments
 
 | Arg      | Description                                                  | Examples       | Type |
 | -------- | ------------------------------------------------------------ | -------------- | ---- |
 | currency | Optionally fill with a specific account value to filter for | "BTC" or "USD" | str  |
 
-### Response
+#### Response
 
 If `currency='BTC'`:
 
@@ -130,40 +130,40 @@ If `currency='BTC'`:
 | available                | Amount of account asset that is free to be placed on orders or sold | float |
 | hold                     | Amount of account asset that is currently on orders, or generally unavailable | float |
 
-## `market_order(product_id, side, funds) -> MarketOrder`
+### `market_order(symbol, side, funds) -> MarketOrder`
 
 Create a new live market order.
 
-### Arguments
+#### Arguments
 
-| Arg        | Description                                                  | Examples               | Type  |
-| ---------- | ------------------------------------------------------------ | ---------------------- | ----- |
-| product_id | Identifier for the product to order                          | "BTC-USD" or "XLM-EUR" | str   |
-| side       | Buy or sell your position                                    | "buy" or "sell"        | str   |
-| funds      | Amount of **quote** to buy or sell. This means "USD" or "EUR." Note that this is opposite of limit order, which uses size. Buying 10 dollars of "BTC-USD" would have args: ("BTC-USD", "buy", 10). | 10.5 or 351.2          | float |
+| Arg    | Description                                                  | Examples               | Type  |
+| ------ | ------------------------------------------------------------ | ---------------------- | ----- |
+| symbol | Identifier for the product to order                          | "BTC-USD" or "XLM-EUR" | str   |
+| side   | Buy or sell your position                                    | "buy" or "sell"        | str   |
+| funds  | Amount of **quote** to buy or sell. This means "USD" or "EUR." Note that this is opposite of limit order, which uses size. Buying 10 dollars of "BTC-USD" would have args: ("BTC-USD", "buy", 10). | 10.5 or 351.2          | float |
 
-### Response
+#### Response
 
 A `market_order` object. Documentation is pending.
 
-## `limit_order(product_id, side, price, size) -> LimitOrder`
+### `limit_order(symbol, side, price, size) -> LimitOrder`
 
 Create a new live limit order on your exchange.
 
-### Arguments
+#### Arguments
 
-| Arg        | Description                                                  | Examples               | Type  |
-| ---------- | ------------------------------------------------------------ | ---------------------- | ----- |
-| product_id | Identifier for the product to order                          | "BTC-USD" or "XLM-EUR" | str   |
-| side       | Create a buy or sell position                                | "buy" or "sell"        | str   |
-| price      | Price to place the order at. In general, be careful to place your order on the correct side of the order book | 32000 or 15000         | float |
-| size       | Amount of **base** to buy or sell. This means "BTC" or "XLM." Note that this is opposite of market order, which uses funds.<br />Buying 2.3 bitcoin at 20k dollars would have args: ("BTC-USD", "buy", 20000, 2.3) | 2.3 or .001            | float |
+| Arg    | Description                                                  | Examples               | Type  |
+| ------ | ------------------------------------------------------------ | ---------------------- | ----- |
+| symbol | Identifier for the product to order                          | "BTC-USD" or "XLM-EUR" | str   |
+| side   | Create a buy or sell position                                | "buy" or "sell"        | str   |
+| price  | Price to place the order at. In general, be careful to place your order on the correct side of the order book | 32000 or 15000         | float |
+| size   | Amount of **base** to buy or sell. This means "BTC" or "XLM." Note that this is opposite of market order, which uses funds.<br />Buying 2.3 bitcoin at 20k dollars would have args: ("BTC-USD", "buy", 20000, 2.3) | 2.3 or .001            | float |
 
-### Response
+#### Response
 
 A `limit_order` object. Documentation is pending.
 
-## `cancel_order(currency_id, order_id) -> dict`
+### `cancel_order(currency_id, order_id) -> dict`
 
 Cancel a particular order.
 
@@ -187,15 +187,15 @@ Cancel a particular order.
 | -------- | ---------------------------- | ---- |
 | order_id | The id of the canceled order | str  |
 
-## `get_open_orders(product_id=None)`
+## `get_open_orders(symbol=None)`
 
 Get a full list of open orders.
 
 ### Arguments
 
-| Key        | Description                                                 | Examples               | type |
-| ---------- | ----------------------------------------------------------- | ---------------------- | ---- |
-| product_id | Optionally fill with an identifier for the product to order | "BTC-USD" or "XLM-USD" | str  |
+| Key    | Description                                                 | Examples               | type |
+| ------ | ----------------------------------------------------------- | ---------------------- | ---- |
+| symbol | Optionally fill with an identifier for the product to order | "BTC-USD" or "XLM-USD" | str  |
 
 ### Response
 
@@ -205,7 +205,7 @@ Get a full list of open orders.
 		'id': 'dfa936a4-ea8b-4dbf-bb99-b2b632a5370a', 
 		'price': 10000.0, 
 		'size': 1.0, 
-		'product_id': 'BTC-USD', 
+		'symbol': 'BTC-USD', 
 		'side': 'buy', 
 		'type': 'limit', 
 		'status': 'open'
@@ -214,56 +214,56 @@ Get a full list of open orders.
 ]
 ```
 
-| Key        | Description                                                  | Type  |
-| ---------- | ------------------------------------------------------------ | ----- |
-| id         | Exchange-specific order identifier                           | str   |
-| price      | Price the limit is set at                                    | float |
-| size       | Size of the limit (in base currency)                         | float |
-| product_id | Identifier for the product the order is on                   | str   |
-| side       | Describes if the order is buying or selling                  | str   |
-| type       | Open orders can be "market," "limit," or "stop." This shows which of those types is valid. | str   |
-| status     | Order status can be "open" "pending" or "closed"             | str   |
+| Key    | Description                                                  | Type  |
+| ------ | ------------------------------------------------------------ | ----- |
+| id     | Exchange-specific order identifier                           | str   |
+| price  | Price the limit is set at                                    | float |
+| size   | Size of the limit (in base currency)                         | float |
+| symbol | Identifier for the product the order is on                   | str   |
+| side   | Describes if the order is buying or selling                  | str   |
+| type   | Open orders can be "market," "limit," or "stop." This shows which of those types is valid. | str   |
+| status | Order status can be "open" "pending" or "closed"             | str   |
 
-## `get_order(currency_id, order_id) -> dict`
+### `get_order(currency_id, order_id) -> dict`
 
 Get info about a particular order. If the objects returned by placing orders are saved, this function shouldn't need to be used.
 
-### Arguments
+#### Arguments
 
 | Arg         | Description                                                  | Examples                             | Type |
 | ----------- | ------------------------------------------------------------ | ------------------------------------ | ---- |
 | currency_id | The identifier for the product to order                      | "BTC-USD" or "XLM-USD"               | str  |
 | order_id    | The exchange-given unique identifier for the order. This can be found using an `order` object. With `.get_id()` | b6d2f951-dae0-89e8-3e79-b460b1e9eead | str  |
 
-### Response
+#### Response
 
 ```python
 {
   'id': 'dfa936a4-ea8b-4dbf-bb99-b2b632a5370a', 
   'price': 10000.0, 
   'size': 1.0, 
-  'product_id': 'BTC-USD', 
+  'symbol': 'BTC-USD', 
   'side': 'buy', 
   'type': 'limit', 
   'status': 'open'
 }
 ```
 
-| Key        | Description                                                  | Type  |
-| ---------- | ------------------------------------------------------------ | ----- |
-| id         | Exchange-specific order identifier                           | str   |
-| price      | Price the limit is set at                                    | float |
-| size       | Size of the limit (in base currency)                         | float |
-| product_id | Identifier for the product the order is on                   | str   |
-| side       | Describes if the order is buying or selling                  | str   |
-| type       | Open orders can be "market," "limit," or "stop." This shows which of those types is valid | str   |
-| status     | Order status can be "open" "pending" or "closed"             | str   |
+| Key    | Description                                                  | Type  |
+| ------ | ------------------------------------------------------------ | ----- |
+| id     | Exchange-specific order identifier                           | str   |
+| price  | Price the limit is set at                                    | float |
+| size   | Size of the limit (in base currency)                         | float |
+| symbol | Identifier for the product the order is on                   | str   |
+| side   | Describes if the order is buying or selling                  | str   |
+| type   | Open orders can be "market," "limit," or "stop." This shows which of those types is valid | str   |
+| status | Order status can be "open" "pending" or "closed"             | str   |
 
-## `get_fees() -> dict`
+### `get_fees() -> dict`
 
 Get the maker and taker fee rates of a particular exchange.
 
-### Response
+#### Response
 
 ```python
 {
@@ -277,19 +277,21 @@ Get the maker and taker fee rates of a particular exchange.
 | maker_fee_rate | Exchange maker fee rate. (89% = 0.89) | float |
 | taker_fee_rate | Exchange taker fee rate. (89% = 0.89) | float |
 
-## `history(product_id, to, granularity) -> pandas.DataFrame`
+### `history(symbol, to=200, resolution='1d', start_date=None, end_date=None) -> pandas.DataFrame`
 
-Download historical data with rows of *at least* `time (epoch seconds)`, `low`', `high`, `open`, `close`, `volume` as columns. This is a wrapper for `get_product_history()`, and exists to allow users to more easily download product history from right now.
+Download historical data with rows of *at least* `time (epoch seconds)`, `low`', `high`, `open`, `close`, `volume` as columns. This is a wrapper for `get_product_history()`, and exists to allow users to more easily download OHCLV data
 
-### Arguments
+#### Arguments
 
-| Arg         | Description                                                  | Examples                  | Type         |
-| ----------- | ------------------------------------------------------------ | ------------------------- | ------------ |
-| product_id  | The identifier for the product to order                      | "BTC-USD" or "XLM-USD"    | str          |
-| to          | Time from exactly now to begin downloading from (`'1y'` would download the last year of data at the granularity resolution). | 86453 or `'1y'` or '`2h`' | float or str |
-| granularity | Resolution in seconds in each candle (ex: 60 = 1 per minute, 3600 = 1 per hour) | 3600                      | int          |
+| Arg        | Description                                                  | Examples                  | Type                 |
+| ---------- | ------------------------------------------------------------ | ------------------------- | -------------------- |
+| symbol     | The identifier for the product to order                      | "BTC-USD" or "XLM-USD"    | str                  |
+| to         | Time from exactly now to begin downloading from (`'1y'` would download the last year of data at the granularity resolution). | 86453 or `'1y'` or '`2h`' | float or str         |
+| resolution | Resolution as a time string (`1m`, `4h`, `1d`, `1y`)         | `1m`, `1d`, `4h`          | str                  |
+| start_date | Starts history collection at a given start date (must have an `end_date` associated with it). This can be a datetime, a date string or an epoch timestamp | `'2018-05-02'`, `123849`  | str, float, datetime |
+| end_date   | End Date for history collection, can be used in conjunction with `start_date` or `to` | `'2018-05-02'`, `123849`  | str, float, datetime |
 
-### Response
+#### Response
 
 Pandas dataframe with at least these columns.
 
@@ -298,7 +300,15 @@ Pandas dataframe with at least these columns.
 | 1591110000 | 9270.0  | 9602.0  | 9583.36 | 9464.46 | 5979.77327365 |
 | 1591113600 | 9417.38 | 9510.94 | 9464.44 | 9478.95 | 1185.12835638 |
 
-## `get_product_history(product_id, epoch_start, epoch_stop, granularity) -> pandas.DataFrame`
+#### Example Use Case
+
+```python
+a = Alpaca()
+interface = a.Interface
+interface.history('MSFT', to=300, resolution='15m', end_date='2020-05-03') # get 300 points from May 3rd, 2020
+```
+
+### `get_product_history(symbol, epoch_start, epoch_stop, granularity) -> pandas.DataFrame`
 
 Download historical data with rows of *at least* `time (epoch seconds)`, `low`', `high`, `open`, `close`, `volume` as columns.
 
@@ -306,12 +316,12 @@ Download historical data with rows of *at least* `time (epoch seconds)`, `low`',
 
 | Arg         | Description                                                  | Examples               | Type  |
 | ----------- | ------------------------------------------------------------ | ---------------------- | ----- |
-| product_id  | The identifier for the product to order                      | "BTC-USD" or "XLM-USD" | str   |
+| symbol      | The identifier for the product to order                      | "BTC-USD" or "XLM-USD" | str   |
 | epoch_start | Starting download time in epoch                              | 1591389962             | float |
 | epoch_stop  | Ending download time in epoch                                | 1622925962             | float |
 | granularity | Resolution in seconds in each candle (ex: 60 = 1 per minute, 3600 = 1 per hour) | 3600                   | int   |
 
-### Response
+#### Response
 
 Pandas dataframe with at least these columns.
 
@@ -320,17 +330,17 @@ Pandas dataframe with at least these columns.
 | 1591110000 | 9270.0  | 9602.0  | 9583.36 | 9464.46 | 5979.77327365 |
 | 1591113600 | 9417.38 | 9510.94 | 9464.44 | 9478.95 | 1185.12835638 |
 
-## `get_market_limits(product_id)`
+### `get_asset_limits(symbol)`
 
-Find the limits that the exchange puts on purchases.
+Find the limits that the exchange puts on purchases for a specific asset.
 
-### Arguments
+#### Arguments
 
-| Arg        | Description                             | Examples               | Type |
-| ---------- | --------------------------------------- | ---------------------- | ---- |
-| product_id | The identifier for the product to order | "BTC-USD" or "XLM-USD" | str  |
+| Arg    | Description                             | Examples               | Type |
+| ------ | --------------------------------------- | ---------------------- | ---- |
+| symbol | The identifier for the product to order | "BTC-USD" or "XLM-USD" | str  |
 
-### Response
+#### Response
 
 ```python
 {
@@ -360,27 +370,27 @@ Find the limits that the exchange puts on purchases.
 | max_price       | The maximum price that the limit can be set                  | float |
 | max_orders      | The maximum number of orders that the exchange allows on a currency pair | float |
 
-## `get_price(currency_pair) -> float`
+### `get_price(currency_pair) -> float`
 
 Get the quoted price of the trading pair.
 
 ### Arguments
 
-| Arg        | Description                             | Examples               | Type |
-| ---------- | --------------------------------------- | ---------------------- | ---- |
-| product_id | The identifier for the product to order | "BTC-USD" or "XLM-USD" | str  |
+| Arg    | Description                             | Examples               | Type |
+| ------ | --------------------------------------- | ---------------------- | ---- |
+| symbol | The identifier for the product to order | "BTC-USD" or "XLM-USD" | str  |
 
-### Response
+#### Response
 
 - Returns a `float` which is the price of the trading pair, such as `53000` or `35000`.
 
-# Rest API Properties
+## Rest API Properties
 
 These properties can be used as shortcuts for making API calls. These are built-in abstractions of the previous methods that provide functionality that is common when developing bots & models.
 
 *Each of these performs API requests*
 
-## `.account -> dict`
+### `.account -> dict`
 
 The equivalent of performing `.get_account()` with no arguments,
 
@@ -403,7 +413,7 @@ The equivalent of performing `.get_account()` with no arguments,
 | available                | Amount of account asset that is free to be placed on orders or sold | float |
 | hold                     | Amount of account asset that is currently on orders, or generally unavailable | float |
 
-## `.orders -> list`
+### `.orders -> list`
 
 The equivalent of performing a `get_open_orders()` request with no arguments.
 
@@ -415,7 +425,7 @@ The equivalent of performing a `get_open_orders()` request with no arguments.
 		'id': 'dfa936a4-ea8b-4dbf-bb99-b2b632a5370a', 
 		'price': 10000.0, 
 		'size': 1.0, 
-		'product_id': 'BTC-USD', 
+		'symbol': 'BTC-USD', 
 		'side': 'buy', 
 		'type': 'limit', 
 		'status': 'open'
@@ -424,17 +434,17 @@ The equivalent of performing a `get_open_orders()` request with no arguments.
 ]
 ```
 
-| Key        | Description                                                  | Type  |
-| ---------- | ------------------------------------------------------------ | ----- |
-| id         | Exchange-specific order identifier                           | str   |
-| price      | Price the limit is set at                                    | float |
-| size       | Size of the limit (in base currency)                         | float |
-| product_id | Identifier for the product the order is on                   | str   |
-| side       | Describes if the order is buying or selling                  | str   |
-| type       | Open orders can be "market," "limit," or "stop." This shows which of those types is valid. | str   |
-| status     | Order status can be "open" "pending" or "closed"             | str   |
+| Key    | Description                                                  | Type  |
+| ------ | ------------------------------------------------------------ | ----- |
+| id     | Exchange-specific order identifier                           | str   |
+| price  | Price the limit is set at                                    | float |
+| size   | Size of the limit (in base currency)                         | float |
+| symbol | Identifier for the product the order is on                   | str   |
+| side   | Describes if the order is buying or selling                  | str   |
+| type   | Open orders can be "market," "limit," or "stop." This shows which of those types is valid. | str   |
+| status | Order status can be "open" "pending" or "closed"             | str   |
 
-## `.cash -> float`
+### `.cash -> float`
 
 Get the amount of cash (generally the quote currency) inside the portfolio. This default quote can be set in the `settings.json` file for each exchange independently. This is used as a shortcut for easily determining buying power when making a transaction. This property is configurable because users may be using a variety of cash quotes such as `USD`, `USDT`, `USDC` or `EUR`. See [here](/usage/settings.json#format)
 

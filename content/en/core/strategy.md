@@ -61,7 +61,7 @@ strategy.add_orderbook_event(custom_bar_event, 'ETH-USD')
 
 ## Accessing State: `StrategyState`
 
-Each event that is added to your `Strategy` will have it's own initialized state that houses key metadata along with information about the price event. Specifically you are able to access the underlying [`Interface`](https://docs.blankly.finance/API/exchange_interface) that allows you to make calls for price data, submit market orders, access current account positions, etc. In addition, users have access to the price_event `resolution` and a state `variables` dictionary where they can assign state variables. 
+Each event that is added to your `Strategy` will have it's own initialized state that houses key metadata along with information about the price event. Specifically you are able to access the underlying [`Interface`](/core/exchange_interface) that allows you to make calls for price data, submit market orders, access current account positions, etc. In addition, users have access to the price_event `resolution` and a state `variables` dictionary where they can assign state variables. 
 
 ### Properties
 
