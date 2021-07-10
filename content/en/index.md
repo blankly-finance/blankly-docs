@@ -38,10 +38,15 @@ import Blankly
 from Blankly.strategy import Strategy, StrategyState
 from model import MyAwesomeModel
 
-def price_event(price: float, ticker: str, state: StrategyState):
+
+def init(symbol: str, state: StrategyState):
+    # initialize per price event state
+    state.variables['has_buy_order'] = False
+
+def price_event(price: float, symbol: str, state: StrategyState):
     interface: Blankly.Interface = state.interface
     # get last 50 days worth of price data 
-    history = interface.get_product_history(50, '1d')
+    history = interface.history(symbol, 50, '1d')
 
     # easily integrate your model
     decision = MyAwesomeModel(history)
@@ -51,7 +56,7 @@ def price_event(price: float, ticker: str, state: StrategyState):
         interface.market_order('buy', 0.25 * interface.cash)
         state.variables['has_buy_order'] = True
     else if state.variables['has_buy_order'] and not decision:
-        amt = interface.account[currency_pair]['available']
+        amt = interface.account[currency_pair].available
         interface.market_order('sell', amt)
         state.variables['has_buy_order'] = False
 
@@ -60,7 +65,8 @@ s = Strategy(c)
 
 s.add_price_event(price_event, 
     currency_pair='MSFT', 
-    resolution='1d')
+    resolution='1d'
+    init=init)
 ```
 
 ### Easy Access to Historical Data

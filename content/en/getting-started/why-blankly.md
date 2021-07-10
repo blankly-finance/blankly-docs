@@ -27,8 +27,8 @@ b = Binance()
 
 interface = a.interface
 # get last 50 price data points at a specific resolution
-interface.get_product_history('MSFT', 50, resolution='15m')
-interface.get_product_history('AAPL', 50, resolution='1d')
+interface.history('MSFT', 50, resolution='15m')
+interface.history('AAPL', 50, resolution='1d')
 ```
 
 ## Backtesting with Portfolio Metrics
