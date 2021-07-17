@@ -71,7 +71,7 @@ s.add_price_event(price_event,
 
 ### Easy Access to Historical Data
 
-Past methods of getting historical data relied on scrounging different data sources and using other packages including `yfinance` or paid providers like `polygon.io`, and each method of gathering data was different. Blankly is unifying historical data gathering so that it's the same code to grab the necessary data that you need. 
+Past methods of getting historical data relied on scrounging different data sources and using other packages including `yfinance` or paid providers like `polygon.io`, and each method of gathering data was different. Blankly is unifying historical data gathering so that it's the same code to grab the necessary data that you need. We currently directly connect with Coinbase Pro, Binance, and Alpaca for historical data (15 minute delay due for Alpaca unless a premium key), but will eventually be releasing our own `blankly.data` package.
 
 ### Built-In Backtesting
 

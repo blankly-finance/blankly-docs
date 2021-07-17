@@ -14,7 +14,7 @@ We started Blankly because we knew that the traditional way of doing things was 
 
 Current methods involve heavily using third-party packages including `yfinance` `CoinAPI` `Polygon.io` and many more that each have their own API, rate limits, and syntax. 
 
-### Blankly
+### Using Blankly
 
 Blankly makes it extremely easy by integrating with our interfaces that run on any exchange.
 
@@ -39,7 +39,8 @@ interface.history('AAPL', 50, resolution='1d')
 
 Traditionally, building out all the metrics takes a lot of time. Whether it's simply calculating a sharpe or sortino ratio. 
 
-### Getting Return History
+### Traditionally
+#### Getting Return History
 
 The first step is to get all the price data of a stock
 ```python
@@ -50,7 +51,7 @@ price_data = yf.Ticker('MSFT')
 prices = price_data.history('1y', interval='1d')
 ```
 
-### Calculating Model Returns
+#### Calculating Model Returns
 Now that we have the data, let's make some decisions based on our model on when to buy or sell
 
 ```python
@@ -79,7 +80,7 @@ for price in prices: # loop through each day
 
 ```
 
-### Calculate the Ratios
+#### Calculate the Ratios
 
 Now let's implement the code needed to calculate portfolio returns and ratios. We're going to calculate the sharpe ratio
 
@@ -95,7 +96,7 @@ sharpe_ratio = sharpe(portfolio_value_per_day)
 
 ```
 
-### Overall Code
+#### Overall Code
 
 Adding all of this code up we have:
 
@@ -143,30 +144,31 @@ Blankly simplifies this code into just a few lines and better yet, this same cod
 ```python
 from model import Model
 from Blankly import Strategy, Alpaca, Interface
-from Blankly.backtest.metrics import sharpe
 
-def buy_or_sell(price, currency_pair, state):
+def init(ticker, state):
+    state.variables['order_amt'] = 0
+
+def buy_or_sell(price, symbol, state):
     decision: bool = model(price)
     interface: Interface = state.interface
     variables = state.variables
     if decision and variables['order_amt'] == 0:
         # buy using all of our cash
         interface.market_order('buy', 
-            currency_pair, interface.cash)
+            symbol, interface.cash)
         # store order amount for sell order
         variables['order_amt'] = interface.cash
     else if not decision and variables['order_amt'] > 0:
         # sell if we have decided to sell
         interface.market_order('sell', 
-            currency_pair, variables['order_amt'])
+            symbol, variables['order_amt'])
 
 a = Alpaca()
 s = Strategy(a)
-s.variables['order_amt'] = 0
 
 s.add_price_event(buy_or_sell, currency_pair='MSFT', resolution='1d')
 
-s.backtest(to='1y', callbacks=[sharpe])
+s.backtest(to='1y') # sharpe is already included as a backtest metric
 ```
 
 ## Build vs Test
@@ -175,7 +177,7 @@ s.backtest(to='1y', callbacks=[sharpe])
 
 In order to make our traditional code to work, we would need to create a separate function to work with a python package like `alpaca` or `CoinbasePro` that is completely different from our backtesting code. This leads to 1. a lot of unnecessary code duplication, 2. difficulty of maintaining code especially when switching across exchanges, and 3. makes it almost extremely difficult to make one strategy run on multiple tickers at the same time. 
 
-### Blankly
+### Using Blankly
 Blankly's build and test environments are exactly the same, we can simply take our strategy defined in the previous example and immediately use it to run a real model by removing `.backtest()` 
 
 ```python
@@ -240,7 +242,7 @@ Better yet, we run your metrics not only individually per stock but also on the 
 
 Traditionally, your price events are tied down to your market orders of a specific ticker or strategy, but we want to change that 
 
-### Blankly
+### Using Blankly
 
 With Blankly, you can create a library of price events and plug and chug.
 
