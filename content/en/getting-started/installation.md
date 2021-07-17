@@ -80,13 +80,13 @@ def price_event(price, currency_pair):
 
 if __name__ == "__main__":
     # Authenticate coinbase pro strategy
-    coinbase_pro = Blankly.CoinbasePro()
+    coinbase_pro = blankly.CoinbasePro()
 
     # Define our interface in case we want to make our own API calls
     interface = coinbase_pro.get_interface()
 
     # Create a strategy on coinbase pro
-    coinbase_strategy = Blankly.Strategy(coinbase_pro)
+    coinbase_strategy = blankly.Strategy(coinbase_pro)
 
     # Run the price event function every time we check for a new price - in this case we specify 15 seconds
     coinbase_strategy.add_price_event(price_event, currency_pair='BTC-USD', resolution='15s')
@@ -102,7 +102,7 @@ Interested in contributing or see a feature we need? The best way is to
 2. Place it as a directory inside your project
 ```
 Project
-|-Blankly
+|-blankly
 |-keys.json
 |-settings.json
 |-script.py

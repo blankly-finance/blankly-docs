@@ -23,7 +23,7 @@ Strategies can have as many price events and combinations as you'd like. You're 
 The object requires an authenticated [`exchange`](/core/exchange) object to function:
 
 ```python
-from Blankly import CoinbasePro, Strategy
+from blankly import CoinbasePro, Strategy
 
 def custom_price_event(price, symbol, state):
   	# do something here
@@ -35,10 +35,10 @@ def orderbook_event(orderbook, symbol, state):
   	# do something at the orderbook level
 
 # Authenticate coinbase pro strategy
-coinbase_pro = Blankly.CoinbasePro()
+coinbase_pro = blankly.CoinbasePro()
 
 # Use our strategy helper on coinbase pro
-strategy = Blankly.Strategy(coinbase_pro)
+strategy = blankly.Strategy(coinbase_pro)
 strategy.add_price_event(custom_price_event, 'BTC-USD', resolution='1h')
 strategy.add_bar_event(custom_bar_event, 'BTC-USD', resolution='1d')
 strategy.add_orderbook_event(custom_bar_event, 'ETH-USD')
@@ -48,14 +48,14 @@ strategy.add_orderbook_event(custom_bar_event, 'ETH-USD')
 
 | Arg           | Description                                                  | Examples                   | Type     |
 | ------------- | ------------------------------------------------------------ | -------------------------- | -------- |
-| exchange      | An [`exchange`](/core/exchange) object                 | `exchange = Blankly.CoinbasePro()`     | Exchange |
+| exchange      | An [`exchange`](/core/exchange) object                 | `exchange = blankly.CoinbasePro()`     | Exchange |
 | symbol | Optionally fill this to create a default for the websocket managers | `'BTC-USD'` or `'XLM-USD'` | str      |
 
 ### Response
 
 | Description       | Examples                                    | Type     |
 | ----------------- | ------------------------------------------- | -------- |
-| A strategy object | `strategy = Blankly.Strategy(coinbase_pro)` | Strategy |
+| A strategy object | `strategy = blankly.Strategy(coinbase_pro)` | Strategy |
 
 
 
@@ -67,7 +67,7 @@ Each event that is added to your `Strategy` will have it's own initialized state
 
 | Property   | Description                                                  | Examples                        | Type              |
 | ---------- | ------------------------------------------------------------ | ------------------------------- | ----------------- |
-| Interface  | Access to the Strategy Interface                             | `interface = state.interface`   | Blankly.Interface |
+| Interface  | Access to the Strategy Interface                             | `interface = state.interface`   | blankly.Interface |
 | Variables  | Access to all underlying user-defined state variables        | `variables = state.variables`   | dict              |
 | Resolution | Specific Strategy Event Resolution (`None` for Orderbook Event) | `resolution = state.resolution` | string            |
 
@@ -86,7 +86,7 @@ def init(symbol: str, state: StrategyState):
   variables['history'] = state.interface.history(symbol, 50, state.resolution)
  
 def price_event(price, symbol, state: StrategyState):
-  interface: Blankly.Interface = state.interface
+  interface: blankly.Interface = state.interface
   variables['history'].append(price) # add new price to history
   # buy the symbol using available cash
   interface.market_order(symbol, 'buy', interface.cash)
@@ -132,7 +132,7 @@ def init(symbol: str, state: StrategyState):
  
 def price_event(price, symbol, state: StrategyState):
   '''This buys and sells whenever the boolean is true or false'''
-  interface: Blankly.Interface = state.interface
+  interface: blankly.Interface = state.interface
   variables['history'].append(price) # add new price to history
   # buy the symbol using available cash
   if not variables['has_bought']:
@@ -199,7 +199,7 @@ def init(symbol: str, state: StrategyState):
 def some_bar_event(bar, symbol, state: StrategyState):
   '''This buys and sells whenever the boolean is true or false'''
   # bar = {'open': 1234.5, 'close': 1200.4, 'high': 1555', 'low': 1000, 'volume': 25000}
-  interface: Blankly.Interface = state.interface
+  interface: blankly.Interface = state.interface
   variables['history'].append(bar) # add new price to history
   oscillation = aroon_oscillator(variables['close'], variables['high'], variables['low'])
   # ... do something with the oscillation calculation
@@ -278,7 +278,7 @@ def init(symbol: str, state: StrategyState):
   variables['history'] = state.interface.history(symbol, 50, state.resolution)
  
 def price_event(price, symbol, state: StrategyState):
-  interface: Blankly.Interface = state.interface
+  interface: blankly.Interface = state.interface
   variables['history'].append(price) # add new price to history
   # buy the symbol using available cash
   interface.market_order(symbol, 'buy', interface.cash)

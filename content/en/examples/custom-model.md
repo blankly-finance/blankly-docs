@@ -30,9 +30,9 @@ To implement this, we want to first create the boilerplate code that runs just l
 #### Create Strategy
 
 ```python
-from Blankly import Strategy, StrategyState, Interface
-from Blankly import Alpaca
-from Blankly.indicators import sma
+from blankly import Strategy, StrategyState, Interface
+from blankly import Alpaca
+from blankly.indicators import sma
 
 from models import OrderPricingModel, OrderDecisionModel
 
@@ -87,9 +87,9 @@ Now that we've gotten everything, let's bring it all together
 
 ```python
 
-from Blankly import Strategy, StrategyState, Interface
-from Blankly import Alpaca
-from Blankly.indicators import sma
+from blankly import Strategy, StrategyState, Interface
+from blankly import Alpaca
+from blankly.indicators import sma
 
 from models import OrderPricingModel, OrderDecisionModel
 

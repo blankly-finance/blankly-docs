@@ -26,14 +26,15 @@ This page details a bit more about what metrics Blankly provides, what their pur
 
 We offer metrics because we know the importance of testing our models. That's why we've made it extremely easy for you to not only create your own metrics (as we discuss later), but also utilizing our built-in Blankly metrics. Calling `strategy.backtest()` automatically has a wide variety of metrics and built-in ratios including Sharpe, Sortino, Maximum Drawdown, and Cagr to name a few. However, we also provide you the ability to add your own callbacks by simply passing in a callbacks array like so:
 
-<alert type="danger"> We have already included many metrics built into backtesting (sharpe, sortino, and many more), if you are to add any additional built-in metrics, please wrap them like so`Blankly.metrics`. This is to allow for proper integration with all of the backtesting data. </alert> 
+<alert type="danger"> We have already included many metrics built into backtesting (sharpe, sortino, and many more), if you are to add any additional built-in metrics, please wrap them like so. This is to allow for proper integration with all of the backtesting data. </alert> 
 
 <code-block label="Python">
 
 ```python
 # Use Blanky.backesting.metrics and NOT Blankly.metrics
-# DON'T DO THIS: from Blankly.metrics import sharpe, sortino
-from Blankly.metrics import sharpe, sortino
+# DON'T DO THIS: from blankly.metrics import sharpe, sortino
+import blankly
+from blankly.metrics import sharpe, sortino
 def price_event(price, interface):
   ... 
   
@@ -42,8 +43,8 @@ def weighted_sharpe_sortino_metric(backtest_data):
   sharpe_value = sharpe(returns, risk_free_rate=0.5)
   sortino_value = sortino(returns, risk_free_rate=0.3)
   return sharpe_value * 0.2 + sortino_value * 0.8 
-alpaca = Blankly.Alpaca() 
-s = Blankly.Strategy(alpaca)
+alpaca = blankly.Alpaca() 
+s = blankly.Strategy(alpaca)
 s.add_price_event(price_event)
 
 s.backtest(callbacks=[weighted_sharpe_sortino_metric])
@@ -109,7 +110,7 @@ $$
 
 <code-block label="Python">
 ```python
-from Blankly.metrics import cum_returns
+from blankly.metrics import cum_returns
 start_value = 100000
 ...
 final_portfolio_value = portfolio_history[-1] # last value in portfolio history

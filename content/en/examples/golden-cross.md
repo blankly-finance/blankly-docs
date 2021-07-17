@@ -27,9 +27,9 @@ We will be implementing the golden cross using `Blankly.Strategy` that allows fo
 #### Create Strategy
 
 ```python
-from Blankly import Strategy, StrategyState, Interface
-from Blankly import Alpaca
-from Blankly.indicators import sma
+from blankly import Strategy, StrategyState, Interface
+from blankly import Alpaca
+from blankly.indicators import sma
 
 def init(symbol, state: StrategyState):
     # run on a new price event to initialize variables
@@ -101,9 +101,9 @@ Now that we've gotten everything, let's bring it all together
 
 ```python
 
-from Blankly import Strategy, StrategyState, Interface
-from Blankly import Alpaca
-from Blankly.indicators import sma
+from blankly import Strategy, StrategyState, Interface
+from blankly import Alpaca
+from blankly.indicators import sma
 
 def init(symbol, state: StrategyState):
     interface: Interface = state.interface

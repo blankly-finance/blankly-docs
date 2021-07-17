@@ -28,9 +28,9 @@ We will be implementing a MACD strategyusing `Blankly.Strategy` that allows for 
 #### Create Strategy
 
 ```python
-from Blankly import Strategy, StrategyState, Interface
-from Blankly import Alpaca
-from Blankly.indicators import macd
+from blankly import Strategy, StrategyState, Interface
+from blankly import Alpaca
+from blankly.indicators import macd
 
 def init(symbol, state: StrategyState):
     # run on a new price event to initialize variables
@@ -120,9 +120,9 @@ Now that we've gotten everything, let's bring it all together
 
 ```python
 
-from Blankly import Strategy, StrategyState, Interface
-from Blankly import Alpaca
-from Blankly.indicators import sma
+from blankly import Strategy, StrategyState, Interface
+from blankly import Alpaca
+from blankly.indicators import sma
 
 SHORT_PERIOD = 12
 LONG_PERIOD = 26

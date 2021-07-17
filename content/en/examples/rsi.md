@@ -26,9 +26,9 @@ We will be implementing this strategy using `Blankly.Strategy` that allows for a
 #### Create Strategy
 
 ```python
-from Blankly import Strategy, StrategyState, Interface
-from Blankly import Alpaca
-from Blankly.indicators import rsi
+from blankly import Strategy, StrategyState, Interface
+from blankly import Alpaca
+from blankly.indicators import rsi
 
 def init(symbol, state: StrategyState):
     # run on a new price event to initialize variables
@@ -96,9 +96,9 @@ One thing you'll begin to realize as you continue to develop with Blankly is tha
 
 ```python
 
-from Blankly import Strategy, StrategyState, Interface
-from Blankly import Alpaca
-from Blankly.indicators import rsi
+from blankly import Strategy, StrategyState, Interface
+from blankly import Alpaca
+from blankly.indicators import rsi
 
 def init(symbol, state: StrategyState):
     interface: Interface = state.interface
