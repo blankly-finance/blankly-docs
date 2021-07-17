@@ -33,7 +33,7 @@ Get a websocket (`Ticker`) object attached to a currency.
 
 | Description                                                  | Examples                                    | Type   |
 | ------------------------------------------------------------ | ------------------------------------------- | ------ |
-| A `Ticker` object. Get the ticker object on a currency or exchange. | `websocket = Blankly.get_ticker('BTC-USD')` | Ticker |
+| A `Ticker` object. Get the ticker object on a currency or exchange. | `websocket = blankly.get_ticker('BTC-USD')` | Ticker |
 
 ## `get_all_tickers() -> dict`
 

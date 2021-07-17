@@ -34,8 +34,8 @@ We've designed Blankly to work well and really well, reducing CPU usage to a mer
 Blankly makes it extremely easy to integrate with any of your existing machine learning models, deep learning models, or simple trading bots. Simply create `Blankly.Strategy` objects as as add a `price_event` and pass the necessary data to your model and you're golden.
 
 ```python
-import Blankly
-from Blankly.strategy import Strategy, StrategyState
+import blankly
+from blankly.strategy import Strategy, StrategyState
 from model import MyAwesomeModel
 
 
@@ -44,7 +44,7 @@ def init(symbol: str, state: StrategyState):
     state.variables['has_buy_order'] = False
 
 def price_event(price: float, symbol: str, state: StrategyState):
-    interface: Blankly.Interface = state.interface
+    interface: blankly.Interface = state.interface
     # get last 50 days worth of price data 
     history = interface.history(symbol, 50, '1d')
 
@@ -60,7 +60,7 @@ def price_event(price: float, symbol: str, state: StrategyState):
         interface.market_order('sell', amt)
         state.variables['has_buy_order'] = False
 
-c = Blankly.Alpaca()
+c = blankly.Alpaca()
 s = Strategy(c)
 
 s.add_price_event(price_event, 

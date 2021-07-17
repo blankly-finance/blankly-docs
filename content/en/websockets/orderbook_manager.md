@@ -31,7 +31,7 @@ Where they key/value pairs indicate `price: quantity at that price`
 
 ## Creation
 
-An orderbook manager can be created by calling `ticker = Blankly.OrderbookManager(default_exchange, default_currency)`.
+An orderbook manager can be created by calling `ticker = blankly.OrderbookManager(default_exchange, default_currency)`.
 
 Because these websocket objects are designed to work across currencies and exchanges, specifying a default exchange and currency for the object to behave on can make interaction significantly simpler.
 
@@ -48,7 +48,7 @@ This will also construct orderbooks within the object that can be reported to yo
 
 | Description                  | Examples                                                     | Type             |
 | ---------------------------- | ------------------------------------------------------------ | ---------------- |
-| An `OrderbookManager` object | `manager = Blankly.OrderbookManager('coinbase_pro', 'BTC-USD')` | OrderbookManager |
+| An `OrderbookManager` object | `manager = blankly.OrderbookManager('coinbase_pro', 'BTC-USD')` | OrderbookManager |
 
 # Functions
 
@@ -68,7 +68,7 @@ Create a new orderbook feed.
 
 | Description             | Examples                                            | Type   |
 | ----------------------- | --------------------------------------------------- | ------ |
-| A blankly Ticker object | `websocket = Blankly.create_orderbook(price_event)` | Ticker |
+| A blankly Ticker object | `websocket = blankly.create_orderbook(price_event)` | Ticker |
 
 ## `append_orderbook_callback(callback_object, override_currency_id=None, override_exchange=None)`
 

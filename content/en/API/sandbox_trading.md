@@ -20,13 +20,13 @@ This creates a very powerful & dynamic paper trading experience. Our goal was to
 To create a paper trading object simply wrap an existing exchange object with a paper trade constructor:
 
 ```python
-import Blankly
+import blankly
 
 # Basic exchange construction
-coinbase_pro = Blankly.CoinbasePro()
+coinbase_pro = blankly.CoinbasePro()
 
 # Create a paper trade exchange:
-paper_trade = Blankly.PaperTrade(coinbase_pro)
+paper_trade = blankly.PaperTrade(coinbase_pro)
 
 # Get the interface like usual:
 interface = paper_trade.get_interface()
@@ -36,6 +36,6 @@ interface = paper_trade.get_interface()
 
 | Arg                    | Description                                                  | Examples                                                     | Type     |
 | ---------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ | -------- |
-| authenticated_exchange | Fill this with an existing authenticated exchange object.    | `coinbase_pro = Blankly.CoinbasePro()` `paper_trade = Blankly.PaperTrade(coinbase_pro)` | exchange |
+| authenticated_exchange | Fill this with an existing authenticated exchange object.    | `coinbase_pro = blankly.CoinbasePro()` `paper_trade = blankly.PaperTrade(coinbase_pro)` | exchange |
 | initial_account_values | An optional account dictionary to write as the starting values for the paper trade exchange. If one is not provided, paper trade will duplicate the account values currently on the live account. | `{'BTC': 2389, 'USD': 1000000}`                              | dict     |
 

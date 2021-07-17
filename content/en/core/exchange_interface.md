@@ -26,9 +26,9 @@ The interface can grow and change based on user feedback - if you see an importa
 Interfaces are pre-generated when an `exchange` object is created. They can then be accessed by using `.get_interface()` on an exchange:
 
 ```python
-import Blankly
+import blankly
 
-exchange = Blankly.CoinbasePro()  # This can be .Binance() or .Alpaca() or anything else supported
+exchange = blankly.CoinbasePro()  # This can be .Binance() or .Alpaca() or anything else supported
 
 interface = exchange.get_interface()  # Use the getter
 
@@ -47,9 +47,9 @@ If you want **easy linting**, its better to use an exchange object and use `.get
 
 You can also create linting by assigning it one of these types depending on which is accurate context:
 
-- `from Blankly.exchanges.interfaces.coinbase_pro.coinbase_pro_api import API`
-- `from Blankly.exchanges.interfaces.binance.binance_api import API	`
-- `from Blankly.exchanges.interfaces.alpaca.alpaca_api import API`
+- `from blankly.exchanges.interfaces.coinbase_pro.coinbase_pro_api import API`
+- `from blankly.exchanges.interfaces.binance.binance_api import API	`
+- `from blankly.exchanges.interfaces.alpaca.alpaca_api import API`
 
 ### `get_exchange_type()`
 

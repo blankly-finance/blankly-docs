@@ -19,7 +19,7 @@ Current methods involve heavily using third-party packages including `yfinance` 
 Blankly makes it extremely easy by integrating with our interfaces that run on any exchange.
 
 ```python
-from Blankly import Alpaca, CoinbasePro, Binance
+from blankly import Alpaca, CoinbasePro, Binance
 
 a = Alpaca()
 c = CoinbasePro()
@@ -143,7 +143,7 @@ Blankly simplifies this code into just a few lines and better yet, this same cod
 
 ```python
 from model import Model
-from Blankly import Strategy, Alpaca, Interface
+from blankly import Strategy, Alpaca, Interface
 
 def init(ticker, state):
     state.variables['order_amt'] = 0

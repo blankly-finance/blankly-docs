@@ -234,9 +234,9 @@ The aroon oscillator utilizes the aroon indicator to determine the current stren
 #### Example Use
 
 ```python
-from Blankly.strategy import Strategy
-from Blankly import Alpaca, Interface
-from Blankly.metrics import aroon_oscillator
+from blankly.strategy import Strategy
+from blankly import Alpaca, Interface
+from blankly.metrics import aroon_oscillator
 
 def price_event(price, symbol, state):
   interface: Interface = state.interface

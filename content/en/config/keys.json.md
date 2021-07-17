@@ -43,13 +43,13 @@ Using & authenticating using `keys.json` is designed to be incredibly easy.
 First construct an `exchange` object for the exchange that you want to use:
 
 ```python
-exchange = Blankly.CoinbasePro()
+exchange = blankly.CoinbasePro()
 ```
 
 This example is in Coinbase Pro, if I wanted to use a particular Coinbase Pro portfolio, then I can specify that: 
 
 ```python
-exchange = Blankly.CoinbasePro(portfolio_name='my cool portfolio')	
+exchange = blankly.CoinbasePro(portfolio_name='my cool portfolio')	
 ```
 
 This will find `"my cool portfolio"` under `"coinbase_pro"` in the document. You can use this to have many different portfolios & accounts across exchanges and dynamically use each one.

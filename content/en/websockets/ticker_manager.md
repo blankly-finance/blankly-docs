@@ -17,7 +17,7 @@ This is true of the websocket managers we have in this module. They are each des
 
 # Creation
 
-A ticker manager can be created by calling `ticker = Blankly.TickerManager(default_exchange, default_currency)`.
+A ticker manager can be created by calling `ticker = blankly.TickerManager(default_exchange, default_currency)`.
 
 Because these websocket objects are designed to work across currencies and exchanges, specifying a default exchange and currency for the object to behave on can make interaction significantly simpler.
 
@@ -34,7 +34,7 @@ This call will also automatically switch channels to use the correct subscriptio
 
 | Description              | Examples                                                     | Type          |
 | ------------------------ | ------------------------------------------------------------ | ------------- |
-| A `TickerManager` object | `manager = Blankly.TickerManager('coinbase_pro', 'BTC-USD')` | TickerManager |
+| A `TickerManager` object | `manager = blankly.TickerManager('coinbase_pro', 'BTC-USD')` | TickerManager |
 
 # Functions
 
@@ -55,5 +55,5 @@ Create a new price event websocket feed.
 
 | Description             | Examples                                         | Type   |
 | ----------------------- | ------------------------------------------------ | ------ |
-| A blankly Ticker object | `websocket = Blankly.create_ticker(price_event)` | Ticker |
+| A blankly Ticker object | `websocket = blankly.create_ticker(price_event)` | Ticker |
 

@@ -14,7 +14,7 @@ The general manager class is designed to allow easy subscription to any channel 
 
 ## Creation
 
-`manager = Blankly.GeneralManager('coinbase_pro', 'BTC-USD')`
+`manager = blankly.GeneralManager('coinbase_pro', 'BTC-USD')`
 
 Because these websocket objects are designed to work across currencies and exchanges, specifying a default exchange and currency for the object to behave on can make interaction significantly simpler.
 
@@ -27,7 +27,7 @@ Because these websocket objects are designed to work across currencies and excha
 
 | Description               | Examples                                                     | Type           |
 | ------------------------- | ------------------------------------------------------------ | -------------- |
-| A `GeneralManager` object | `manager = Blankly.GeneralManager('coinbase_pro', 'BTC-USD')` | GeneralManager |
+| A `GeneralManager` object | `manager = blankly.GeneralManager('coinbase_pro', 'BTC-USD')` | GeneralManager |
 
 # Functions
 
@@ -58,7 +58,7 @@ def callback(message):
 
   
 # Create the manager:
-manager = Blankly.GeneralManager('binance', 'BTC-USD')
+manager = blankly.GeneralManager('binance', 'BTC-USD')
 
 
 # Create the connection
@@ -84,7 +84,7 @@ def callback(message):
 
   
 # Create the manager):
-manager = Blankly.GeneralManager('binance', 'BTC-USDT')
+manager = blankly.GeneralManager('binance', 'BTC-USDT')
 
 
 # Create the connection

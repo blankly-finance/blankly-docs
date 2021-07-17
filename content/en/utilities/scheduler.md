@@ -11,7 +11,7 @@ This allows single functions to double as asynchronous logic that can be used ac
 
 ## Creation
 
-A scheduler can be created by calling `Blankly.Scheduler`:
+A scheduler can be created by calling `blankly.Scheduler`:
 
 ### Arguments
 
@@ -26,7 +26,7 @@ A scheduler can be created by calling `Blankly.Scheduler`:
 
 | Description        | Examples                                           | Type      |
 | ------------------ | -------------------------------------------------- | --------- |
-| A scheduler object | `scheduler = Blankly.Scheduler(price_event, '2m')` | Scheduler |
+| A scheduler object | `scheduler = blankly.Scheduler(price_event, '2m')` | Scheduler |
 
 # Functions
 

@@ -14,15 +14,15 @@ Because this is designed to work with each exchange, the creation is different d
 
 **Coinbase Pro**
 
-`exchange = Blankly.CoinbasePro()`
+`exchange = blankly.CoinbasePro()`
 
 **Binance**
 
-`exchange = Blankly.Binance()`
+`exchange = blankly.Binance()`
 
 **Alpaca**
 
-`exchange = Blankly.Alpaca()`
+`exchange = blankly.Alpaca()`
 
 ### Arguments
 
@@ -36,7 +36,7 @@ Because this is designed to work with each exchange, the creation is different d
 
 | Description        | Examples                             | Type             |
 | ------------------ | ------------------------------------ | ---------------- |
-| An exchange object | `scheduler = Blankly.CoinbasePro()` | Exchange object. |
+| An exchange object | `scheduler = blankly.CoinbasePro()` | Exchange object. |
 
 # Functions
 
@@ -136,13 +136,13 @@ Write a value to the shared memory dictionary. This can be used to communicate w
 
 ## `append_model(model, coin_id, args=None)`
 
-Append a new `Blankly.BlanklyBot` object to the exchange. This can be run with `.start_models()`
+Append a new `blankly.BlanklyBot` object to the exchange. This can be run with `.start_models()`
 
 ### Arguments
 
 | Arg     | Description                                                  | Examples                 | Type |
 | ------- | ------------------------------------------------------------ | ------------------------ | ---- |
-| model   | An object inheriting from `Blankly.BlanklyBot`               | See multicore_bot.py     | Bot  |
+| model   | An object inheriting from `blankly.BlanklyBot`               | See multicore_bot.py     | Bot  |
 | coin_id | The coin_id to append the bot to                             | `'BTC-USD'`              | str  |
 | args    | Optionally add *any* type which will be passed into the main function in the `Bot` class. This works well as a dictionary with key/value pairs that can give settings. | `{'check_interval': .5}` | any  |
 
