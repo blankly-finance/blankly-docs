@@ -88,10 +88,10 @@ if __name__ == "__main__":
     # Create a strategy on coinbase pro
     coinbase_strategy = blankly.Strategy(coinbase_pro)
 
-    # Run the price event function every time we check for a new price - in this case we specify 15 seconds
-    coinbase_strategy.add_price_event(price_event, currency_pair='BTC-USD', resolution='15s')
-    coinbase_strategy.add_price_event(price_event, currency_pair='LINK-USD', resolution='15s')
-    coinbase_strategy.add_price_event(price_event, currency_pair='ETH-BTC', resolution='15s')
+    # Run the price event function every time we check for a new price - in this case we can even specify varying resolutions
+    coinbase_strategy.add_price_event(price_event, currency_pair='BTC-USD', resolution='1m')
+    coinbase_strategy.add_price_event(price_event, currency_pair='LINK-USD', resolution='1h')
+    coinbase_strategy.add_price_event(price_event, currency_pair='ETH-BTC', resolution='4h')
 
 ```
 
