@@ -16,7 +16,7 @@ Recursively iterate through order books and make sure they're all closed.
 
 ** Make sure to fill channel argument if using `GeneralManager`
 
-## `get_ticker(currency_id, override_exchange=None)`
+## `get_ticker(symbol, override_exchange=None)`
 
 Get a websocket (`Ticker`) object attached to a currency.
 
@@ -24,7 +24,7 @@ Get a websocket (`Ticker`) object attached to a currency.
 
 | Arg               | Description                                                  | Examples                        | Type |
 | ----------------- | ------------------------------------------------------------ | ------------------------------- | ---- |
-| currency_id       | Fill with a default asset for the manager to use when no overrides are given later. | `'BTC-USD'` or `'XLM-USD'`      | str  |
+| symbol            | Fill with a default asset for the manager to use when no overrides are given later. | `'BTC-USD'` or `'XLM-USD'`      | str  |
 | override_exchange | Optionally fill with a default exchange for the manager to use when no overrides are given later. | `'coinbase_pro'` or `'binance'` | str  |
 
 ** Make sure to fill channel argument if using `GeneralManager`
@@ -47,7 +47,7 @@ Get the tickers object dictionary. This can be used for individual management, o
 | -------------------------------------------- | ----------------------------------------------- | ---- |
 | The ticker dictionary that the manager uses. | `{'coinbase_pro':{'BTC-USD': <Ticker Object>}}` | dict |
 
-## `append_callback(callback_object, override_currency=None, override_exchange=None)`
+## `append_callback(callback_object, override_symbol=None, override_exchange=None)`
 
 Append a callback directly to the websocket.
 
@@ -58,12 +58,12 @@ This bypasses all processing that manager class may do before returning to the u
 | Arg               | Description                                                  | Examples                        | Type     |
 | ----------------- | ------------------------------------------------------------ | ------------------------------- | -------- |
 | callback_object   | New callback function to add to the object                   | `price_event`                   | callable |
-| currency_id       | Optionally fill with a default asset for the manager to use when no overrides are given later. | `'BTC-USD'` or `'XLM-USD'`      | str      |
+| override_symbol   | Optionally fill with a default asset for the manager to use when no overrides are given later. | `'BTC-USD'` or `'XLM-USD'`      | str      |
 | override_exchange | Optionally fill with a default exchange for the manager to use when no overrides are given later. | `'coinbase_pro'` or `'binance'` | str      |
 
 ** Make sure to fill channel argument if using `GeneralManager`
 
-## `is_websocket_open(override_currency=None, override_exchange=None) -> bool`
+## `is_websocket_open(override_symbol=None, override_exchange=None) -> bool`
 
 Check if the websocket attached to a currency is open.
 
@@ -71,7 +71,7 @@ Check if the websocket attached to a currency is open.
 
 | Arg               | Description                                                  | Examples                        | Type |
 | ----------------- | ------------------------------------------------------------ | ------------------------------- | ---- |
-| currency_id       | Optionally fill with a default asset for the manager to use when no overrides are given later. | `'BTC-USD'` or `'XLM-USD'`      | str  |
+| override_symbol   | Optionally fill with a default asset for the manager to use when no overrides are given later. | `'BTC-USD'` or `'XLM-USD'`      | str  |
 | override_exchange | Optionally fill with a default exchange for the manager to use when no overrides are given later. | `'coinbase_pro'` or `'binance'` | str  |
 
 ** Make sure to fill channel argument if using `GeneralManager`
@@ -82,7 +82,7 @@ Check if the websocket attached to a currency is open.
 | ------------------------------------------- | ----------------- | ---- |
 | Boolean describing if the websocket is open | `True` or `False` | bool |
 
-## `get_most_recent_time(override_currency=None, override_exchange=None)`
+## `get_most_recent_time(override_symbol=None, override_exchange=None)`
 
 Get the most recent time associated with the most recent tick
 
@@ -90,7 +90,7 @@ Get the most recent time associated with the most recent tick
 
 | Arg               | Description                                                  | Examples                        | Type |
 | ----------------- | ------------------------------------------------------------ | ------------------------------- | ---- |
-| currency_id       | Optionally fill with a default asset for the manager to use when no overrides are given later. | `'BTC-USD'` or `'XLM-USD'`      | str  |
+| override_symbol   | Optionally fill with a default asset for the manager to use when no overrides are given later. | `'BTC-USD'` or `'XLM-USD'`      | str  |
 | override_exchange | Optionally fill with a default exchange for the manager to use when no overrides are given later. | `'coinbase_pro'` or `'binance'` | str  |
 
 ** Make sure to fill channel argument if using `GeneralManager`
@@ -101,7 +101,7 @@ Get the most recent time associated with the most recent tick
 | ------------------------------------------- | ----------------- | ---- |
 | Boolean describing if the websocket is open | `True` or `False` | bool |
 
-## `get_time_feed(override_currency=None, override_exchange=None)`
+## `get_time_feed(override_symbol=None, override_exchange=None)`
 
 Get a time array associated with the ticker feed.
 
@@ -109,7 +109,7 @@ Get a time array associated with the ticker feed.
 
 | Arg               | Description                                                  | Examples                        | Type |
 | ----------------- | ------------------------------------------------------------ | ------------------------------- | ---- |
-| currency_id       | Optionally fill with a default asset for the manager to use when no overrides are given later. | `'BTC-USD'` or `'XLM-USD'`      | str  |
+| override_symbol   | Optionally fill with a default asset for the manager to use when no overrides are given later. | `'BTC-USD'` or `'XLM-USD'`      | str  |
 | override_exchange | Optionally fill with a default exchange for the manager to use when no overrides are given later. | `'coinbase_pro'` or `'binance'` | str  |
 
 ** Make sure to fill channel argument if using `GeneralManager`
@@ -120,7 +120,7 @@ Get a time array associated with the ticker feed.
 | ------------------------------------------- | ----------------------------------------------------------- | ---- |
 | A list of epoch times associated with ticks | `[1623356615.244464, 1623356616.244599, 1623356617.244478]` | list |
 
-## `get_feed(override_currency=None, override_exchange=None)`
+## `get_feed(override_symbol=None, override_exchange=None)`
 
 Get the full ticker array.
 
@@ -128,7 +128,7 @@ Get the full ticker array.
 
 | Arg               | Description                                                  | Examples                        | Type |
 | ----------------- | ------------------------------------------------------------ | ------------------------------- | ---- |
-| currency_id       | Optionally fill with a default asset for the manager to use when no overrides are given later. | `'BTC-USD'` or `'XLM-USD'`      | str  |
+| override_symbol   | Optionally fill with a default asset for the manager to use when no overrides are given later. | `'BTC-USD'` or `'XLM-USD'`      | str  |
 | override_exchange | Optionally fill with a default exchange for the manager to use when no overrides are given later. | `'coinbase_pro'` or `'binance'` | str  |
 
 ** Make sure to fill channel argument if using `GeneralManager`
@@ -139,7 +139,7 @@ Get the full ticker array.
 | ------------------------------------------------------ | ------------------------------------------------------------ | ---- |
 | A list of responses from the exchange inside a buffer. | `[{'type': 'heartbeat', 'last_trade_id': 0, 'product_id': 'BTC-USD', 'sequence': 26222011258, 'time': 1623356791.70079}, {'type': 'heartbeat', 'last_trade_id': 0, 'product_id': 'BTC-USD', 'sequence': 26222011927, 'time': 1623356792.700799}]` | list |
 
-## `get_response(override_currency=None, override_exchange=None)`
+## `get_response(override_symbol=None, override_exchange=None)`
 
 Get the exchange's response to the request to subscribe to a feed.
 
@@ -147,7 +147,7 @@ Get the exchange's response to the request to subscribe to a feed.
 
 | Arg               | Description                                                  | Examples                        | Type |
 | ----------------- | ------------------------------------------------------------ | ------------------------------- | ---- |
-| currency_id       | Optionally fill with a default asset for the manager to use when no overrides are given later. | `'BTC-USD'` or `'XLM-USD'`      | str  |
+| override_symbol   | Optionally fill with a default asset for the manager to use when no overrides are given later. | `'BTC-USD'` or `'XLM-USD'`      | str  |
 | override_exchange | Optionally fill with a default exchange for the manager to use when no overrides are given later. | `'coinbase_pro'` or `'binance'` | str  |
 
 ** Make sure to fill channel argument if using `GeneralManager`
@@ -158,7 +158,7 @@ Get the exchange's response to the request to subscribe to a feed.
 | ------------------------------------------------------ | ------------------------------------------------------------ | ---- |
 | A list of responses from the exchange inside a buffer. | `{"type":"subscriptions","channels":[{"name":"heartbeat","product_ids":["BTC-USD"]}]}` | list |
 
-## `close_websocket(override_currency=None, override_exchange=None)`
+## `close_websocket(override_symbol=None, override_exchange=None)`
 
 Close a websocket connection & thread.
 
@@ -166,12 +166,12 @@ Close a websocket connection & thread.
 
 | Arg               | Description                                                  | Examples                        | Type |
 | ----------------- | ------------------------------------------------------------ | ------------------------------- | ---- |
-| currency_id       | Optionally fill with a default asset for the manager to use when no overrides are given later. | `'BTC-USD'` or `'XLM-USD'`      | str  |
+| override_symbol   | Optionally fill with a default asset for the manager to use when no overrides are given later. | `'BTC-USD'` or `'XLM-USD'`      | str  |
 | override_exchange | Optionally fill with a default exchange for the manager to use when no overrides are given later. | `'coinbase_pro'` or `'binance'` | str  |
 
 ** Make sure to fill channel argument if using `GeneralManager`
 
-## `restart_ticker(override_currency=None, override_exchange=None`
+## `restart_ticker(override_symbol=None, override_exchange=None`
 
 Restart a websocket after asking it to stop.
 
@@ -179,12 +179,12 @@ Restart a websocket after asking it to stop.
 
 | Arg               | Description                                                  | Examples                        | Type |
 | ----------------- | ------------------------------------------------------------ | ------------------------------- | ---- |
-| currency_id       | Optionally fill with a default asset for the manager to use when no overrides are given later. | `'BTC-USD'` or `'XLM-USD'`      | str  |
+| override_symbol   | Optionally fill with a default asset for the manager to use when no overrides are given later. | `'BTC-USD'` or `'XLM-USD'`      | str  |
 | override_exchange | Optionally fill with a default exchange for the manager to use when no overrides are given later. | `'coinbase_pro'` or `'binance'` | str  |
 
 ** Make sure to fill channel argument if using `GeneralManager`
 
-## `get_most_recent_tick(override_currency=None, override_exchange=None)`
+## `get_most_recent_tick(override_symbol=None, override_exchange=None)`
 
 Get the most recent ticker received.
 
@@ -192,7 +192,7 @@ Get the most recent ticker received.
 
 | Arg               | Description                                                  | Examples                        | Type |
 | ----------------- | ------------------------------------------------------------ | ------------------------------- | ---- |
-| currency_id       | Optionally fill with a default asset for the manager to use when no overrides are given later. | `'BTC-USD'` or `'XLM-USD'`      | str  |
+| override_symbol   | Optionally fill with a default asset for the manager to use when no overrides are given later. | `'BTC-USD'` or `'XLM-USD'`      | str  |
 | override_exchange | Optionally fill with a default exchange for the manager to use when no overrides are given later. | `'coinbase_pro'` or `'binance'` | str  |
 
 ### Response

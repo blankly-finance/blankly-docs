@@ -31,14 +31,14 @@ Because these websocket objects are designed to work across currencies and excha
 
 # Functions
 
-## `create_general_connection(callback, channel, log=None, asset_id=None, override_exchange=None)`
+## `create_general_connection(callback, channel, log=None, override_symbol=None, override_exchange=None)`
 
 | Arg               | Description                                                  | Examples                                | Type     |
 | ----------------- | ------------------------------------------------------------ | --------------------------------------- | -------- |
 | callback          | Function with argument that accepts a single json-type message. | `price_event` function reference        | callable |
 | channel           | The websocket channel to create this connection on. Demos are given below. | `'aggTrade'`, `'ticker'`, `'heartbeat'` | str      |
 | log               | Optionally fill this with a path to a log file to enable logging. | `'./btc_log.csv'`                       | str      |
-| asset_id          | Override the default currency id and create the websocket this currency. | `'BTC-USD'` or `'XLM-USD'`              | str      |
+| override_symbol   | Override the default symbol and create the websocket this currency. | `'BTC-USD'` or `'XLM-USD'`              | str      |
 | override_exchange | Override the default exchange and create the websocket on this exchange. | `'coinbase_pro'` or '`binance`'         | str      |
 
 ## Coinbase Pro Streams

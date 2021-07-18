@@ -16,11 +16,11 @@ The orderbook is currently organized to give this format:
 
 ```python
 {
-  "buy": {
+  "bids": {
     35600: 3.4,
     23400: 1.5
   },
-  "sell": {
+  "asks": {
     54000: 2.1,
     45000: 5.3
   }
@@ -52,7 +52,7 @@ This will also construct orderbooks within the object that can be reported to yo
 
 # Functions
 
-## `create_orderbook(callback, currency_id=None, override_exchange=None)`
+## `create_orderbook(callback, symbol=None, override_exchange=None)`
 
 Create a new orderbook feed.
 
@@ -61,7 +61,7 @@ Create a new orderbook feed.
 | Arg               | Description                                                  | Examples                         | Type     |
 | ----------------- | ------------------------------------------------------------ | -------------------------------- | -------- |
 | callback          | Function with argument that accepts a single json-type message. | `price_event` function reference | callable |
-| currency_id       | Override the default currency id and create the websocket this currency. | `'BTC-USD'` or `'XLM-USD'`       | str      |
+| symbol            | Override the default symbol and create the websocket this currency. | `'BTC-USD'` or `'XLM-USD'`       | str      |
 | override_exchange | Override the default exchange and create the websocket on this exchange. | `'coinbase_pro'` or '`binance`'  | str      |
 
 ### Response
@@ -70,7 +70,7 @@ Create a new orderbook feed.
 | ----------------------- | --------------------------------------------------- | ------ |
 | A blankly Ticker object | `websocket = blankly.create_orderbook(price_event)` | Ticker |
 
-## `append_orderbook_callback(callback_object, override_currency_id=None, override_exchange=None)`
+## `append_orderbook_callback(callback_object, override_symbol=None, override_exchange=None)`
 
 Because the storing, sorting and aggregation of order books works as an intermediary between the websocket and the user, this function is added so that it's possible to append functions to that intermediary.
 
@@ -81,10 +81,10 @@ To emphasize this point, if you use the `.append_callback()` function found in t
 | Arg               | Description                                                  | Examples                         | Type     |
 | ----------------- | ------------------------------------------------------------ | -------------------------------- | -------- |
 | callback          | Function with argument that accepts a single json-type message. | `price_event` function reference | callable |
-| currency_id       | Override the default currency id and create the websocket this currency. | `'BTC-USD'` or `'XLM-USD'`       | str      |
+| symbol            | Override the default symbol and create the websocket this currency. | `'BTC-USD'` or `'XLM-USD'`       | str      |
 | override_exchange | Override the default exchange and create the websocket on this exchange. | `'coinbase_pro'` or '`binance`'  | str      |
 
-## `get_most_recent_orderbook(override_currency_id=None, override_exchange=None)`
+## `get_most_recent_orderbook(override_symbol=None, override_exchange=None)`
 
 Get the most recent orderbook under a currency and exchange.
 
@@ -92,7 +92,7 @@ Get the most recent orderbook under a currency and exchange.
 
 | Arg               | Description                                                  | Examples                        | Type |
 | ----------------- | ------------------------------------------------------------ | ------------------------------- | ---- |
-| currency_id       | Override the default currency id and create the websocket this currency. | `'BTC-USD'` or `'XLM-USD'`      | str  |
+| symbol            | Override the default symbol and create the websocket this currency. | `'BTC-USD'` or `'XLM-USD'`      | str  |
 | override_exchange | Override the default exchange and create the websocket on this exchange. | `'coinbase_pro'` or '`binance`' | str  |
 
 ### Response

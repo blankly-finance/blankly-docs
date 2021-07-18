@@ -72,9 +72,9 @@ Get all trading pairs currently on the exchange.
 ```python
 [
   {
-    "currency_id": "BTC-USD",
-    "base_currency": "BTC",
-  	"quote_currency": "USD",
+    "symbol": "BTC-USD",
+    "base_asset": "BTC",
+  	"quote_asset": "USD",
   	"base_min_size": 0.0001,
   	"base_max_size": 280,
   	"base_increment": .01
@@ -85,9 +85,9 @@ Get all trading pairs currently on the exchange.
 
 | Key            | Description                                                  | Type  |
 | -------------- | ------------------------------------------------------------ | ----- |
-| currency_id    | The currency pair of this exchange's products                | str   |
-| base_currency  | The base currency in the trading pair                        | str   |
-| quote_currency | The quote currency in the trading pair                       | str   |
+| symbol         | The currency pair of this exchange's products                | str   |
+| base_asset     | The base asset in the trading pair                           | str   |
+| quote_asset    | The quote asset in the trading pair                          | str   |
 | base_min_size  | Smallest amount of base currency that can be bought on the exchange | float |
 | base_max_size  | Largest amount of base currency that can be bought on the exchange | float |
 | base_increment | The finest resolution the base currency can be ordered in    | float |
@@ -163,17 +163,16 @@ Create a new live limit order on your exchange.
 
 A `limit_order` object. Documentation is pending.
 
-### `cancel_order(currency_id, order_id) -> dict`
+### `cancel_order(symbol, order_id) -> dict`
 
 Cancel a particular order.
 
 ### Arguments
 
-| Arg         | Description                                                  | Examples                             | Type |
-| ----------- | ------------------------------------------------------------ | ------------------------------------ | ---- |
-| currency_id | The identifier for the product to order                      | "BTC-USD" or "XLM-USD"               | str  |
-| order_id    | The exchange-given unique identifier for the order. This can be found using an `order` object. With `.get_id()` | b6d2f951-dae0-89e8-3e79-b460b1e9eead | str  |
-|             |                                                              |                                      |      |
+| Arg      | Description                                                  | Examples                             | Type |
+| -------- | ------------------------------------------------------------ | ------------------------------------ | ---- |
+| symbol   | The identifier for the product to order                      | "BTC-USD" or "XLM-USD"               | str  |
+| order_id | The exchange-given unique identifier for the order. This can be found using an `order` object. With `.get_id()` | b6d2f951-dae0-89e8-3e79-b460b1e9eead | str  |
 
 ### Response
 
@@ -224,16 +223,16 @@ Get a full list of open orders.
 | type   | Open orders can be "market," "limit," or "stop." This shows which of those types is valid. | str   |
 | status | Order status can be "open" "pending" or "closed"             | str   |
 
-### `get_order(currency_id, order_id) -> dict`
+### `get_order(symbol, order_id) -> dict`
 
 Get info about a particular order. If the objects returned by placing orders are saved, this function shouldn't need to be used.
 
 #### Arguments
 
-| Arg         | Description                                                  | Examples                             | Type |
-| ----------- | ------------------------------------------------------------ | ------------------------------------ | ---- |
-| currency_id | The identifier for the product to order                      | "BTC-USD" or "XLM-USD"               | str  |
-| order_id    | The exchange-given unique identifier for the order. This can be found using an `order` object. With `.get_id()` | b6d2f951-dae0-89e8-3e79-b460b1e9eead | str  |
+| Arg      | Description                                                  | Examples                             | Type |
+| -------- | ------------------------------------------------------------ | ------------------------------------ | ---- |
+| symbol   | The identifier for the product to order                      | "BTC-USD" or "XLM-USD"               | str  |
+| order_id | The exchange-given unique identifier for the order. This can be found using an `order` object. With `.get_id()` | b6d2f951-dae0-89e8-3e79-b460b1e9eead | str  |
 
 #### Response
 

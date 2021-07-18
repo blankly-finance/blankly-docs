@@ -75,35 +75,35 @@ Turn a blankly asset id into one that can be used by other exchanges.
 | ------------------------------------------------------------ | --------------------- | ---- |
 | An asset id that follows the specified exchange's conventions. | "BTCUSD" or "XLM-USD" | str  |
 
-## `get_base_currency(blankly_coin_id)`
+## `get_base_asset(symbol)`
 
 Get the base asset from the blankly trading pair.
 
 ### Arguments
 
-| Arg             | Description                                           | Examples               | Type |
-| --------------- | ----------------------------------------------------- | ---------------------- | ---- |
-| blankly_coin_id | Blankly formatted asset id for a particular currency. | "BTC-USD" or "XLM-USD" | str  |
+| Arg             | Description                                        | Examples                         | Type |
+| --------------- | -------------------------------------------------- | -------------------------------- | ---- |
+| blankly_coin_id | Blankly formatted asset id for a particular asset. | "BTC-USD" or "XLM-USD" or "MSFT" | str  |
 
 ### Response
 
-| Description                                   | Examples                                     | Type |
-| --------------------------------------------- | -------------------------------------------- | ---- |
-| The base asset of the specified trading pair. | "BTC" from "BTC-USD" or "XLM" from "XLM-USD" | str  |
+| Description                             | Examples                                               | Type |
+| --------------------------------------- | ------------------------------------------------------ | ---- |
+| The base asset of the specified symbol. | "BTC" from "BTC-USD" or "XLM" from "XLM-USD" or "MSFT" | str  |
 
-## `get_quote_currency(blankly_coin_id)`
+## `get_quote_asset(blankly_coin_id)`
 
 Get the quote asset from the blankly trading pair.
 
 ### Arguments
 
-| Arg             | Description                                           | Examples               | Type |
-| --------------- | ----------------------------------------------------- | ---------------------- | ---- |
-| blankly_coin_id | Blankly formatted asset id for a particular currency. | "BTC-USD" or "XLM-USD" | str  |
+| Arg             | Description                                           | Examples                         | Type |
+| --------------- | ----------------------------------------------------- | -------------------------------- | ---- |
+| blankly_coin_id | Blankly formatted asset id for a particular currency. | "BTC-USD" or "XLM-USD" or "MSFT" | str  |
 
 ### Response
 
-| Description                                    | Examples                                     | Type |
-| ---------------------------------------------- | -------------------------------------------- | ---- |
-| The quote asset of the specified trading pair. | "USD" from "BTC-USD" or "USD" from "XLM-USD" | str  |
+| Description                                    | Examples                                               | Type |
+| ---------------------------------------------- | ------------------------------------------------------ | ---- |
+| The quote asset of the specified trading pair. | "USD" from "BTC-USD" or "USD" from "XLM-USD" or "MSFT" | str  |
 
