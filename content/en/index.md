@@ -1,6 +1,6 @@
 ---
 title: Overview
-description: ''
+description: 'Blankly makes it extremely easy for you to build and deploy your models at scale, allowing you to write your code once and run it on any exchange. Check out our docs for more examples.'
 position: 1
 version: 1.0
 category: Getting Started
