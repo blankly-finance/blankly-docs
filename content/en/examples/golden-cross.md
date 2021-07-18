@@ -31,18 +31,21 @@ from blankly import Strategy, StrategyState, Interface
 from blankly import Alpaca
 from blankly.indicators import sma
 
+
 def init(symbol, state: StrategyState):
     # run on a new price event to initialize variables
     pass
+
 
 def price_event(price, symbol, state: StrategyState):
     # we'll come back to this soon
     pass
 
+
 alpaca = Alpaca()
 s = Strategy(alpaca)
 s.add_price_event(price_event, 'MSFT', resolution='1d', init=init)
-s.run()
+s.start()
 ```
 
 ### Initializing Variables and History
@@ -53,7 +56,7 @@ We can actually easily do this on initialization and make sure the proper data i
 ```python
 def init(symbol, state: StrategyState):
     interface: Interface = state.interface
-    resolution: str = state.resolution
+    resolution: float = state.resolution
     variables = state.variables
     # initialize the historical data
     variables['history'] = interface.history(symbol, 800, resolution)['close']
@@ -72,15 +75,15 @@ Traditionally, calculating an SMA would typically involve utilizing `numpy` or `
 def price_event(price, symbol, state: StrategyState):
     interface: Interface = state.interface
     # allow the resolution to be any resolution: 15m, 30m, 1d, etc.
-    resolution: str = state.resolution
+    resolution: float = state.resolution
     variables = state.variables
 
     variables['history'].append(price)
 
-    sma50 = sma(history, period=50)
-    sma200 = sma(history, period=200)
+    sma50 = sma(variables['history'], period=50)
+    sma200 = sma(variables['history'], period=200)
     diff = sma200 - sma50
-    slope_sma50 = (sma50[-1] - sma50[-5]) / 5 # get the slope of the last 5 SMA50 Data Points
+    slope_sma50 = (sma50[-1] - sma50[-5]) / 5  # get the slope of the last 5 SMA50 Data Points
     prev_diff = diff[-2]
     curr_diff = diff[-1]
     is_cross_up = slope_sma50 > 0 and curr_diff >= 0 and prev_diff < 0
@@ -88,7 +91,7 @@ def price_event(price, symbol, state: StrategyState):
     # comparing prev diff with current diff will show a cross
     if is_cross_up and not variables['has_bought']:
         interface.market_order('buy', symbol, interface.cash)
-        variables['has_bought'] = true
+        variables['has_bought'] = True
     elif is_cross_down and variables['has_bought']:
         curr_value = interface.account[symbol].available * price
         interface.market_order('sell', symbol, curr_value)
@@ -105,24 +108,26 @@ from blankly import Strategy, StrategyState, Interface
 from blankly import Alpaca
 from blankly.indicators import sma
 
+
 def init(symbol, state: StrategyState):
     interface: Interface = state.interface
-    resolution: str = state.resolution
+    resolution: float = state.resolution
     variables = state.variables
     # initialize the historical data
     variables['history'] = interface.history(symbol, 800, resolution)['close']
     variables['has_bought'] = False
 
+
 def price_event(price, symbol, state: StrategyState):
     interface: Interface = state.interface
     # allow the resolution to be any resolution: 15m, 30m, 1d, etc.
-    resolution: str = state.resolution
+    resolution: float = state.resolution
     variables = state.variables
 
     variables['history'].append(price)
 
-    sma50 = sma(history, period=50)
-    sma200 = sma(history, period=200)
+    sma50 = sma(variables['history'], period=50)
+    sma200 = sma(variables['history'], period=200)
     diff = sma200 - sma50
     slope_sma50 = (sma50[-1] - sma50[-5]) / 5 # get the slope of the last 5 SMA50 Data Points
     prev_diff = diff[-2]
@@ -132,11 +137,12 @@ def price_event(price, symbol, state: StrategyState):
     # comparing prev diff with current diff will show a cross
     if is_cross_up and not variables['has_bought']:
         interface.market_order('buy', symbol, interface.cash)
-        variables['has_bought'] = true
+        variables['has_bought'] = True
     elif is_cross_down and variables['has_bought']:
         curr_value = interface.account[symbol].available * price
         interface.market_order('sell', symbol, curr_value)
         variables['has_bought'] = False
+
 
 alpaca = Alpaca()
 s = Strategy(alpaca)

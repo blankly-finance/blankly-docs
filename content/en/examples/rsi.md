@@ -30,18 +30,21 @@ from blankly import Strategy, StrategyState, Interface
 from blankly import Alpaca
 from blankly.indicators import rsi
 
+
 def init(symbol, state: StrategyState):
     # run on a new price event to initialize variables
     pass
+
 
 def price_event(price, symbol, state: StrategyState):
     # we'll come back to this soon
     pass
 
+
 alpaca = Alpaca()
 s = Strategy(alpaca)
 s.add_price_event(price_event, 'MSFT', resolution='15m', init=init)
-s.run()
+s.start()
 ```
 
 ### Initializing Variables and History
