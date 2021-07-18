@@ -10,14 +10,16 @@ category: Getting Started
 
 ## The Quick Run-Down
 
-Blankly is a package that allows you to rapidly build and deploy trading models at scale in the cloud. We abstract away all the code related to connecting to exchanges (i.e. Coinbase Pro, Binance, and Stock Exchanges), order submission (Limit, Market, and Stop), and order book and price data (historical and real-time at your designated resolution) so that you can focus on building your models. 
+Blankly is a package that allows you to rapidly build and deploy trading models at scale in the cloud. We're built the platform that allows you to backtest, paper trade, sandbox test, and deploy live cross-exchange without modifying a single line of trading logic.
+
+We abstract away all the code related to connecting to exchanges (i.e. Coinbase Pro, Binance, and Stock Exchanges), order submission, and order book and price data (historical and real-time at your designated resolution) so that you can focus on building your models. 
 
 <alert type="success">
 Our goal is to take what originally takes 3-4 months of scrounging for data, connecting endpoints, and more, and make it only a few lines of code so that your workflow is optimized and easy
 </alert>
 
 
-### One Codebase, Any Exchange, Trading Multiple Entities
+### One Codebase, Cross-Exchange, Trading Multiple Entities
 
 Blankly is the only package on the market that allows you to build a model once and allow it to run on any supported exchange and trading multiple entities at a time.
 You can trade `MSFT`, `AAPL`, `PLTR` all from a single code-file with three lines of code. 
@@ -27,7 +29,7 @@ Blankly makes it as simple as one line to convert an existing strategy or bot tr
 
 ### Optimized for Performance at Scale
 
-We've designed Blankly to work well and really well, reducing CPU usage to a mere 1% so that your model can do what it needs to do. We make use of all the power that python provides to really streamline your development and ensure that your models are always up and running.
+We've designed Blankly to run extraordinarily efficiently - allowing robust trading logic to run with less than 1% CPU consumption. By integrating libraries written in C, we make use of all the power that python provides to really streamline your development and ensure that your models are always up and running.
 
 ### Easy Integration with Existing Codebases
 
@@ -36,37 +38,40 @@ Blankly makes it extremely easy to integrate with any of your existing machine l
 ```python
 import blankly
 from blankly.strategy import Strategy, StrategyState
-from model import MyAwesomeModel
+from model import my_awesome_model
 
 
 def init(symbol: str, state: StrategyState):
     # initialize per price event state
     state.variables['has_buy_order'] = False
 
+
 def price_event(price: float, symbol: str, state: StrategyState):
     interface: blankly.Interface = state.interface
-    # get last 50 days worth of price data 
+    # get last 50 days worth of price data
     history = interface.history(symbol, 50, '1d')
 
     # easily integrate your model
-    decision = MyAwesomeModel(history)
+    decision = my_awesome_model(history)
 
     # buy or sell based on that decision
     if decision:
-        interface.market_order('buy', 0.25 * interface.cash)
+        interface.market_order(symbol, 'buy', 0.25 * interface.cash)
         state.variables['has_buy_order'] = True
-    else if state.variables['has_buy_order'] and not decision:
-        amt = interface.account[currency_pair].available
-        interface.market_order('sell', amt)
+    elif state.variables['has_buy_order'] and not decision:
+        amt = interface.account[symbol].available
+        interface.market_order(symbol, 'sell', amt * price)
         state.variables['has_buy_order'] = False
+
 
 c = blankly.Alpaca()
 s = Strategy(c)
 
-s.add_price_event(price_event, 
-    currency_pair='MSFT', 
-    resolution='1d'
-    init=init)
+s.add_price_event(price_event,
+                  symbol='MSFT',
+                  resolution='1d',
+                  init=init)
+
 ```
 
 ### Easy Access to Historical Data
@@ -98,7 +103,7 @@ We want Blankly to simple to use but powerful in scope. That's why we're putting
 We originally started the Blankly trading module in December 2020. Far before it took the form as it is today, it was just a way of learning how to make requests to API endpoints and mess with the outputs. Today it's a complete quantitative development platform with hundreds of users.
 
 Blankly aims to remove the barriers when developing quantitative models. Writing well tested & stable code can be time consuming and difficult. Many current solutions also often force you to use online IDEs or only allow limited API calls through their servers. They diminish the user experience in an effort to hide the source code. Blankly doesn't do that. We give you the same tools for free and the code that makes it work. We allow you to build how you want and run anywhere. 
-We try to avoid complex docker configurations, Gradle scripts, or complex configurations. We want our module to be usable out of the box but still provide infinite customization and powerful abilities. Our goal is to write code so simple and powerful that anyone - from the python beginner to the professional developer - can take advantage of features previously inaccessible. We can't wait to see what you make and how you contribute. Thanks for being a part of the Blankly family.
+We try to avoid complex docker configurations, Gradle scripts, or confusing configurations. We want our module to be usable out of the box but still provide infinite customization and powerful abilities. Our goal is to write code so simple and powerful that anyone - from the python beginner to the professional developer - can take advantage of features previously inaccessible. We can't wait to see what you make and how you contribute. Thanks for being a part of the Blankly family.
 
 
 ## Ecosystem
@@ -113,6 +118,10 @@ Get up and running with our growing developer community:
 
 ## License
 
-Blankly is a free and open source project, released under the permissable MIT license. This means it can be used in personal or commercial projects for free. MIT is the same license used by such popular projects as jQuery and Ruby on Rails.
+Blankly is a free and open source project, released under the permissible LGPL license. This means it can be used in closed-source personal or commercial projects for free. However, because of the high piracy rate for this type of code, any modifications to Blankly source code (stuff with the LGPL header) must be made open sourced for everybody. Here's how wikipedia says it: "Any developer who modifies an LGPL-covered component is required to make their modified version available under the same LGPL license."
+
+We hope to move to the more permissible Apache License in the future.
+
+This is not legal advice.
 
 This documentation content (found in the [blankly-docs](https://github.com/Blankly-Finance/blankly-docs) repo) is licensed under the [Apache 2 license](https://www.apache.org/licenses/LICENSE-2.0).
