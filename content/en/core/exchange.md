@@ -80,25 +80,25 @@ Get the authenticated interface object (very important).
 | ------------------------------------------------------------ | ----------------------------------- | ------------------ |
 | This gives the actual interface object to use. See [here](/API/exchange_interface). | All interfaces have identical calls | ICurrencyInterface |
 
-## `start_models(coin_id=None)`
+## `start_models(symbol=None)`
 
 Used for multiprocessed bots. This calls the run functions of each appended multiprocessed model. See the multiprocessing demo for usage.
 
 ### Arguments
 
-| Arg     | Description                                                  | Examples    | Type |
-| ------- | ------------------------------------------------------------ | ----------- | ---- |
-| coin_id | Models are appended by reference to their asset. Optionally fill this with a reference to just start that single asset. | `'BTC-USD'` | str  |
+| Arg    | Description                                                  | Examples    | Type |
+| ------ | ------------------------------------------------------------ | ----------- | ---- |
+| symbol | Models are appended by reference to their asset. Optionally fill this with a reference to just start that single asset. | `'BTC-USD'` | str  |
 
-## `get_model_state(self, currency)`
+## `get_model_state(self, symbol)`
 
 Returns the shared memory dictionary from the requested multiprocessed model. This is the function used by the main process to understand what other processes are doing internally.
 
 ### Arguments
 
-| Arg      | Description                                          | Examples    | Type |
-| -------- | ---------------------------------------------------- | ----------- | ---- |
-| currency | The currency identifier for the multiprocessed model | `'BTC-USD'` | str  |
+| Arg    | Description                                       | Examples    | Type |
+| ------ | ------------------------------------------------- | ----------- | ---- |
+| symbol | The asset identifier for the multiprocessed model | `'BTC-USD'` | str  |
 
 ### Response
 
@@ -106,15 +106,15 @@ Returns the shared memory dictionary from the requested multiprocessed model. Th
 | ------------------------------------------------------------ | -------------------- | ---- |
 | A shared dictionary that can be written to and read by both processes | `{'heartbeat': 231}` | dict |
 
-## `get_full_state(self, currency)`
+## `get_full_state(self, symbol)`
 
 Returns the shared memory dictionary from the requested multiprocessed model as well as an exchange API request that shows the state of the coin that the process is running on.
 
 ### Arguments
 
-| Arg      | Description                                          | Examples    | Type |
-| -------- | ---------------------------------------------------- | ----------- | ---- |
-| currency | The currency identifier for the multiprocessed model | `'BTC-USD'` | str  |
+| Arg    | Description                                       | Examples    | Type |
+| ------ | ------------------------------------------------- | ----------- | ---- |
+| symbol | The asset identifier for the multiprocessed model | `'BTC-USD'` | str  |
 
 ### Response
 
@@ -122,29 +122,29 @@ Returns the shared memory dictionary from the requested multiprocessed model as 
 | ------------------------------------------------------------ | ------------------------------------------------------------ | ---- |
 | A shared dictionary that can be written to and read by both processes | `{'model':{'heartbeat': 231}, "account": {"currency":"BTC","hold": 0.0,"available": 54.90091578}}` | dict |
 
-## `write_value(currency, key, value)`
+## `write_value(symbol, key, value)`
 
 Write a value to the shared memory dictionary. This can be used to communicate with other processes.
 
 ### Arguments
 
-| Arg      | Description                                                  | Examples    | Type      |
-| -------- | ------------------------------------------------------------ | ----------- | --------- |
-| currency | Currency identifier for which bot to write the dictionary value. | `'BTC-USD'` | str       |
-| key      | The key of the value to write                                | `'stop'`    | immutable |
-| value    | Value to write to they key                                   | `'true'`    | any       |
+| Arg    | Description                                                  | Examples    | Type      |
+| ------ | ------------------------------------------------------------ | ----------- | --------- |
+| symbol | Asset identifier for which bot to write the dictionary value. | `'BTC-USD'` | str       |
+| key    | The key of the value to write                                | `'stop'`    | immutable |
+| value  | Value to write to they key                                   | `'true'`    | any       |
 
-## `append_model(model, coin_id, args=None)`
+## `append_model(model, symbol, args=None)`
 
 Append a new `blankly.BlanklyBot` object to the exchange. This can be run with `.start_models()`
 
 ### Arguments
 
-| Arg     | Description                                                  | Examples                 | Type |
-| ------- | ------------------------------------------------------------ | ------------------------ | ---- |
-| model   | An object inheriting from `blankly.BlanklyBot`               | See multicore_bot.py     | Bot  |
-| coin_id | The coin_id to append the bot to                             | `'BTC-USD'`              | str  |
-| args    | Optionally add *any* type which will be passed into the main function in the `Bot` class. This works well as a dictionary with key/value pairs that can give settings. | `{'check_interval': .5}` | any  |
+| Arg    | Description                                                  | Examples                 | Type |
+| ------ | ------------------------------------------------------------ | ------------------------ | ---- |
+| model  | An object inheriting from `blankly.BlanklyBot`               | See multicore_bot.py     | Bot  |
+| symbol | The asset to append the bot to                               | `'BTC-USD'`              | str  |
+| args   | Optionally add *any* type which will be passed into the main function in the `Bot` class. This works well as a dictionary with key/value pairs that can give settings. | `{'check_interval': .5}` | any  |
 
 ## `get_direct_calls() -> API`
 
