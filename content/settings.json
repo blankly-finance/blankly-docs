@@ -6,5 +6,7 @@
     "dark": "/logo-dark.svg"
   },
   "github": "Blankly-Finance/blankly.docs",
-  "twitter": "@EmersonDove"
+  "twitter": "@EmersonDove",
+  "defaultDir": "",
+  "defaultBranch": "master"
 }
