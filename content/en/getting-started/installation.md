@@ -60,7 +60,11 @@ In the working directory of your project (normally the root), Blankly needs two 
         "another cool portfolio": {
             "API_KEY": "**************************************************************",
             "API_SECRET": "*************************************************************"
-        }
+        },
+        "second cool portfolio": {
+            "API_KEY": "**************************************************************",
+            "API_SECRET": "*************************************************************"
+        } 
     },
     "alpaca": {
         "another cool portfolio": {
