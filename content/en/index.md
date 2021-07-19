@@ -42,26 +42,32 @@ from model import my_awesome_model
 
 
 def init(symbol: str, state: StrategyState):
-    # initialize per price event state
-    state.variables['has_buy_order'] = False
+    # Every price event will have a separate version of this
+    state.variables['owns_a_position'] = False
+
+    # Download price history in the init - get last 50 days worth of price data
+    state.variables['history'] = state.interface.history(symbol, 50, '1d')['close'].to_list()
 
 
 def price_event(price: float, symbol: str, state: StrategyState):
-    interface: blankly.Interface = state.interface
-    # get last 50 days worth of price data
-    history = interface.history(symbol, 50, '1d')
+    # Pull our interface from the state
+    interface = state.interface
 
-    # easily integrate your model
-    decision = my_awesome_model(history)
+    # Save the price update
+    state.variables['history'].append(price)
+
+    # Easily integrate your model
+    decision = my_awesome_model(state.variables['history'])
 
     # buy or sell based on that decision
     if decision:
-        interface.market_order(symbol, 'buy', 0.25 * interface.cash)
-        state.variables['has_buy_order'] = True
-    elif state.variables['has_buy_order'] and not decision:
-        amt = interface.account[symbol].available
-        interface.market_order(symbol, 'sell', amt * price)
-        state.variables['has_buy_order'] = False
+        interface.market_order(symbol, 'buy', blankly.trunc(0.25 * interface.cash, 2))
+        state.variables['owns_a_position'] = True
+    elif state.variables['owns_a_position'] and not decision:
+        # Sell it all if you get a sell signal
+        amt = interface.account[state.base_asset]['available']
+        interface.market_order(symbol, 'sell', blankly.trunc(amt * price, 2))
+        state.variables['owns_a_position'] = False
 
 
 c = blankly.Alpaca()
@@ -69,8 +75,10 @@ s = Strategy(c)
 
 s.add_price_event(price_event,
                   symbol='MSFT',
-                  resolution='1d',
+                  resolution='20s',
                   init=init)
+
+s.start()
 
 ```
 
