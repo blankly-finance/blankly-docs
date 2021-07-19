@@ -21,7 +21,6 @@ Blankly makes it extremely easy by integrating with our interfaces that run on a
 <alert type="warning">
     Most recent data will be delayed by 15 minutes with Alpaca if a premium key is not specified in your keys.json. 
     If you have a premium key, make sure you add the property "premium: true". 
-
     We are actively working on a blankly.data that will be a new source for financial data.
 </alert>
 
