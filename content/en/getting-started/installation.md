@@ -30,8 +30,19 @@ In the working directory of your project (normally the root), Blankly needs two 
     "account_update_time": 5000,
     "use_sandbox": true,
     "use_sandbox_websockets": false,
-    "binance_tld": "us",
-    "websocket_buffer_size": 10000
+    "websocket_buffer_size": 10000,
+
+    "coinbase_pro": {
+      "cash": "USD"
+    },
+    "binance": {
+      "cash": "USDT",
+      "binance_tld": "us"
+    },
+    "alpaca": {
+      "websocket_stream": "iex",
+      "cash": "USD"
+    }
   }
 }
 ```
@@ -49,6 +60,12 @@ In the working directory of your project (normally the root), Blankly needs two 
         "another cool portfolio": {
             "API_KEY": "**************************************************************",
             "API_SECRET": "*************************************************************"
+        }
+    },
+    "alpaca": {
+        "another cool portfolio": {
+            "API_KEY": "********************",
+            "API_SECRET": "****************************************"
         }
     }
 }
@@ -71,7 +88,7 @@ Using the module is quite easy now. Here is a very simple demo that shows some f
 import blankly
 
 
-def price_event(price, currency_pair):
+def price_event(price, currency_pair, state):
     """
     This function will run every time we check for a new price - defined below
     """
@@ -89,9 +106,12 @@ if __name__ == "__main__":
     coinbase_strategy = blankly.Strategy(coinbase_pro)
 
     # Run the price event function every time we check for a new price - in this case we can even specify varying resolutions
-    coinbase_strategy.add_price_event(price_event, currency_pair='BTC-USD', resolution='1m')
-    coinbase_strategy.add_price_event(price_event, currency_pair='LINK-USD', resolution='1h')
-    coinbase_strategy.add_price_event(price_event, currency_pair='ETH-BTC', resolution='4h')
+    coinbase_strategy.add_price_event(price_event, symbol='BTC-USD', resolution='1m')
+    coinbase_strategy.add_price_event(price_event, symbol='LINK-USD', resolution='1h')
+    coinbase_strategy.add_price_event(price_event, symbol='ETH-BTC', resolution='4h')
+
+    # Make sure to run the strategy definition
+    coinbase_strategy.start()
 
 ```
 
@@ -108,4 +128,4 @@ Project
 |-script.py
 ```
 3. Import normally to your scripts & make your changes
-4. Under `lgpl` make sure to open-source your changes!
+4. Under `LGPL` make sure to open-source your changes!

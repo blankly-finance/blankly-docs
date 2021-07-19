@@ -36,12 +36,14 @@ from blankly.indicators import sma
 
 from models import OrderPricingModel, OrderDecisionModel
 
+
 def init(symbol, state: StrategyState):
     # initialize this once and store it into state
     variables = state.variables
     variables['decision_model'] = OrderDecisionModel(symbol)
     variables['pricing_model'] = OrderPricingModel(symbol)
     variables["has_bought"] = False
+
 
 def price_event(price, symbol, state: StrategyState):
     # we'll come back to this soon
@@ -50,7 +52,7 @@ def price_event(price, symbol, state: StrategyState):
 alpaca = Alpaca()
 s = Strategy(alpaca)
 s.add_price_event(price_event, 'MSFT', resolution='1d', init=init)
-s.run()
+s.start()
 ```
 
 ### Implementing the Price Event
@@ -93,6 +95,7 @@ from blankly.indicators import sma
 
 from models import OrderPricingModel, OrderDecisionModel
 
+
 def init(symbol, state: StrategyState):
     # initialize this once and store it into state
     variables = state.variables
@@ -100,10 +103,11 @@ def init(symbol, state: StrategyState):
     variables['pricing_model'] = OrderPricingModel(symbol)
     variables['has_bought'] = False
 
+
 def price_event(price, symbol, state: StrategyState):
     interface: Interface = state.interface
     # allow the resolution to be any resolution: 15m, 30m, 1d, etc.
-    resolution: str = state.resolution
+    resolution: float = state.resolution
     variables = state.variables
     decision_model = variables['decision_model']
     pricing_model = variables['pricing_model']
@@ -121,11 +125,13 @@ def price_event(price, symbol, state: StrategyState):
         amt_to_sell = pricing_model(price, symbol, interface.cash, curr_value)
         interface.market_order('sell', symbol, amt_to_sell)
 
+
 alpaca = Alpaca()
 s = Strategy(alpaca)
 s.add_price_event(price_event, 'MSFT', resolution='1d', init=init)
 # decision_model = OrderDecisionModel() <-- global state can also be accessed in price event functions 
 # pricing_model = OrderPricingModel()
 s.backtest(initial_values={'USD': 10000}, to='2y')
+
 
 ```

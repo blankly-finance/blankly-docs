@@ -42,6 +42,8 @@ strategy = blankly.Strategy(coinbase_pro)
 strategy.add_price_event(custom_price_event, 'BTC-USD', resolution='1h')
 strategy.add_bar_event(custom_bar_event, 'BTC-USD', resolution='1d')
 strategy.add_orderbook_event(custom_bar_event, 'ETH-USD')
+
+strategy.start()
 ```
 
 ### Arguments
@@ -77,24 +79,27 @@ With any price event function, you will most definitely be working with `state` 
 
 ```python
 from blankly import Strategy, StrategyState, Interface
+import blankly
+
 
 def init(symbol: str, state: StrategyState):
-  variables = state.variables # grab the variables dictionary
-  # initialize any variables here
-  variables['model_started'] = False 
-  # get 50 data points at specific resolution of event
-  variables['history'] = state.interface.history(symbol, 50, state.resolution)
- 
+    variables = state.variables  # grab the variables dictionary
+    # initialize any variables here
+    variables['model_started'] = False
+    # get 50 data points at specific resolution of event
+    variables['history'] = state.interface.history(symbol, 50, state.resolution)
+
+
 def price_event(price, symbol, state: StrategyState):
-  interface: blankly.Interface = state.interface
-  variables['history'].append(price) # add new price to history
-  # buy the symbol using available cash
-  interface.market_order(symbol, 'buy', interface.cash)
+    interface: blankly.Interface = state.interface
+    state.variables['history'].append(price)  # add new price to history
+    # buy the symbol using available cash
+    interface.market_order(symbol, 'buy', interface.cash)
 ```
 
 
 
-For some real-lif example uses, check out our [examples](/examples/rsi)
+For some real-life example uses, check out our [examples](/examples/rsi)
 
 ## Functions
 
@@ -188,25 +193,30 @@ Bar Events are by definition synced with the exchange so that bucket intervals a
 ```python
 from blankly import Strategy, StrategyState, Interface
 from blankly.indicators import aroon_oscillator
+import blankly
+
 
 def init(symbol: str, state: StrategyState):
-  variables = state.variables # grab the variables dictionary
-  # initialize any variables here
-  variables['has_bought'] = False 
-  # get 50 data points at specific resolution of event
-  variables['history'] = state.interface.history(symbol, 50, state.resolution)
- 
+    variables = state.variables  # grab the variables dictionary
+    # initialize any variables here
+    variables['has_bought'] = False
+    # get 50 data points at specific resolution of event
+    variables['history'] = state.interface.history(symbol, 50, state.resolution)
+
+
 def some_bar_event(bar, symbol, state: StrategyState):
-  '''This buys and sells whenever the boolean is true or false'''
-  # bar = {'open': 1234.5, 'close': 1200.4, 'high': 1555', 'low': 1000, 'volume': 25000}
-  interface: blankly.Interface = state.interface
-  variables['history'].append(bar) # add new price to history
-  oscillation = aroon_oscillator(variables['close'], variables['high'], variables['low'])
-  # ... do something with the oscillation calculation
-    
-a = Alpaca()
+    '''This buys and sells whenever the boolean is true or false'''
+    # bar = {'open': 1234.5, 'close': 1200.4, 'high': 1555', 'low': 1000, 'volume': 25000}
+    interface: blankly.Interface = state.interface
+    variables = state.variables  # grab the variables state
+    variables['history'].append(bar)  # add new price to history
+    oscillation = aroon_oscillator(variables['close'], variables['high'], variables['low'])
+    # ... do something with the oscillation calculation
+
+
+a = blankly.Alpaca()
 s = Strategy(a)
-s.add_price_event(price_event, 'MSFT', resolution='15m', init=init)
+s.add_price_event(some_bar_event, 'MSFT', resolution='15m', init=init)
 ```
 
 
@@ -250,13 +260,15 @@ Users can use this to define their own custom metrics. F.e., let's say we want t
 from blankly import Strategy, StrategyState, Interface, Alpaca
 from blankly.metrics import sortino, sharpe
 
+
 def custom_backtest_metric(backtest_data):
-  returns = backtest_data['returns']['value'] # get all the returns
-	return sortino(returns) + sharpe(returns)
+    returns = backtest_data['returns']['value']  # get all the returns
+    return sortino(returns) + sharpe(returns)
+
 
 a = Alpaca()
-s = Strategy()
-s.add_price_event(some_price_event, 'MSFT', resolution='15m')
+s = Strategy(a)
+s.add_price_event(custom_backtest_metric, 'MSFT', resolution='15m')
 s.backtest(initial_values={'USD': 10000}, to='2y', callbacks=[custom_backtest_metric])
 ```
 
@@ -269,28 +281,37 @@ Taking our first example, let's say we wanted to make a custom metric that combi
 ```python
 from blankly import Strategy, StrategyState, Interface
 from blankly.metrics import sortino, sharpe
+import blankly
+
 
 def init(symbol: str, state: StrategyState):
-  variables = state.variables # grab the variables dictionary
-  # initialize any variables here
-  variables['model_started'] = False 
-  # get 50 data points at specific resolution of event
-  variables['history'] = state.interface.history(symbol, 50, state.resolution)
- 
+    variables = state.variables  # grab the variables dictionary
+    # initialize any variables here
+    variables['model_started'] = False
+    # get 50 data points at specific resolution of event
+    variables['history'] = state.interface.history(symbol, 50, state.resolution)
+
+
 def price_event(price, symbol, state: StrategyState):
-  interface: blankly.Interface = state.interface
-  variables['history'].append(price) # add new price to history
-  # buy the symbol using available cash
-  interface.market_order(symbol, 'buy', interface.cash)
+    interface: blankly.Interface = state.interface
+    variables = state.variables
+    variables['history'].append(price)  # add new price to history
+    # buy the symbol using available cash
+    interface.market_order(symbol, 'buy', interface.cash)
+
 
 def custom_sharpe_sortino(backtest_data):
-  returns = backtest_data['returns']['value'] # get all the returns
-	return sortino(returns) + sharpe(returns)
+    returns = backtest_data['returns']['value']  # get all the returns
+    return sortino(returns) + sharpe(returns)
 
-a = Alpaca()
-s = Strategy()
-s.add_price_event(some_price_event, 'MSFT', resolution='15m')
-result = s.backtest(initial_values={'USD': 10000}, start_date='2008-09-25' end_date='2009-08-25', callbacks=[custom_sharpe_sortino])
+
+a = blankly.Alpaca()
+s = Strategy(a)
+s.add_price_event(price_event, 'MSFT', resolution='15m', init=init)
+result = s.backtest(initial_values={'USD': 10000},
+                    start_date='2008-09-25',
+                    end_date='2009-08-25',
+                    callbacks=[custom_sharpe_sortino])
 
 print(result)
 ```

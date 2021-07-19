@@ -68,7 +68,7 @@ Now that we have the data, let's make some decisions based on our model on when 
 portfolio_value = 100000
 portfolio_value_per_day = []
 num_shares = 0.0
-for price in prices: # loop through each day
+for price in prices:  # loop through each day
     decision: bool = model(price)
 
     if num_shares > 0:
@@ -78,7 +78,7 @@ for price in prices: # loop through each day
     # buy/sell logic
     if decision and num_shares == 0.0:
         num_shares = portfolio_value // price
-    else if not decision and num_shares > 0.0:
+    elif not decision and num_shares > 0.0:
         portfolio_value = num_shares * price
         num_shares = 0
 
@@ -94,13 +94,14 @@ Now let's implement the code needed to calculate portfolio returns and ratios. W
 ```python
 ...
 import math
-from statistics import mean, std
+from statistics import mean, stdev
+
 
 def sharpe(returns, days=252):
-    return mean(returns) / std(returns) * math.sqrt(days)
+    return mean(returns) / stdev(returns) * math.sqrt(days)
+
 
 sharpe_ratio = sharpe(portfolio_value_per_day)
-
 ```
 
 #### Overall Code
@@ -108,10 +109,10 @@ sharpe_ratio = sharpe(portfolio_value_per_day)
 Adding all of this code up we have:
 
 ```python
-from model import Model # model that returns buy or sell signal
+from model import model  # model that returns buy or sell signal
 import yfinance as yf
 import math
-from statistics import mean, std
+from statistics import mean, stdev
 
 price_data = yf.Ticker('MSFT')
 # yfinance returns OHLC data
@@ -131,15 +132,17 @@ for price in prices: # loop through each day
     # buy/sell logic
     if decision and num_shares == 0.0:
         num_shares = portfolio_value // price
-    else if not decision and num_shares > 0.0:
+    elif not decision and num_shares > 0.0:
         portfolio_value = num_shares * price
         num_shares = 0
 
     # add the portfolio value results
     portfolio_value_per_day.append(portfolio_value)
 
+
 def sharpe(returns, days=252):
-    return mean(returns) / std(returns) * math.sqrt(days)
+    return mean(returns) / stdev(returns) * math.sqrt(days)
+
 
 sharpe_ratio = sharpe(portfolio_value_per_day)
 ```
@@ -149,11 +152,13 @@ sharpe_ratio = sharpe(portfolio_value_per_day)
 Blankly simplifies this code into just a few lines and better yet, this same code can immediately be used for deployment by simply removing the `.backtest()` call
 
 ```python
-from model import Model
+from model import model
 from blankly import Strategy, Alpaca, Interface
+
 
 def init(ticker, state):
     state.variables['order_amt'] = 0
+
 
 def buy_or_sell(price, symbol, state):
     decision: bool = model(price)
@@ -162,20 +167,25 @@ def buy_or_sell(price, symbol, state):
     if decision and variables['order_amt'] == 0:
         # buy using all of our cash
         interface.market_order('buy', 
-            symbol, interface.cash)
+                               symbol, 
+                               interface.cash)
         # store order amount for sell order
         variables['order_amt'] = interface.cash
-    else if not decision and variables['order_amt'] > 0:
+    elif not decision and variables['order_amt'] > 0:
         # sell if we have decided to sell
         interface.market_order('sell', 
-            symbol, variables['order_amt'])
+                               symbol, 
+                               variables['order_amt'])
+
 
 a = Alpaca()
 s = Strategy(a)
 
-s.add_price_event(buy_or_sell, currency_pair='MSFT', resolution='1d')
+s.add_price_event(buy_or_sell, symbol='MSFT', resolution='1d')
 
-s.backtest(to='1y') # sharpe is already included as a backtest metric
+
+s.backtest(to='1y')  # sharpe is already included as a backtest metric
+
 ```
 
 ## Build vs Test
@@ -223,9 +233,9 @@ But we would have more trouble if we wanted to run our strategy on crypto becaus
 
 With Blankly, we just need to add one more line of code, AND we can change the resolution:
 ```python
-s.add_price_event(buy_or_sell, currency_pair='MSFT', resolution='1d')
-s.add_price_event(buy_or_sell, currency_pair='AAPL', resolution='1d')
-s.add_price_event(buy_or_sell, currency_pair='TSLA', resolution='15m')
+s.add_price_event(buy_or_sell, symbol='MSFT', resolution='1d')
+s.add_price_event(buy_or_sell, symbol='AAPL', resolution='1d')
+s.add_price_event(buy_or_sell, symbol='TSLA', resolution='15m')
 ```
 
 If we wanted to change the exchange we just need to instantiate a new strategy:
@@ -235,9 +245,9 @@ If we wanted to change the exchange we just need to instantiate a new strategy:
 coinbase_pro = CoinbasePro()
 s = Strategy(coinbase_pro)
 
-s.add_price_event(buy_or_sell, currency_pair='BTC-USD', resolution='1d')
-s.add_price_event(buy_or_sell, currency_pair='COMP-USD', resolution='1d')
-s.add_price_event(buy_or_sell, currency_pair='BTC-ETH', resolution='15m')
+s.add_price_event(buy_or_sell, symbol='BTC-USD', resolution='1d')
+s.add_price_event(buy_or_sell, symbol='COMP-USD', resolution='1d')
+s.add_price_event(buy_or_sell, symbol='BTC-ETH', resolution='15m')
 ```
 
 Better yet, we run your metrics not only individually per stock but also on the entire portfolio of price events.
@@ -260,7 +270,7 @@ from price_events import rsi_strategy, macd_strategy
 coinbase_pro = CoinbasePro()
 s = Strategy(coinbase_pro)
 
-s.add_price_event(rsi_strategy, currency_pair='BTC-USD', resolution='1d')
-s.add_price_event(rsi_strategy, currency_pair='COMP-USD', resolution='1d')
-s.add_price_event(macd_strategy, currency_pair='BTC-ETH', resolution='15m')
+s.add_price_event(rsi_strategy, symbol='BTC-USD', resolution='1d')
+s.add_price_event(rsi_strategy, symbol='COMP-USD', resolution='1d')
+s.add_price_event(macd_strategy, symbol='BTC-ETH', resolution='15m')
 ```

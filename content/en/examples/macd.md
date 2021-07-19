@@ -32,18 +32,21 @@ from blankly import Strategy, StrategyState, Interface
 from blankly import Alpaca
 from blankly.indicators import macd
 
+
 def init(symbol, state: StrategyState):
     # run on a new price event to initialize variables
     pass
+
 
 def price_event(price, symbol, state: StrategyState):
     # we'll come back to this soon
     pass
 
+
 alpaca = Alpaca()
 s = Strategy(alpaca)
 s.add_price_event(price_event, 'MSFT', resolution='30m', init=init)
-s.run()
+s.start()
 ```
 
 ### Initializing Variables and History
@@ -58,9 +61,10 @@ SHORT_PERIOD = 12
 LONG_PERIOD = 26
 SIGNAL_PERIOD = 9
 
+
 def init(symbol, state: StrategyState):
     interface: Interface = state.interface
-    resolution: str = state.resolution
+    resolution: float = state.resolution
     variables = state.variables
     # initialize the historical data
     variables['history'] = interface.history(symbol, 800, resolution)['close']
@@ -83,31 +87,32 @@ We will use the 12 and 26 day EMA as our short and long periods and 9 as our sig
 def price_event(price, symbol, state: StrategyState):
     interface: Interface = state.interface
     # allow the resolution to be any resolution: 15m, 30m, 1d, etc.
-    resolution: str = state.resolution
     variables = state.variables
 
     variables['history'].append(price)
-    macd_res, macd_signal, macd_histogram = macd(history, short_period=variables['short_period'], long_period=variables['long_period'], signal_period=variables['signal_period'])
+    macd_res, macd_signal, macd_histogram = macd(variables['history'],
+                                                 short_period=variables['short_period'],
+                                                 long_period=variables['long_period'],
+                                                 signal_period=variables['signal_period'])
 
-    slope_macd = (macd_res[-1] - macd_res[-5]) / 5 # get the slope of the last 5 MACD_points
+    slope_macd = (macd_res[-1] - macd_res[-5]) / 5  # get the slope of the last 5 MACD_points
     prev_macd = macd_res[-2]
     curr_macd = macd_res[-1]
     curr_signal_macd = macd_signal[-1]
-    
+
     # We want to make sure this works even if curr_macd does not equal the signal MACD
-    is_cross_up = slope_macd > 0 and curr_macd >= curr_signal_macd and prev_macd < curr_signal_macd
-    
-    is_cross_down = slope_macd < 0 and curr_diff <= curr_signal_macd and prev_macd > curr_signal_macd
+    is_cross_up = slope_macd > 0 and curr_macd >= curr_signal_macd > prev_macd
+
+    is_cross_down = slope_macd < 0 and curr_diff <= curr_signal_macd < prev_macd
     if is_cross_up and not variables['has_bought']:
         # buy with all available cash
         interface.market_order('buy', symbol, interface.cash)
-        variables['has_bought'] = true
+        variables['has_bought'] = True
     elif is_cross_down and variables['has_bought']:
         # sell all of the position
         curr_value = interface.account[symbol].available * price
         interface.market_order('sell', symbol, curr_value)
         variables['has_bought'] = False
-
 ```
 
 <alert type="success">
@@ -122,15 +127,16 @@ Now that we've gotten everything, let's bring it all together
 
 from blankly import Strategy, StrategyState, Interface
 from blankly import Alpaca
-from blankly.indicators import sma
+from blankly.indicators import macd
 
 SHORT_PERIOD = 12
 LONG_PERIOD = 26
 SIGNAL_PERIOD = 9
 
+
 def init(symbol, state: StrategyState):
     interface: Interface = state.interface
-    resolution: str = state.resolution
+    resolution: float = state.resolution
     variables = state.variables
     # initialize the historical data
     variables['history'] = interface.history(symbol, 800, resolution)['close']
@@ -139,36 +145,41 @@ def init(symbol, state: StrategyState):
     variables['signal_period'] = SIGNAL_PERIOD
     variables['has_bought'] = False
 
+
 def price_event(price, symbol, state: StrategyState):
     interface: Interface = state.interface
     # allow the resolution to be any resolution: 15m, 30m, 1d, etc.
-    resolution: str = state.resolution
     variables = state.variables
 
     variables['history'].append(price)
-    macd_res, macd_signal, macd_histogram = macd(history, short_period=variables['short_period'], long_period=variables['long_period'], signal_period=variables['signal_period'])
+    macd_res, macd_signal, macd_histogram = macd(variables['history'], 
+                                                 short_period=variables['short_period'],
+                                                 long_period=variables['long_period'],
+                                                 signal_period=variables['signal_period'])
 
-    slope_macd = (macd_res[-1] - macd_res[-5]) / 5 # get the slope of the last 5 MACD_points
+    slope_macd = (macd_res[-1] - macd_res[-5]) / 5  # get the slope of the last 5 MACD_points
     prev_macd = macd_res[-2]
     curr_macd = macd_res[-1]
     curr_signal_macd = macd_signal[-1]
-    
+
     # We want to make sure this works even if curr_macd does not equal the signal MACD
-    is_cross_up = slope_macd > 0 and curr_macd >= curr_signal_macd and prev_macd < curr_signal_macd
-    
-    is_cross_down = slope_macd < 0 and curr_diff <= curr_signal_macd and prev_macd > curr_signal_macd
+    is_cross_up = slope_macd > 0 and curr_macd >= curr_signal_macd > prev_macd
+
+    is_cross_down = slope_macd < 0 and curr_diff <= curr_signal_macd < prev_macd
     if is_cross_up and not variables['has_bought']:
         # buy with all available cash
         interface.market_order('buy', symbol, interface.cash)
-        variables['has_bought'] = true
+        variables['has_bought'] = True
     elif is_cross_down and variables['has_bought']:
         # sell all of the position
         curr_value = interface.account[symbol].available * price
         interface.market_order('sell', symbol, curr_value)
         variables['has_bought'] = False
 
+
 alpaca = Alpaca()
 s = Strategy(alpaca)
 s.add_price_event(price_event, 'MSFT', resolution='30m', init=init)
-s.backtest(initial_values={'USD': 10000}, '2y')
+s.backtest(initial_values={'USD': 10000}, to='2y')
+
 ```
