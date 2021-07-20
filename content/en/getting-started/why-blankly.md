@@ -151,39 +151,44 @@ sharpe_ratio = sharpe(portfolio_value_per_day)
 Blankly simplifies this code into just a few lines and better yet, this same code can immediately be used for deployment by simply removing the `.backtest()` call
 
 ```python
-from model import model
-from blankly import Strategy, Alpaca, Interface
+from examples.working_examples.model import my_awesome_model as model
+
+import blankly
+from blankly import Strategy
+from blankly.strategy.strategy_state import StrategyState
 
 
 def init(ticker, state):
-    state.variables['order_amt'] = 0
+    state.variables['own_position'] = False
+
+# funds = price * quantity
+# funds / price = quantity
 
 
-def buy_or_sell(price, symbol, state):
+def buy_or_sell(price, symbol, state: StrategyState):
     decision: bool = model(price)
-    interface: Interface = state.interface
-    variables = state.variables
-    if decision and variables['order_amt'] == 0:
-        # buy using all of our cash
-        interface.market_order('buy', 
-                               symbol, 
-                               interface.cash)
+    interface = state.interface
+
+    if decision and not state.variables['own_position']:
+        cash = blankly.trunc(interface.cash, 2)
+
+        # buy using all of our cash (to 2 safety decimals)
+        interface.market_order(symbol=symbol, side='buy', funds=cash)
         # store order amount for sell order
-        variables['order_amt'] = interface.cash
-    elif not decision and variables['order_amt'] > 0:
+        state.variables['own_position'] = True
+    elif state.variables['own_position'] and not decision:
         # sell if we have decided to sell
-        interface.market_order('sell', 
-                               symbol, 
-                               variables['order_amt'])
+        base_owned = interface.get_account(state.base_asset)['available']
+        interface.market_order(symbol=symbol, side='sell', funds=blankly.trunc(base_owned * price, 2))
+        state.variables['own_position'] = False
 
 
-a = Alpaca()
+a = blankly.CoinbasePro()
 s = Strategy(a)
 
-s.add_price_event(buy_or_sell, symbol='MSFT', resolution='1d')
+s.add_price_event(buy_or_sell, symbol='BTC-USD', resolution='1d', init=init)
 
-
-s.backtest(to='1y')  # sharpe is already included as a backtest metric
+s.backtest(to='1y', initial_values={'USD': 100000})  # sharpe is already included as a backtest metric
 
 ```
 
