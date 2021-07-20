@@ -161,9 +161,6 @@ from blankly.strategy.strategy_state import StrategyState
 def init(ticker, state):
     state.variables['own_position'] = False
 
-# funds = price * quantity
-# funds / price = quantity
-
 
 def buy_or_sell(price, symbol, state: StrategyState):
     decision: bool = model(price)
@@ -182,11 +179,10 @@ def buy_or_sell(price, symbol, state: StrategyState):
         interface.market_order(symbol=symbol, side='sell', funds=blankly.trunc(base_owned * price, 2))
         state.variables['own_position'] = False
 
-
-a = blankly.CoinbasePro()
+a = blankly.Alpaca()
 s = Strategy(a)
 
-s.add_price_event(buy_or_sell, symbol='BTC-USD', resolution='1d', init=init)
+s.add_price_event(buy_or_sell, symbol='MSFT', resolution='1d', init=init)
 
 s.backtest(to='1y', initial_values={'USD': 100000})  # sharpe is already included as a backtest metric
 

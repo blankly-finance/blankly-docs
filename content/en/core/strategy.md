@@ -78,16 +78,16 @@ Each event that is added to your `Strategy` will have it's own initialized state
 With any price event function, you will most definitely be working with `state` to do things like submit a market order or get data as needed.
 
 ```python
-from blankly import Strategy, StrategyState, Interface
 import blankly
+from blankly import StrategyState
 
 
 def init(symbol: str, state: StrategyState):
     variables = state.variables  # grab the variables dictionary
     # initialize any variables here
-    variables['model_started'] = False
+    variables['this_is_cool'] = True
     # get 50 data points at specific resolution of event
-    variables['history'] = state.interface.history(symbol, 50, state.resolution)
+    variables['history'] = state.interface.history(symbol, 50, state.resolution)['close']
 
 
 def price_event(price, symbol, state: StrategyState):
@@ -126,30 +126,36 @@ Remember to set up your `settings.json` and `keys.json` in order for all your co
 </alert>
 
 ```python
-from blankly import Strategy, StrategyState, Interface
+from blankly import Strategy, StrategyState, Alpaca
+import blankly
+
 
 def init(symbol: str, state: StrategyState):
-  variables = state.variables # grab the variables dictionary
-  # initialize any variables here
-  variables['has_bought'] = False 
-  # get 50 data points at specific resolution of event
-  variables['history'] = state.interface.history(symbol, 50, state.resolution)
- 
-def price_event(price, symbol, state: StrategyState):
-  '''This buys and sells whenever the boolean is true or false'''
-  interface: blankly.Interface = state.interface
-  variables['history'].append(price) # add new price to history
-  # buy the symbol using available cash
-  if not variables['has_bought']:
-	  interface.market_order(symbol, 'buy', interface.cash)
+    variables = state.variables  # grab the variables dictionary
+    # initialize any variables here
     variables['has_bought'] = True
-  else:
-    interface.market_order(symbol, 'sell', interface.account[symbol].available)
-    variables['has_bought'] = False
-    
+    # get 50 data points at specific resolution of event
+    variables['history'] = state.interface.history(symbol, 50, state.resolution)['close'].to_list()
+
+
+def price_event(price, symbol, state: StrategyState):
+    """ This buys and sells whenever the boolean is true or false """
+    interface: blankly.Interface = state.interface
+    state.variables['history'].append(price)  # add new price to history
+    # buy the symbol using available cash
+    if not state.variables['has_bought']:
+        interface.market_order(symbol, 'buy', blankly.trunc(interface.cash, 2))
+        state.variables['has_bought'] = True
+    else:
+        interface.market_order(symbol, 'sell', blankly.trunc(interface.account[state.base_asset]['available'], 2))
+        state.variables['has_bought'] = False
+
+
 a = Alpaca()
 s = Strategy(a)
 s.add_price_event(price_event, 'MSFT', resolution='15m', init=init)
+
+s.start()
 ```
 
 
