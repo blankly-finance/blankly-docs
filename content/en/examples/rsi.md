@@ -72,18 +72,17 @@ This is a very simple conditional statement.
 ```python
 def price_event(price, symbol, state: StrategyState):
     interface: Interface = state.interface
-    # allow the resolution to be any resolution: 15m, 30m, 1d, etc.
-    resolution: str = state.resolution
     variables = state.variables
 
     variables['history'].append(price)
 
-    rsi = rsi(history, period=14)
+    # get latest rsi value
+    rsi_value = rsi(history, period=14)[-1]
     # comparing prev diff with current diff will show a cross
-    if rsi < 30 and not variables['has_bought']:
+    if rsi_value < 30 and not variables['has_bought']:
         interface.market_order('buy', symbol, interface.cash)
         variables['has_bought'] = True
-    elif rsi > 70 and variables['has_bought']:
+    elif rsi_value > 70 and variables['has_bought']:
         curr_value = interface.account[symbol].available * price
         interface.market_order('sell', symbol, curr_value)
         variables['has_bought'] = False
@@ -113,18 +112,17 @@ def init(symbol, state: StrategyState):
 
 def price_event(price, symbol, state: StrategyState):
     interface: Interface = state.interface
-    # allow the resolution to be any resolution: 15m, 30m, 1d, etc.
-    resolution: str = state.resolution
     variables = state.variables
 
     variables['history'].append(price)
 
-    rsi = rsi(history, period=14)
+    # get latest rsi value
+    rsi_value = rsi(history, period=14)[-1]
     # comparing prev diff with current diff will show a cross
-    if rsi < 30 and not variables['has_bought']:
+    if rsi_value < 30 and not variables['has_bought']:
         interface.market_order('buy', symbol, interface.cash)
         variables['has_bought'] = True
-    elif rsi > 70 and variables['has_bought']:
+    elif rsi_value > 70 and variables['has_bought']:
         curr_value = interface.account[symbol].available * price
         interface.market_order('sell', symbol, curr_value)
         variables['has_bought'] = False
