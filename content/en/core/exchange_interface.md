@@ -317,7 +317,8 @@ Or if `return_as` is set to `list`:
 ```python
 a = Alpaca()
 interface = a.Interface
-interface.history('MSFT', to=300, resolution='15m', end_date='2020-05-03') # get 300 points from May 3rd, 2020
+interface.history('MSFT', to=300, resolution='15m', end_date='2020-05-03') # get 300 points from May 3rd, 2020 as a dataframe
+interface.history('MSFT', to=300, resolution='15m', end_date='2020-05-03', return_as='list')['close'] # get 300 points from May 3rd, 2020 as a dictionary of np.arrays
 ```
 
 ### `get_product_history(symbol, epoch_start, epoch_stop, resolution) -> pandas.DataFrame`
