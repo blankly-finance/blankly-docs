@@ -54,12 +54,8 @@ We can actually easily do this on initialization and make sure the proper data i
 
 ```python
 def init(symbol, state: StrategyState):
-    interface: Interface = state.interface
-    resolution: str = state.resolution
-    variables = state.variables
-    # initialize the historical data
-    variables['history'] = interface.history(symbol, 150, resolution)['close']
-    variables['has_bought'] = False
+    # Download price data to give context to the algo
+    state.variables['history'] = state.interface.history(symbol, to='1y', return_as='list')['close']
 ```
 
 ### Implementing the Price Event
@@ -69,23 +65,19 @@ Now that we have the code set up, let's take a deep dive into how to implement t
 First, as we recall, we want to buy an entity when the RSI is under 30 and sell when the RSI is greater than 70, we will use a period of 14 (the typical setup)
 This is a very simple conditional statement. 
 
+<alert> Due to float precision errors with binary (try 2.1 * 0.2 in the terminal), we've carefully implemented a function called trunc that will allow you to easily calculate the correct amount you want to sell without worrying about floating point errors with the exchange. Simply import it from utils</alert>
+
 ```python
 def price_event(price, symbol, state: StrategyState):
-    interface: Interface = state.interface
-    variables = state.variables
-
-    variables['history'].append(price)
-
-    # get latest rsi value
-    rsi_value = rsi(history, period=14)[-1]
-    # comparing prev diff with current diff will show a cross
-    if rsi_value < 30 and not variables['has_bought']:
-        interface.market_order('buy', symbol, interface.cash)
-        variables['has_bought'] = True
-    elif rsi_value > 70 and variables['has_bought']:
-        curr_value = interface.account[symbol].available * price
-        interface.market_order('sell', symbol, curr_value)
-        variables['has_bought'] = False
+    """ This function will give an updated price every 15 seconds from our definition below """
+    state.variables['history'].append(price)
+    rsi = blankly.indicators.rsi(state.variables['history'])
+    if rsi[-1] < 30:
+        # Dollar cost average buy
+        state.interface.market_order(symbol, side='buy', funds=10)
+    elif rsi[-1] > 70:
+        # Dollar cost average sell
+        state.interface.market_order(symbol, side='sell', funds=10)
 ```
 
 ### Adding it All Together
@@ -98,40 +90,40 @@ One thing you'll begin to realize as you continue to develop with Blankly is tha
 
 ```python
 
-from blankly import Strategy, StrategyState, Interface
-from blankly import Alpaca
-from blankly.indicators import rsi
+import blankly
+from blankly import StrategyState
 
-def init(symbol, state: StrategyState):
-    interface: Interface = state.interface
-    resolution: str = state.resolution
-    variables = state.variables
-    # initialize the historical data
-    variables['history'] = interface.history(symbol, 150, resolution)['close']
-    variables['has_bought'] = False
 
 def price_event(price, symbol, state: StrategyState):
-    interface: Interface = state.interface
-    variables = state.variables
+    """ This function will give an updated price every 15 seconds from our definition below """
+    state.variables['history'].append(price)
+    rsi = blankly.indicators.rsi(state.variables['history'])
+    if rsi[-1] < 30:
+        # Dollar cost average buy
+        state.interface.market_order(symbol, side='buy', funds=10)
+    elif rsi[-1] > 70:
+        # Dollar cost average sell
+        state.interface.market_order(symbol, side='sell', funds=10)
 
-    variables['history'].append(price)
 
-    # get latest rsi value
-    rsi_value = rsi(history, period=14)[-1]
-    # comparing prev diff with current diff will show a cross
-    if rsi_value < 30 and not variables['has_bought']:
-        interface.market_order('buy', symbol, interface.cash)
-        variables['has_bought'] = True
-    elif rsi_value > 70 and variables['has_bought']:
-        curr_value = interface.account[symbol].available * price
-        interface.market_order('sell', symbol, curr_value)
-        variables['has_bought'] = False
+def init(symbol, state: StrategyState):
+    # Download price data to give context to the algo
+    state.variables['history'] = state.interface.history(symbol, to='1y', return_as='list')['close']
 
-alpaca = Alpaca()
-s = Strategy(alpaca)
-# creating an init allows us to run the same function for 
-# different tickers and resolutions
-s.add_price_event(price_event, 'MSFT', resolution='15m', init=init)
-s.add_price_event(price_event, 'AAPL', resolution='1d', init=init)
-s.backtest(initial_values={'USD': 10000}, to='2y')
+
+if __name__ == "__main__":
+    # Authenticate coinbase pro strategy
+    coinbase_pro = blankly.CoinbasePro()
+
+    # Use our strategy helper on coinbase pro
+    coinbase_strategy = blankly.Strategy(coinbase_pro)
+
+    # Run the price event function every time we check for a new price - by default that is 15 seconds
+    coinbase_strategy.add_price_event(price_event, symbol='BTC-USD', resolution='30m', init=init)
+
+    # Start the strategy. This will begin each of the price event ticks
+    coinbase_strategy.start()
+    # Or backtest using this
+    # coinbase_strategy.backtest(to='1y', initial_values={'USD': 100000, 'BTC': 2})
+
 ```

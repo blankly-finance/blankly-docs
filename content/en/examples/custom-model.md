@@ -42,7 +42,7 @@ def init(symbol, state: StrategyState):
     variables = state.variables
     variables['decision_model'] = OrderDecisionModel(symbol)
     variables['pricing_model'] = OrderPricingModel(symbol)
-    variables["has_bought"] = False
+    variables['has_bought'] = False
 
 
 def price_event(price, symbol, state: StrategyState):
@@ -60,11 +60,8 @@ s.start()
 As we mentioned before, we'll have two models: a `OrderDecisionModel` that will determine when to buy and an `OrderPricingModel` that will determine how much to buy. The `OrderDecisionModel` will take in the `symbol`. And the `OrderPricingModel` will take in the `price`, `symbol`, available cash, and the position size of that `symbol` in our account `interface.account`.
 
 ```python
-
 def price_event(price, symbol, state: StrategyState):
     interface: Interface = state.interface
-    # allow the resolution to be any resolution: 15m, 30m, 1d, etc.
-    resolution: str = state.resolution
     variables = state.variables
     decision_model = variables['decision_model']
     pricing_model = variables['pricing_model']
@@ -76,11 +73,11 @@ def price_event(price, symbol, state: StrategyState):
         curr_value = interface.account[symbol].available * price
         # call pricing model to determine how much to buy
         amt_to_buy = pricing_model(price, symbol, interface.cash, curr_value)
-        interface.market_order('buy', symbol, amt_to_buy)
+        interface.market_order(symbol, 'buy', amt_to_buy)
     elif decision == 1:
         curr_value = interface.account[symbol].available * price
         amt_to_sell = pricing_model(price, symbol, interface.cash, curr_value)
-        interface.market_order('sell', symbol, amt_to_sell)
+        interface.market_order(symbol, 'sell', amt_to_sell)
 ```
 
 ### Adding it All Together
@@ -106,8 +103,6 @@ def init(symbol, state: StrategyState):
 
 def price_event(price, symbol, state: StrategyState):
     interface: Interface = state.interface
-    # allow the resolution to be any resolution: 15m, 30m, 1d, etc.
-    resolution: float = state.resolution
     variables = state.variables
     decision_model = variables['decision_model']
     pricing_model = variables['pricing_model']
@@ -119,11 +114,11 @@ def price_event(price, symbol, state: StrategyState):
         curr_value = interface.account[symbol].available * price
         # call pricing model to determine how much to buy
         amt_to_buy = pricing_model(price, symbol, interface.cash, curr_value)
-        interface.market_order('buy', symbol, amt_to_buy)
+        interface.market_order(symbol, 'buy', amt_to_buy)
     elif decision == 1:
         curr_value = interface.account[symbol].available * price
         amt_to_sell = pricing_model(price, symbol, interface.cash, curr_value)
-        interface.market_order('sell', symbol, amt_to_sell)
+        interface.market_order(symbol, 'sell', amt_to_sell)
 
 
 alpaca = Alpaca()
