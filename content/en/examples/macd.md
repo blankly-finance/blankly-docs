@@ -1,7 +1,7 @@
 ---
 title: MACD
 description: 'Implementing a MACD strategy using Blankly'
-position: 12
+position: 18
 category: Examples
 ---
 

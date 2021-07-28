@@ -1,7 +1,7 @@
 ---
 title: Exchange Interface
 description: 'Information on the usage of the exchange interface class'
-position: 21
+position: 11
 version: 1.0
 category: Framework
 ---

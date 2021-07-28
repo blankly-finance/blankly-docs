@@ -1,7 +1,7 @@
 ---
 title: Market Order
 description: 'Order specific functions from market order.'
-position: 9
+position: 13
 version: 1.0
 category: Orders
 order_docs: orders/order

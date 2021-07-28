@@ -1,7 +1,7 @@
 ---
 title: Scheduler
 description: 'Use scheduler to run event-based functions with saved arguments.'
-position: 15
+position: 23
 version: 1.0
 category: Utilities
 ---
@@ -19,7 +19,7 @@ A scheduler can be created by calling `blankly.Scheduler`:
 | ----------------- | ------------------------------------------------------------ | -------------------- | ---------------- |
 | callback          | Fill with a function reference to be called in the scheduler thread. | `price_event`        | callable         |
 | interval          | Time interval for the given function to run.                 | `'2m'` or `'3h'`     | str or int/float |
-| initially_stopped | Optional boolean. If set to `true`, the scheduler will not start until `.start()` is run. | `True`               | bool             |
+| initially_stopped | Optional boolean. If set to `True`, the scheduler will not start until `.start()` is run. | `True`               | bool             |
 | **kwargs          | Arguments to pass into the callback function. This can be used to distinguish what the logic in the callback should do. | `'asset_id='BTC-USD` | Any              |
 
 ### Response

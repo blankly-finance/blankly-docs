@@ -1,7 +1,7 @@
 ---
 title: Indicators
 description: 'Indicators to quickly develop better price events'
-position: 12
+position: 16
 version: 1.0
 category: Metrics & Indicators
 ---

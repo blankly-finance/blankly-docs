@@ -1,7 +1,7 @@
 ---
 title: Exchange
 description: 'Authenticate and interact with a representation of your exchange.'
-position: 7
+position: 10
 version: 1.0
 category: Framework
 ---
@@ -68,7 +68,7 @@ Get the preferences dictionary that the exchange class is using.
 
 | Description                                                  | Examples                                  | Type |
 | ------------------------------------------------------------ | ----------------------------------------- | ---- |
-| A dictionary with defined preferences. See [here](/usage/settings.json). | `'binance'`, `'coinbase_pro'`, `'alpaca'` | str  |
+| A dictionary with defined preferences. See [here](/config/settings.json). | `'binance'`, `'coinbase_pro'`, `'alpaca'` | str  |
 
 ## `get_interface()`
 
@@ -78,7 +78,7 @@ Get the authenticated interface object (very important).
 
 | Description                                                  | Examples                            | Type               |
 | ------------------------------------------------------------ | ----------------------------------- | ------------------ |
-| This gives the actual interface object to use. See [here](/API/exchange_interface). | All interfaces have identical calls | ICurrencyInterface |
+| This gives the actual interface object to use. See [here](/core/exchange_interface). | All interfaces have identical calls | ICurrencyInterface |
 
 ## `start_models(symbol=None)`
 
@@ -124,7 +124,7 @@ Returns the shared memory dictionary from the requested multiprocessed model as 
 
 ## `write_value(symbol, key, value)`
 
-Write a value to the shared memory dictionary. This can be used to communicate with other processes.
+Write a value to the shared memory dictionary. This can be used to communicate with other processes. Generally this is used for multiprocess bots.
 
 ### Arguments
 
@@ -136,7 +136,7 @@ Write a value to the shared memory dictionary. This can be used to communicate w
 
 ## `append_model(model, symbol, args=None)`
 
-Append a new `blankly.BlanklyBot` object to the exchange. This can be run with `.start_models()`
+Append a new `blankly.BlanklyBot` object to the exchange. This can be run with `.start_models()`. This is the append function for multiprocess bots.
 
 ### Arguments
 
@@ -149,6 +149,8 @@ Append a new `blankly.BlanklyBot` object to the exchange. This can be run with `
 ## `get_direct_calls() -> API`
 
 This is an important function that allows the user to get the direct, unfiltered API calls to the exchange. This function can be used to bypass the user interface & opens up all implemented calls which go far beyond the scope of the interface.
+
+This is also pre-typed for each exchange which allows autofill when using this function.
 
 ### Response
 
