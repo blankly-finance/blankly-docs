@@ -92,17 +92,17 @@ Get all trading pairs currently on the exchange.
 | base_max_size  | Largest amount of base currency that can be bought on the exchange | float |
 | base_increment | The finest resolution the base currency can be ordered in    | float |
 
-### `get_account(currency=None)`
+### `get_account(symbol=None) -> dict`
 
 #### Arguments
 
-| Arg      | Description                                                  | Examples       | Type |
-| -------- | ------------------------------------------------------------ | -------------- | ---- |
-| currency | Optionally fill with a specific account value to filter for | "BTC" or "USD" | str  |
+| Arg    | Description                                                  | Examples       | Type |
+| ------ | ------------------------------------------------------------ | -------------- | ---- |
+| symbol | Optionally fill with a specific account value to filter for. This should be a base asset. | "BTC" or "USD" | str  |
 
 #### Response
 
-If `currency='BTC'`:
+If `symbol='BTC'`:
 
 ```python
 {
@@ -111,7 +111,7 @@ If `currency='BTC'`:
 }
 ```
 
-‌If `currency=None`:
+‌If `symbol=None`:
 
 ```python
 "BTC": {
@@ -167,14 +167,14 @@ A `limit_order` object. Documentation is pending.
 
 Cancel a particular order.
 
-### Arguments
+#### Arguments
 
 | Arg      | Description                                                  | Examples                             | Type |
 | -------- | ------------------------------------------------------------ | ------------------------------------ | ---- |
 | symbol   | The identifier for the product to order                      | "BTC-USD" or "XLM-USD"               | str  |
 | order_id | The exchange-given unique identifier for the order. This can be found using an `order` object. With `.get_id()` | b6d2f951-dae0-89e8-3e79-b460b1e9eead | str  |
 
-### Response
+#### Response
 
 ```python
 {
@@ -186,11 +186,11 @@ Cancel a particular order.
 | -------- | ---------------------------- | ---- |
 | order_id | The id of the canceled order | str  |
 
-## `get_open_orders(symbol=None)`
+### `get_open_orders(symbol=None)`
 
 Get a full list of open orders.
 
-### Arguments
+#### Arguments
 
 | Key    | Description                                                 | Examples               | type |
 | ------ | ----------------------------------------------------------- | ---------------------- | ---- |
@@ -276,7 +276,7 @@ Get the maker and taker fee rates of a particular exchange.
 | maker_fee_rate | Exchange maker fee rate. (89% = 0.89) | float |
 | taker_fee_rate | Exchange taker fee rate. (89% = 0.89) | float |
 
-### `history(symbol, to=200, resolution='1d', start_date=None, end_date=None) -> pandas.DataFrame`
+### `history(symbol, to = 200, resolution = '1d', start_date = None, end_date = None, return_as = 'df') -> pandas.DataFrame`
 
 Download historical data with rows of *at least* `time (epoch seconds)`, `low`', `high`, `open`, `close`, `volume` as columns. This is a wrapper for `get_product_history()`, and exists to allow users to more easily download OHCLV data
 
@@ -289,6 +289,7 @@ Download historical data with rows of *at least* `time (epoch seconds)`, `low`',
 | resolution | Resolution as a time string (`1m`, `4h`, `1d`, `1y`)         | `1m`, `1d`, `4h`          | str                  |
 | start_date | Starts history collection at a given start date (must have an `end_date` associated with it). This can be a datetime, a date string or an epoch timestamp | `'2018-05-02'`, `123849`  | str, float, datetime |
 | end_date   | End Date for history collection, can be used in conjunction with `start_date` or `to` | `'2018-05-02'`, `123849`  | str, float, datetime |
+| return_as  | Choose if the return type should be a dataframe with columns or a dictionary with keys that match the columns. It also allows pandas orient values of `'dict', 'list', 'series', 'split', 'records', 'index'` | `'list'` or `'df'`        | str                  |
 
 #### Response
 
@@ -298,6 +299,18 @@ Pandas dataframe with at least these columns.
 | ---------- | ------- | ------- | ------- | ------- | ------------- |
 | 1591110000 | 9270.0  | 9602.0  | 9583.36 | 9464.46 | 5979.77327365 |
 | 1591113600 | 9417.38 | 9510.94 | 9464.44 | 9478.95 | 1185.12835638 |
+
+Or if `return_as` is set to `list`:
+
+```python
+{
+	'time': [1591110000, 1591113600],
+  'low': [9270.0, 9417.38],
+  'open': [9583.36, 9464.44],
+  'close': [9464.46, 9478.95],
+  'volume': [5979.77327365, 1185.12835638]
+}
+```
 
 #### Example Use Case
 
@@ -307,18 +320,18 @@ interface = a.Interface
 interface.history('MSFT', to=300, resolution='15m', end_date='2020-05-03') # get 300 points from May 3rd, 2020
 ```
 
-### `get_product_history(symbol, epoch_start, epoch_stop, granularity) -> pandas.DataFrame`
+### `get_product_history(symbol, epoch_start, epoch_stop, resolution) -> pandas.DataFrame`
 
 Download historical data with rows of *at least* `time (epoch seconds)`, `low`', `high`, `open`, `close`, `volume` as columns.
 
 ### Arguments
 
-| Arg         | Description                                                  | Examples               | Type  |
-| ----------- | ------------------------------------------------------------ | ---------------------- | ----- |
-| symbol      | The identifier for the product to order                      | "BTC-USD" or "XLM-USD" | str   |
-| epoch_start | Starting download time in epoch                              | 1591389962             | float |
-| epoch_stop  | Ending download time in epoch                                | 1622925962             | float |
-| granularity | Resolution in seconds in each candle (ex: 60 = 1 per minute, 3600 = 1 per hour) | 3600                   | int   |
+| Arg         | Description                                                  | Examples               | Type       |
+| ----------- | ------------------------------------------------------------ | ---------------------- | ---------- |
+| symbol      | The identifier for the product to order                      | "BTC-USD" or "XLM-USD" | str        |
+| epoch_start | Starting download time in epoch                              | 1591389962             | float      |
+| epoch_stop  | Ending download time in epoch                                | 1622925962             | float      |
+| resolution  | Resolution in seconds in each candle (ex: 60 = 1 per minute, 3600 = 1 per hour) | 3600                   | str or int |
 
 #### Response
 
@@ -329,7 +342,7 @@ Pandas dataframe with at least these columns.
 | 1591110000 | 9270.0  | 9602.0  | 9583.36 | 9464.46 | 5979.77327365 |
 | 1591113600 | 9417.38 | 9510.94 | 9464.44 | 9478.95 | 1185.12835638 |
 
-### `get_asset_limits(symbol)`
+### `get_order_filter(symbol)`
 
 Find the limits that the exchange puts on purchases for a specific asset.
 
@@ -343,33 +356,51 @@ Find the limits that the exchange puts on purchases for a specific asset.
 
 ```python
 {
-  'base_currency': 'BTC',
-  'quote_currency': 'USD',
-  'base_min_size': 0.001,
-  'base_max_size': 10000.0,
-  'quote_increment': 0.01,
-  'base_increment': 1e-08,
-  'market': 'BTC-USD',
-  'min_price': 0.0,
-  'max_price': -1.0,
-  'max_orders': -1,
+  "symbol": "BTC-USD",
+  "base_asset": "BTC",
+  "quote_asset": "USD",
+  "max_orders": 1000000000000,
+  "limit_order": {
+    "base_min_size": 0.001,
+    "base_max_size": 10000.0,
+    "base_increment": 1e-08,
+    "price_increment": 0.01,
+    "min_price": 0.01,
+    "max_price": 9999999999
+  },
+  "market_order": {
+    "fractionable": True,
+    "quote_increment": 0.01,
+    "buy": {
+      "min_funds": 10.0,
+      "max_funds": 1000000.0
+    },
+    "sell": {
+      "min_funds": 10.0,
+      "max_funds": 1000000.0
+    }
+  },
 }
 ```
 
 | Key             | Description                                                  | Type  |
 | --------------- | ------------------------------------------------------------ | ----- |
-| base_currency   | The base currency of this market                             | str   |
-| quote_currency  | The quote currency of this market                            | str   |
+| symbol          | The order filter that the query represents                   | str   |
+| base_asset      | The base asset of this market                                | str   |
+| quote_asset     | The quote asset of this market                               | str   |
+| max_orders      | The maximum number of orders that the exchange allows on a currency pair | int   |
 | base_min_size   | The minimum size to buy of base                              | float |
 | base_max_size   | The maximum amount of base currency to buy                   | float |
-| quote_increment | The resolution of the quote currency when placing orders     | float |
 | base_increment  | The resolution of the base increment when placing orders     | float |
-| market          | The trading pair that the market limits correspond to        | str   |
+| price_increment | The resolution that can be used when setting a limit price   | float |
 | min_price       | The minimum limit price that can be set                      | float |
 | max_price       | The maximum price that the limit can be set                  | float |
-| max_orders      | The maximum number of orders that the exchange allows on a currency pair | float |
+| fractionable    | Does the market order allow orders to be placed that are less than one of the base asset | bool  |
+| quote_increment | The resolution of the quote currency when placing orders     | float |
+| min_funds       | The minimum funds allowed when placing a market order        | float |
+| max_funds       | The maximum funds allowed when placing a market order        |       |
 
-### `get_price(currency_pair) -> float`
+### `get_price(symbol) -> float`
 
 Get the quoted price of the trading pair.
 
@@ -445,7 +476,7 @@ The equivalent of performing a `get_open_orders()` request with no arguments.
 
 ### `.cash -> float`
 
-Get the amount of cash (generally the quote currency) inside the portfolio. This default quote can be set in the `settings.json` file for each exchange independently. This is used as a shortcut for easily determining buying power when making a transaction. This property is configurable because users may be using a variety of cash quotes such as `USD`, `USDT`, `USDC` or `EUR`. See [here](/usage/settings.json#format)
+Get the amount of cash (generally the quote currency) inside the portfolio. This default quote can be set in the `settings.json` file for each exchange independently. This is used as a shortcut for easily determining buying power when making a transaction. This property is configurable because users may be using a variety of cash quotes such as `USD`, `USDT`, `USDC` or `EUR`. See [here](/usage/settings.json#format). Usage of this is discouraged if trading more complex assets such as `BTC-ETH`.
 
 ### Response
 

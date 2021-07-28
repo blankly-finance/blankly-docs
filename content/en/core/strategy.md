@@ -106,7 +106,7 @@ For some real-life example uses, check out our [examples](/examples/rsi)
 
 ## Functions
 
-### `add_price_event(callback: typing.Callable, symbol: str, resolution: str or float, init: typing.Callable, synced: bool = False, **kwargs)`
+### `add_price_event(callback: typing.Callable, symbol: str, resolution: str or float, init: typing.Callable, synced: bool = False)`
 
 Adds a price event to the strategy. This will pass a price as well as a `price_event` function with args `(price, symbol)`. Users can access their strategy information within `StrategyState`
 
@@ -331,7 +331,7 @@ def init(symbol: str, state: StrategyState):
     # initialize any variables here
     variables['model_started'] = False
     # get 50 data points at specific resolution of event
-    variables['history'] = state.interface.history(symbol, 50, state.resolution)
+    variables['history'] = state.interface.history(symbol, 50, state.resolution)['close'].tolist()
 
 
 def price_event(price, symbol, state: StrategyState):
@@ -339,7 +339,7 @@ def price_event(price, symbol, state: StrategyState):
     variables = state.variables
     variables['history'].append(price)  # add new price to history
     # buy the symbol using available cash
-    interface.market_order(symbol, 'buy', interface.cash)
+    interface.market_order(symbol, 'sell', .00001)
 
 
 def custom_sharpe_sortino(backtest_data):
@@ -350,9 +350,9 @@ def custom_sharpe_sortino(backtest_data):
 a = blankly.Alpaca()
 s = Strategy(a)
 s.add_price_event(price_event, 'MSFT', resolution='15m', init=init)
-result = s.backtest(initial_values={'USD': 10000},
-                    start_date='2008-09-25',
-                    end_date='2009-08-25',
+result = s.backtest(initial_values={'MSFT': 10000},
+                    start_date='2015-09-25',
+                    end_date='2016-08-25',
                     callbacks=[custom_sharpe_sortino])
 
 print(result)

@@ -6,12 +6,13 @@ version: 1.0
 category: API
 ---
 
-The sandbox interface object allows users to realistically sandbox trade on any exchange. By default, sandboxes allow:
+The sandbox interface object allows users to realistically sandbox trade on any of our exchanges. By default, sandboxes allow:
 
 - Accurate exchange specific fee rates which are checked and set during the object construction.
 - Accurate account management through buy and sell orders using the fees.
 - Multithreaded local monitoring of limit order price triggers using the correct websocket feeds.
 - Custom initial account value injections.
+- Correct order filter checking
 
 This creates a very powerful & dynamic paper trading experience. Our goal was to make it almost impossible to distinguish the difference between live trading and paper trading.
 

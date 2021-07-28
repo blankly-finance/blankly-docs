@@ -27,7 +27,7 @@ Although they run independently, messages & updates can be sent between bots thr
 - `self.exchange_type`: Type of exchange i.e "binance" or "coinbase_pro"
 - `self.currency_pair`: The default trading pair or identifier for the market (`'BTC-USD'`)
 - `self.initial_state`: Information about the account the model is defaulted to running on.
-- `self.user_preferences`: User preferences read in from [settings.json](/usage/settings.json)
+- `self.user_preferences`: User preferences read in from [settings.json](/config/settings.json)
 - `self.Interface`: An [interface](/core/exchange_interface) pre-authenticated & setup for running on the default exchange
 - `self.direct_calls`: The [direct calls](/core/exchange#get_direct_calls---api) object for the given exchange
 - `self.coinbase_pro_direct`: If you know that you're using Coinbase Pro, use this for IDE autofill. This is set equal to `self.direct_calls`

@@ -49,7 +49,7 @@ https://docs.pro.coinbase.com/#websocket-feed
 
 ### Example
 
-To use a Coinbase Pro stream, such as `heartbeat`, simply create a general connection using that channel:
+To use a Coinbase stream, such as `heartbeat`, simply create a general connection using that channel:
 
 ```python
 # Demo callback object
@@ -58,14 +58,14 @@ def callback(message):
 
   
 # Create the manager:
-manager = blankly.GeneralManager('binance', 'BTC-USD')
+manager = blankly.GeneralManager('coinbase_pro', 'BTC-USD')
 
 
 # Create the connection
 websocket = manager.create_general_connection(callback, 'heartbeat')
 ```
 
-This will begin printing heartbeats from Coinbase Pro on that currency.
+This will begin printing heartbeats from Coinbase on that currency.
 
 ## Binance Streams
 

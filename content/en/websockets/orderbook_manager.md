@@ -16,18 +16,12 @@ The orderbook is currently organized to give this format:
 
 ```python
 {
-  "bids": {
-    35600: 3.4,
-    23400: 1.5
-  },
-  "asks": {
-    54000: 2.1,
-    45000: 5.3
-  }
+  "bids": [(35600: 3.4), (23400 1.5)],
+  "asks": [(54000 2.1), (45000 5.3)]
 }
 ```
 
-Where they key/value pairs indicate `price: quantity at that price`
+Where they tuples pairs indicate `(price, quantity at that price)`
 
 ## Creation
 
@@ -52,7 +46,7 @@ This will also construct orderbooks within the object that can be reported to yo
 
 # Functions
 
-## `create_orderbook(callback, symbol=None, override_exchange=None)`
+## `create_orderbook(callback, override_symbol=None, override_exchange=None)`
 
 Create a new orderbook feed.
 
@@ -61,7 +55,7 @@ Create a new orderbook feed.
 | Arg               | Description                                                  | Examples                         | Type     |
 | ----------------- | ------------------------------------------------------------ | -------------------------------- | -------- |
 | callback          | Function with argument that accepts a single json-type message. | `price_event` function reference | callable |
-| symbol            | Override the default symbol and create the websocket this currency. | `'BTC-USD'` or `'XLM-USD'`       | str      |
+| override_symbol   | Override the default symbol and create the websocket this currency. | `'BTC-USD'` or `'XLM-USD'`       | str      |
 | override_exchange | Override the default exchange and create the websocket on this exchange. | `'coinbase_pro'` or '`binance`'  | str      |
 
 ### Response

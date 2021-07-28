@@ -22,3 +22,9 @@ Quite literally raised in this instance:
 if isinstance(response, dict):
 	raise APIException(response['message'])
 ```
+
+## `AuthError`
+
+This will be raised if there are issues with the user input in `keys.json` during authentication.
+
+## 

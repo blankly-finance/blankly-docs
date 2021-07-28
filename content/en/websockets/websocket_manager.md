@@ -18,7 +18,7 @@ Recursively iterate through order books and make sure they're all closed.
 
 ## `get_ticker(symbol, override_exchange=None)`
 
-Get a websocket (`Ticker`) object attached to a currency.
+Get a websocket (`Ticker`) object attached to a symbol.
 
 ### Arguments
 
@@ -122,7 +122,7 @@ Get a time array associated with the ticker feed.
 
 ## `get_feed(override_symbol=None, override_exchange=None)`
 
-Get the full ticker array.
+Get the full ticker array. The max length of this is set in `settings.json`
 
 ### Arguments
 

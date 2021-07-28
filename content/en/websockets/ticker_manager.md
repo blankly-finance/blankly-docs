@@ -38,7 +38,7 @@ This call will also automatically switch channels to use the correct subscriptio
 
 # Functions
 
-## `create_ticker(callback, log=None, symbol=None, override_exchange=None)`
+## `create_ticker(callback, log=None, override_symbol=None, override_exchange=None)`
 
 Create a new price event websocket feed.
 
@@ -48,7 +48,7 @@ Create a new price event websocket feed.
 | ----------------- | ------------------------------------------------------------ | -------------------------------- | -------- |
 | callback          | Function with argument that accepts a single json-type message. | `price_event` function reference | callable |
 | log               | Optionally fill this with a path to a log file to enable logging. | `'./btc_log.csv'`                | str      |
-| symbol            | Override the default symbol and create the websocket this currency. | `'BTC-USD'` or `'XLM-USD'`       | str      |
+| override_symbol   | Override the default symbol and create the websocket this currency. | `'BTC-USD'` or `'XLM-USD'`       | str      |
 | override_exchange | Override the default exchange and create the websocket on this exchange. | `'coinbase_pro'` or '`binance`'  | str      |
 
 ### Response

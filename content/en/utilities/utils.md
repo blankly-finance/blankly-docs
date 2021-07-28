@@ -40,7 +40,7 @@ Get the ISO8601 string from epoch time.
 | ------------------------------------------------------------ | -------------------- | ---- |
 | An ISO representation of the epoch number that was passed in. | 2021-06-06T23:38:27Z | str  |
 
-## `to_blankly_coin_id(asset_id, exchange, quote_guess=None) -> str`
+## `to_blankly_sybol(symbol, exchange, quote_guess=None) -> str`
 
 Convert an asset id returned by an exchange to one that can be easily parsed & manipulated by blankly. This generally means adding a "-" between the quote and base pairs.
 
@@ -48,7 +48,7 @@ Convert an asset id returned by an exchange to one that can be easily parsed & m
 
 | Arg         | Description                                                  | Examples                    | Type |
 | ----------- | ------------------------------------------------------------ | --------------------------- | ---- |
-| asset_id    | The identifier or trading pair returned by the non-conforming exchange. | "BTCUSD" or "XLMUSD"        | str  |
+| symbol      | The identifier or trading pair returned by the non-conforming exchange. | "BTCUSD" or "XLMUSD"        | str  |
 | exchange    | The identifier for the exchange the trading pair comes from  | "coinbase_pro" or "binance" | str  |
 | quote_guess | An optional argument that allows the function to more easily parse the trading pair. If left blank, this will attempt applying a list of known quotes. | "USD" if guessing "BTCUSD"  | str  |
 
@@ -58,16 +58,16 @@ Convert an asset id returned by an exchange to one that can be easily parsed & m
 | --------------------------------------------------- | ---------------------- | ---- |
 | A asset id string that follows blankly conventions. | "BTC-USD" or "XLM-USD" | str  |
 
-## `to_exchange_coin_id(blankly_coin_id, exchange)`
+## `to_exchange_symbol(blankly_symbol, exchange)`
 
 Turn a blankly asset id into one that can be used by other exchanges.
 
 ### Arguments
 
-| Arg             | Description                                                  | Examples                    | Type |
-| --------------- | ------------------------------------------------------------ | --------------------------- | ---- |
-| blankly_coin_id | Blankly formatted asset id for a particular currency.        | "BTC-USD" or "XLM-USD"      | str  |
-| exchange        | The identifier for the exchange to convert the trading pair to. | "coinbase_pro" or "binance" | str  |
+| Arg            | Description                                                  | Examples                    | Type |
+| -------------- | ------------------------------------------------------------ | --------------------------- | ---- |
+| blankly_symbol | Blankly formatted symbol for a particular currency.          | "BTC-USD" or "XLM-USD"      | str  |
+| exchange       | The identifier for the exchange to convert the trading pair to. | "coinbase_pro" or "binance" | str  |
 
 ### Response
 
@@ -81,9 +81,9 @@ Get the base asset from the blankly trading pair.
 
 ### Arguments
 
-| Arg             | Description                                        | Examples                         | Type |
-| --------------- | -------------------------------------------------- | -------------------------------- | ---- |
-| blankly_coin_id | Blankly formatted asset id for a particular asset. | "BTC-USD" or "XLM-USD" or "MSFT" | str  |
+| Arg    | Description                                        | Examples                         | Type |
+| ------ | -------------------------------------------------- | -------------------------------- | ---- |
+| symbol | Blankly formatted asset id for a particular asset. | "BTC-USD" or "XLM-USD" or "MSFT" | str  |
 
 ### Response
 
@@ -91,15 +91,15 @@ Get the base asset from the blankly trading pair.
 | --------------------------------------- | ------------------------------------------------------ | ---- |
 | The base asset of the specified symbol. | "BTC" from "BTC-USD" or "XLM" from "XLM-USD" or "MSFT" | str  |
 
-## `get_quote_asset(blankly_coin_id)`
+## `get_quote_asset(symbol)`
 
 Get the quote asset from the blankly trading pair.
 
 ### Arguments
 
-| Arg             | Description                                           | Examples                         | Type |
-| --------------- | ----------------------------------------------------- | -------------------------------- | ---- |
-| blankly_coin_id | Blankly formatted asset id for a particular currency. | "BTC-USD" or "XLM-USD" or "MSFT" | str  |
+| Arg    | Description                                           | Examples                         | Type |
+| ------ | ----------------------------------------------------- | -------------------------------- | ---- |
+| symbol | Blankly formatted asset id for a particular currency. | "BTC-USD" or "XLM-USD" or "MSFT" | str  |
 
 ### Response
 
@@ -107,3 +107,21 @@ Get the quote asset from the blankly trading pair.
 | ---------------------------------------------- | ------------------------------------------------------ | ---- |
 | The quote asset of the specified trading pair. | "USD" from "BTC-USD" or "USD" from "XLM-USD" or "MSFT" | str  |
 
+## `trunc(number, decimals) -> float`
+
+Cleanly truncate a number to a certain number of decimals. This is very useful for interacting with exchange resolutions. 
+
+**Using the `round()` function can create slippage & make a number to greater than an account value leading to an `Insufficient Funds` error**.
+
+### Arguments
+
+| Arg      | Description                | Examples                        | Type  |
+| -------- | -------------------------- | ------------------------------- | ----- |
+| number   | A float input              | `2.353244245` or `'459.435322'` | float |
+| decimals | Number of decimals to keep | `2` or `'13'`                   | int   |
+
+### Response
+
+| Description                             | Examples                              | Type  |
+| --------------------------------------- | ------------------------------------- | ----- |
+| A truncated version of the input number | `blankly.trunc(2.3453243, 2) == 2.34` | Float |

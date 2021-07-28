@@ -20,6 +20,7 @@ A scheduler can be created by calling `blankly.Scheduler`:
 | callback          | Fill with a function reference to be called in the scheduler thread. | `price_event`        | callable         |
 | interval          | Time interval for the given function to run.                 | `'2m'` or `'3h'`     | str or int/float |
 | initially_stopped | Optional boolean. If set to `True`, the scheduler will not start until `.start()` is run. | `True`               | bool             |
+| synced            | Align the scheduler with intervals in UTC. ex: if the interval is '1h' then with sync it will only   run at *:00 | `True`               | bool             |
 | **kwargs          | Arguments to pass into the callback function. This can be used to distinguish what the logic in the callback should do. | `'asset_id='BTC-USD` | Any              |
 
 ### Response
