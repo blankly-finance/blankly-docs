@@ -24,9 +24,10 @@ features:
     - Logs for websocket feeds
     - Status management for purchases
     - Create strategies using an event-based framework
-    - Instantly backtest your strategies (`strategy.backtest(to='1y')`)
+    - Instantly backtest your strategies (`strategy.backtest(to='1y')`) without changing your code
     - Automatic price downloads & caching for use in backtests
     - Interface that allows calls to each supported exchange to be identical
+    - Extremely Low CPU Overload (0.1% total for RSI Model running on 5 tickers)
 
 ---
 
