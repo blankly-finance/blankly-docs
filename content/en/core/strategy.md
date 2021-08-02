@@ -73,6 +73,7 @@ Each event that is added to your `Strategy` will have it's own initialized state
 | variables   | Access to all underlying user-defined state variables. This is a modular dictionary used for general storage. | `variables = state.variables`     | dict              |
 | resolution  | Specific Strategy Event Resolution (`None` for Orderbook Event). This is the number of seconds between runs if defined. | `resolution = state.resolution`   | float             |
 | symbol      | The symbol the price event is running on                     | `symbol = state.symbol`           | str               |
+| time        | The current epoch time (if in backtest mode or in real-time) | `time = state.time`               | Int               |
 | base_asset  | The base asset of the symbol (`BTC` of `BTC-USD` or `AAPL` of `AAPL`) | `base_asset = state.base_asset`   | str               |
 | quote_asset | The quote asset of the symbol (`USD` of `BTC-USD` or `USD` of `AAPL`) | `quote_asset = state.quote_asset` | str               |
 
