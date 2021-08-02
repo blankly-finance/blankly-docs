@@ -167,7 +167,13 @@ Check out our [RSI](/examples/rsi), [Golden Cross](/examples/golden-cross) examp
 
 ### `add_orderbook_event(callback: typing.Callable, symbol: str, init: typing.Callable = None)`
 
-Add a orderbook events to the strategy. This will pass a price as well as a full orderbook with args `(price, symbol)`
+Add a orderbook events to the strategy. This will pass a price as well as a full orderbook with args `(price, symbol)`.
+
+<alert type="warning">
+
+Note: Currently Alpaca does not support level II market order data so the orderbook feed is limited and will not show a full orderbook like Coinbase Pro or Binance.
+
+</alert>
 
 #### Arguments
 
@@ -230,7 +236,17 @@ s.add_price_event(some_bar_event, 'MSFT', resolution='15m', init=init)
 
 
 
-### `backtest(initial_values: dict = None, to: str = None, start_date: str = None, end_date: str = None, save: bool = False, settings_path: str = None, callbacks: list = None, **kwargs) -> BacktestResult`
+### `time() -> float` 
+
+Gets the current time depending on if the strategy is in a backtest mode or not. 
+
+### Response
+
+| Key  | Description                     | Type |
+| ---- | ------------------------------- | ---- |
+| time | The epoch time that is returned | int  |
+
+### `backtest(initial_values: dict = None, to: str = None, start_date: str = None, end_date: str = None, save: bool = False, settings_path: str = None, callbacks: typing.Callable = None, **kwargs)`
 
 This allows the user to backtest the strategy on a given time interval and with various starting values. We have made our backtesting as customizable as possible and also have built-in all [`blankly.metrics`](/metrics/metrics). Users can also create their own custom metrics as well. 
 
