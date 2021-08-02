@@ -92,7 +92,9 @@ Get all trading pairs currently on the exchange.
 | base_max_size  | Largest amount of base currency that can be bought on the exchange | float |
 | base_increment | The finest resolution the base currency can be ordered in    | float |
 
-### `get_account(symbol=None) -> dict`
+### `get_account(symbol=None)`
+
+Gets the current account holdings if symbol is None, otherwise will return the symbol holdings. If passed in a specific symbol, it will attempt to get the base asset ('BTC-USD' as symbol will give you 'BTC').
 
 #### Arguments
 

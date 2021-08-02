@@ -158,3 +158,13 @@ This is also pre-typed for each exchange which allows autofill when using this f
 | --------------------------------------------------------- | -------- | ------------------- |
 | A direct calls object which bypasses all Blankly features | `API`    | Various API objects |
 
+
+## `get_market_clock() -> dict` (Alpaca Specific)
+
+This will get the current market clock (i.e. current market timestamp, whether or not it's open and when the next open and close will be) that's running for the U.S. stock exchanges. 
+
+### Response
+
+| Description                                               | Examples | Type                |
+| --------------------------------------------------------- | -------- | ------------------- |
+| A response displaying the current timestamp, whether the market is open or not, and when the next market open or close is. | `dict`    | View [this](https://alpaca.markets/docs/api-documentation/api-v2/clock/) for more detalis |
