@@ -114,9 +114,9 @@ Query the exchange for the order status.
 
 ### Arguments
 
-| Arg  | Description                                 | Examples       | Type |
+| Arg  | Description                         git         | Examples       | Type |
 | ---- | ------------------------------------------- | -------------- | ---- |
-| full | Get the full order order response, not just | "BTC" or "USD" | str  |
+| full | Get the full order order response, not just "pending" or "filled" | True or False | bool  |
 
 ### Response
 
