@@ -1,7 +1,7 @@
 ---
 title: Ticker Manager
 description: 'Price event websocket feed.'
-position: 27
+position: 28
 version: 1.0
 category: Websockets
 ---

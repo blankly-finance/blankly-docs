@@ -1,7 +1,7 @@
 ---
 title: Exchange
 description: 'Authenticate and interact with a representation of your exchange.'
-position: 10
+position: 11
 version: 1.0
 category: Framework
 ---

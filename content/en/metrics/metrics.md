@@ -1,7 +1,7 @@
 ---
 title: Metrics
 description: 'Useful metrics built into blankly'
-position: 16
+position: 17
 version: 1.0
 category: Metrics & Indicators
 ---

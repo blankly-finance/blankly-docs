@@ -1,7 +1,7 @@
 ---
 title: Utilities
 description: 'Useful utility functions built into blankly'
-position: 22
+position: 23
 version: 1.0
 category: Utilities
 ---
