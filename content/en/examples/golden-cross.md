@@ -1,7 +1,7 @@
 ---
 title: The Golden Cross
 description: 'Implementing the golden cross using Blankly'
-position: 19
+position: 20
 category: Examples
 ---
 

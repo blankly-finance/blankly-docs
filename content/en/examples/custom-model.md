@@ -1,7 +1,7 @@
 ---
 title: Integrating with Custom Models
 description: 'Implementing the golden cross using Blankly'
-position: 17
+position: 18
 category: Examples
 ---
 

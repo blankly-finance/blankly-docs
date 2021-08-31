@@ -1,7 +1,7 @@
 ---
 title: Limit Order
 description: 'Order specific functions from market order.'
-position: 14
+position: 15
 version: 1.0
 category: Orders
 order_docs: orders/order
