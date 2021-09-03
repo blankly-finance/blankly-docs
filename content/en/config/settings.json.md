@@ -6,7 +6,11 @@ version: 1.0
 category: Config
 ---
 
-The `settings.json` file follows this format:
+The `settings.json` file is used to define global settings for the blankly module. Multiple settings can be used for different exchange objects by specifying which settings document to load in the constructor. This allows the dynamic inclusion of sandbox and non-sandbox exchanges in a single process. 
+
+Note that blankly will always remember the most recently overridden path. If the path is overridden then on the next read of a `settings.json` file, it will always reuse the overridden path even if `override_path=None`. This is done so that classes like websockets can always use the most up to date settings.
+
+This file can be placed in version control.
 
 ## Format
 

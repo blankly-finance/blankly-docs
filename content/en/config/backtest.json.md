@@ -6,7 +6,11 @@ version: 1.0
 category: Config
 ---
 
-The `backtest.json` file follows this format:
+The `backtest.json` file is used to specify settings for the backtest. 
+
+This file is only necessary if running backtests.
+
+This file can be placed in version control.
 
 ## Format
 

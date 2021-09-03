@@ -26,5 +26,3 @@ if isinstance(response, dict):
 ## `AuthError`
 
 This will be raised if there are issues with the user input in `keys.json` during authentication.
-
-## 

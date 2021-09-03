@@ -6,7 +6,9 @@ version: 1.0
 category: Config
 ---
 
-The `keys.json` file follows this format.
+The `keys.json` file is used to organize and store authentication information for multiple exchanges and portfolios. Each supported exchange uses API keys. This document is designed to make it easy to interact & authenticate across different accounts. 
+
+This should be left out of version control.
 
 ## Format
 
@@ -37,8 +39,6 @@ The `keys.json` file follows this format.
     }
 }
 ```
-
-Each supported exchange uses API keys. This document is designed to make it easy to interact & authenticate across different accounts. 
 
 ## Usage
 
