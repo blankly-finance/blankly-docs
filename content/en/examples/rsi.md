@@ -1,7 +1,7 @@
 ---
 title: RSI
 description: 'Detecting overbuying and overselling using RSI'
-position: 22
+position: 23
 category: Examples
 ---
 

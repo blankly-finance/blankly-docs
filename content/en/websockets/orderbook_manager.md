@@ -1,7 +1,7 @@
 ---
 title: Orderbook Manager
 description: 'Live orderbook creation & management'
-position: 30
+position: 32
 version: 1.0
 category: Websockets
 ---

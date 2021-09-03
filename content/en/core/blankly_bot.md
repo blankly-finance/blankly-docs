@@ -1,7 +1,7 @@
 ---
 title: Blankly Bot
 description: 'Usage & Functions of the Blankly Bot class'
-position: 10
+position: 11
 version: 1.0
 category: Framework
 ---

@@ -1,7 +1,7 @@
 ---
 title: Websocket Manager
 description: 'Inherited object that contains universal interaction abilities'
-position: 28
+position: 30
 version: 1.0
 category: Websockets
 ---

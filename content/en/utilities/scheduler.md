@@ -1,7 +1,7 @@
 ---
 title: Scheduler
 description: 'Use scheduler to run event-based functions with saved arguments.'
-position: 25
+position: 26
 version: 1.0
 category: Utilities
 ---
