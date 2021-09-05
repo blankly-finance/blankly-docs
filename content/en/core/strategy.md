@@ -118,7 +118,7 @@ Adds a price event to the strategy. This will pass a price as well as a `price_e
 | callback   | A callback function to add a price event for                 | `price_event`                                                | Callable     |
 | symbol     | Fill this to inform the price_event which price to provide   | `'BTC-USD'` or `'XLM-USD'`                                   | str          |
 | resolution | Resolution to send prices to the user function.              | `3600` or `'15s'`                                            | str or float |
-| init       | Fill this with a callback function to allow a setup for the state variable. | Pass a function like `setup` with arguments that are `setup(currency_pair, state)` | callable     |
+| init       | Fill this with a callback function to allow a setup for the state variable. | Pass a function like `setup` with arguments that are `setup(currency_pair, state)` | Callable     |
 | sync       | Whether to start price event in sync with the exchange resolution times (i.e. if it's 15m resolution then run at 12:15, 12:30, 12:45, and 1:00) | True or False                                                | bool         |
 
 ### Example Use Case
