@@ -15,6 +15,20 @@ This is true of the websocket managers we have in this module. They are each des
 
 *Websocket connections should be used only if strictly necessary for the trading strategy.* They require significantly higher CPU, bandwidth & memory usage when compared to making simple REST requests on a set interval.
 
+Any ticker connections to the supported exchanges will give this information for each trade:
+
+```python
+{
+	'price': 51714.73, 
+	'time': 1630896526.812199, 
+	'trade_id': 208225105, 
+  'symbol': 'BTC-USD', 
+  'size': 0.0153549
+}
+```
+
+There will also be an `'exchange_specific'` tag that will give any extra information given from any exchange.
+
 # Creation
 
 A ticker manager can be created by calling `ticker = blankly.TickerManager(default_exchange, default_currency)`.
@@ -35,6 +49,36 @@ This call will also automatically switch channels to use the correct subscriptio
 | Description              | Examples                                                     | Type          |
 | ------------------------ | ------------------------------------------------------------ | ------------- |
 | A `TickerManager` object | `manager = blankly.TickerManager('coinbase_pro', 'BTC-USD')` | TickerManager |
+
+### Example
+
+```python
+import blankly
+
+def price_event(message):
+  	"""
+  	This callback function will be run for every single update
+  	
+  	The message variable has at least these keys:
+  	{
+  		'price': 51714.73, 
+  		'time': 1630896526.812199, 
+  		'trade_id': 208225105, 
+  		'symbol': 'BTC-USD', 
+  		'size': 0.0153549
+  	}
+  	"""
+    print(message)
+
+
+if __name__ == "__main__":
+    # Create a manager - this object can be used for managing 		#  many websocket connections
+    manager = blankly.TickerManager('coinbase_pro', 'BTC-USD')
+    
+    # This will create and start a websocket connection. It
+    #  will use the defaults defined above unless overridden
+    manager.create_ticker(price_event)
+```
 
 # Functions
 

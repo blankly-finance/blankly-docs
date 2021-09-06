@@ -159,7 +159,7 @@ This is also pre-typed for each exchange which allows autofill when using this f
 | A direct calls object which bypasses all Blankly features | `API`    | Various API objects |
 
 
-## `get_market_clock() -> dict` (Alpaca Specific)
+## `get_market_clock() -> dict` (Alpaca Only)
 
 This will get the current market clock (i.e. current market timestamp, whether or not it's open and when the next open and close will be) that's running for the U.S. stock exchanges. 
 
@@ -167,4 +167,16 @@ This will get the current market clock (i.e. current market timestamp, whether o
 
 | Description                                               | Examples | Type                |
 | --------------------------------------------------------- | -------- | ------------------- |
-| A response displaying the current timestamp, whether the market is open or not, and when the next market open or close is. | `dict`    | View [this](https://alpaca.markets/docs/api-documentation/api-v2/clock/) for more detalis |
+| A response displaying the current timestamp, whether the market is open or not, and when the next market open or close is. | `dict`    | View [this](https://alpaca.markets/docs/api-documentation/api-v2/clock/) for more details |
+
+## Paper Trade Limit Order Watch
+
+Because paper trading happens entirely locally, prices always have to be downloaded to be used in the paper trading system. We created a watchdog system which allows continuous background monitoring of the price on the exchange. One started, this will continue to read the price on regular intervals and execute any limit orders if necessary.
+
+## `start_limit_order_watch()` (Paper Trade Only)
+
+Start the paper trade limit order watch (see explanation above).
+
+## `stop_limit_order_watch()` (Paper Trade Only)
+
+Stop the paper trade limit order watch (see explanation above).
