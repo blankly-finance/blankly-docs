@@ -33,7 +33,7 @@ We've designed Blankly to run extraordinarily efficiently - allowing robust trad
 
 ### Easy Integration with Existing Codebases
 
-Blankly makes it extremely easy to integrate with any of your existing machine learning models, deep learning models, or simple trading bots. Simply create `Blankly.Strategy` objects as as add a `price_event` and pass the necessary data to your model and you're golden.
+Blankly makes it extremely easy to integrate with any of your existing machine learning models, deep learning models, or simple trading bots. Simply create `Blankly.Strategy` objects, add a `price_event`, and pass the necessary data to your model and you're golden.
 
 ```python
 import blankly
