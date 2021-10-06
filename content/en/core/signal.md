@@ -40,6 +40,12 @@ All signal behaviors & execution occurs in the object creation. Any consecutive 
 
 Signal State is the state of the overall signal. **Note again, this is different from a Strategy that has state on a per symbol basis**. Instead, state is shared across all symbols and functions. 
 
+<alert type="danger">
+
+Note that Signals DO NOT store state across cycles (i.e. it's as if the entire process is completely restarted again). This means that we can't actually store things like price history over runs. This is intentional as it allows both your algorithm locally and in the cloud to sleep and not use computing resources. 
+
+</alert>
+
 ### Properties
 
 | Property   | Description                                                  | Examples                        | Type              |
@@ -53,23 +59,19 @@ Signal State is the state of the overall signal. **Note again, this is different
 
 ### Common Use Cases
 
-#### Storing Symbol Data 
+#### Storing Top X Stocks
 
-This is very similar to the strategy where you can access `state.variables` and store any specific variables you may want in there. For example, I could store `state.variables['<ticker>_data']` where I store the data for each ticker.
+This is very similar to the strategy where you can access `state.variables` and store any specific variables you may want in there. For example, I could store `state.variables['<ticker>_data']` where I store the data for each ticker if needed.
 
-<alert> Note, similar to the `Strategy` examples. We do recommend using a `deque` instead of an array to store values as having this run multiple times can make array sizes extremely large </alert>
+In this case, however, say that we are evaluating each stock and ultimately only want to store the Top X stocks, well we can ues a priority queue for this
 
 ```python
 from blankly import Signal, SignalState
-from collections import deque
+from queue import PriorityQueue
 
 def init(state: SignalState):
-  for symbol in state.symbols:
-    # get data needed
-	  state.variables[symbol] = state.interface.history(symbol, 150, as='deque')
+  state.variables['top_stocks'] = PriorityQueue() # add stock results into this as a tuple (result, ticker)
 ```
-
-
 
 #### Storing Start/Current Positions
 
@@ -121,13 +123,13 @@ signal.notify()
 
 ### Find All Stocks that Are Oversold using RSI
 
-To do this, we use our RSI indicator that is built into Blankly. However, we need to first initialize our price data and set that all up: 
+To do this, we use our RSI indicator that is built into Blankly. First, let's get the data for each stock to calculate RSI. 
 
 ```python
-def init(state: SignalState):
-  # get all data setup
-  for symbol in state.symbols:
-    state.variables['data_' + symbol] = state.interface.history(symbol, 150, as='deque')
+def is_stock_buy(symbol, state: SignalState):
+  # get the most recent price from the exchange
+  prices = state.interface.history(symbol, 40, resolution=state.resolution) # get past 40 data points
+	...
 ```
 
 Okay, now that's set up. Let's actually do the evaluator and see if the stocks are oversold or not. In order to do this, we need to get the most recent price each time, add it to the `deque` and calculate the RSI on the new price data. 
@@ -135,13 +137,10 @@ Okay, now that's set up. Let's actually do the evaluator and see if the stocks a
 ```python
 from blankly.indicators import rsi
 def is_stock_buy(symbol, state: SignalState):
-  # get the most recent price from the exchange
-  price = state.interface.get_price(symbol)
-  state.variables['data_' + symbol].append()
-  rsi_values = rsi(state.variables['data_' + symbol], 14)
-  if rsi_values[-1] < 30: 
-    # the stock is oversold
-    return { 'is_oversold': True, 'price': price, 'symbol': symbol }
+  # This runs per stock
+  prices = state.interface.history(symbol, 40, resolution=state.resolution) # get past 40 data points
+  rsi_values = rsi(prices['close'], 14)
+  return { 'is_oversold': rsi_values[-1] < 30, 'price': price, 'symbol': symbol }
 ```
 
 We can now use this to format output and notify the people that are connected to this Signal. 
