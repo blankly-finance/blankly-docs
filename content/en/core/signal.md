@@ -70,7 +70,9 @@ from blankly import Signal, SignalState
 from queue import PriorityQueue
 
 def init(state: SignalState):
-  state.variables['top_stocks'] = PriorityQueue() # add stock results into this as a tuple (result, ticker)
+  # add stock results into this as a tuple (result, ticker)
+  # note you would want to input negative the value if you want a max priority queue vs a min
+  state.variables['top_stocks'] = PriorityQueue(maxsize=20) 
 ```
 
 #### Storing Start/Current Positions
