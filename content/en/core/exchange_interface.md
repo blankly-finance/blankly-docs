@@ -132,7 +132,7 @@ If `symbol='BTC'`:
 | available                | Amount of account asset that is free to be placed on orders or sold | float |
 | hold                     | Amount of account asset that is currently on orders, or generally unavailable | float |
 
-### `market_order(symbol, side, funds) -> MarketOrder`
+### `market_order(symbol, side, size) -> MarketOrder`
 
 Create a new live market order.
 
@@ -142,7 +142,7 @@ Create a new live market order.
 | ------ | ------------------------------------------------------------ | ---------------------- | ----- |
 | symbol | Identifier for the product to order                          | "BTC-USD" or "XLM-EUR" | str   |
 | side   | Buy or sell your position                                    | "buy" or "sell"        | str   |
-| funds  | Amount of **quote** to buy or sell. This means "USD" or "EUR." Note that this is opposite of limit order, which uses size. Buying 10 dollars of "BTC-USD" would have args: ("BTC-USD", "buy", 10). | 10.5 or 351.2          | float |
+| Size   | Amount of **base** to buy or sell. This means "BTC" or "XLM." Note that this is opposite of limit order, which uses size. Buying .01 of "BTC-USD" would have args: ("BTC-USD", "buy", 0.01). | 2.3 or .001            | float |
 
 #### Response
 
