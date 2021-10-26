@@ -21,16 +21,6 @@ Get the price that this limit order is set at.
 | ------------------------------------------------------------ | -------------------- | ----- |
 | The limit price describes the point at which the user wants to buy or sell. | `30000` or `'75000'` | float |
 
-## `get_quantity() -> float`
-
-Get the quantity (or size) of the limit order.
-
-### Response
-
-| Description                                                  | Examples        | Type  |
-| ------------------------------------------------------------ | --------------- | ----- |
-| Size describes the amount of base currency ("BTC" of "BTC-USD") which is being bought or sold. | `1.3` or `.001` | float |
-
 ## `get_time_in_force() -> str`
 
 Get the time in force setting for the order.	

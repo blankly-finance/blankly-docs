@@ -33,7 +33,7 @@ Get the original but parsed response from the exchange
   'id': '5839dc4f-78f9-4c55-bb42-6d42ec92b4aa', 
   'price': 10000.0, 
   'size': 0.001, 
-  'product_id': 'BTC-USD', 
+  'symbol': 'BTC-USD', 
   'side': 'buy', 
   'type': 'limit', 
   'time_in_force': 'GTC', 
@@ -59,9 +59,9 @@ Get the original but parsed response from the exchange
 ```python
 {
   'id': 'ada612f8-cd1e-46b8-bc6f-5b43114c4f57', 
-  'product_id': 'BTC-USD', 
+  'symbol': 'BTC-USD', 
   'side': 'buy', 
-  'funds': 9.98502246, 
+  'size': .533, 
   'type': 'market', 
   'created_at': 1623123324.471316, 
   'status': 'pending'
@@ -73,7 +73,7 @@ Get the original but parsed response from the exchange
 | id         | The exact order id returned by the exchange                 | str   |
 | product_id | The trading pair that the limit order is placed on          | str   |
 | side       | The side of the order, buying or selling                    | str   |
-| funds      | The amount of quote currency ordered in the market order    | float |
+| size       | The amount of base currency ordered in the market order     | float |
 | type       | The order type - can be limit, market, and potentially stop | str   |
 | created_at | The exchange's time in which the order was created at       | float |
 | status     | Where the order is in the order lifecycle                   | str   |
@@ -133,9 +133,9 @@ Query the exchange for the order status.
 ```python
 {
   'id': 'cfe77aff-20f9-420c-9bbe-d127fcd26649', 
-  'product_id': 'BTC-USD', 
+  'symbol': 'BTC-USD', 
   'side': 'buy', 
-  'funds': 9.98502246, 
+  'size': .533, 
   'type': 'market', 
   'status': 'done', 
 }
@@ -147,7 +147,7 @@ Query the exchange for the order status.
 | id         | The exchange unique order identifier                         | str   |
 | product_id | The asset id that the order was created on                   | str   |
 | side       | Determine if the order is buying or selling                  | str   |
-| funds      | Post-fees funds exchanged in the order                       | float |
+| size       | Pre-fees size exchanged in the order                         | float |
 | type       | The order type. Note that this is an example market order, which contains different keys than a limit order. | str   |
 | status     | Where the order is in the exchange lifecycle                 | str   |
 
@@ -171,3 +171,12 @@ Get if the order is a buy or sell.
 | ----------------------------------------------------------- | ----------------- | ---- |
 | Describes the purchasing side of the order that was placed. | `'buy'`, `'sell'` | str  |
 
+## `get_size() -> float`
+
+Get the size (or quantity) of the market or limit order.
+
+### Response
+
+| Description                                                  | Examples        | Type  |
+| ------------------------------------------------------------ | --------------- | ----- |
+| Size describes the amount of base currency ("BTC" of "BTC-USD") which is being bought or sold. | `1.3` or `.001` | float |

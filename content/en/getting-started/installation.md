@@ -28,9 +28,10 @@ In the working directory of your project (normally the root), Blankly needs two 
 {
   "settings": {
     "account_update_time": 5000,
-    "use_sandbox": true,
+    "use_sandbox": false,
     "use_sandbox_websockets": false,
     "websocket_buffer_size": 10000,
+    "test_connectivity_on_auth": true,
 
     "coinbase_pro": {
       "cash": "USD"
@@ -60,11 +61,7 @@ In the working directory of your project (normally the root), Blankly needs two 
         "another cool portfolio": {
             "API_KEY": "**************************************************************",
             "API_SECRET": "*************************************************************"
-        },
-        "second cool portfolio": {
-            "API_KEY": "**************************************************************",
-            "API_SECRET": "*************************************************************"
-        } 
+        }
     },
     "alpaca": {
         "another cool portfolio": {

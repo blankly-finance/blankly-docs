@@ -97,11 +97,9 @@ def init(symbol: str, state: StrategyState):
 def price_event(price, symbol, state: StrategyState):
     interface: blankly.Interface = state.interface
     state.variables['history'].append(price)  # add new price to history
-    # buy the symbol using available cash
-    interface.market_order(symbol, 'buy', blankly.trunc(interface.cash, 2))
+    # buy as much as possible with the available cash
+    interface.market_order(symbol, 'buy', int(interface.cash/price))
 ```
-
-
 
 For some real-life example uses, check out our [examples](/examples/rsi)
 
@@ -149,10 +147,10 @@ def price_event(price, symbol, state: StrategyState):
     state.variables['history'].append(price)  # add new price to history
     # buy the symbol using available cash
     if not state.variables['has_bought']:
-        interface.market_order(symbol, 'buy', blankly.trunc(interface.cash, 2))
+        interface.market_order(symbol, 'buy', int(interface.cash/price))
         state.variables['has_bought'] = True
     else:
-        interface.market_order(symbol, 'sell', blankly.trunc(interface.account[state.base_asset]['available'], 2))
+        interface.market_order(symbol, 'sell', int(interface.account[state.base_asset]['available']))
         state.variables['has_bought'] = False
 
 
@@ -358,8 +356,8 @@ def price_event(price, symbol, state: StrategyState):
     interface: blankly.Interface = state.interface
     variables = state.variables
     variables['history'].append(price)  # add new price to history
-    # buy the symbol using available cash
-    interface.market_order(symbol, 'sell', .00001)
+    # Sell 1 of whatever the symbol was (in this case MSFT)
+    interface.market_order(symbol, 'sell', 1)
 
 
 def custom_sharpe_sortino(backtest_data):

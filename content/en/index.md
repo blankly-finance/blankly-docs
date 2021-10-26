@@ -61,12 +61,12 @@ def price_event(price: float, symbol: str, state: StrategyState):
 
     # buy or sell based on that decision
     if decision:
-        interface.market_order(symbol, 'buy', blankly.trunc(0.25 * interface.cash, 2))
+        interface.market_order(symbol, 'buy', int((0.25 * interface.cash)/price))
         state.variables['owns_a_position'] = True
     elif state.variables['owns_a_position'] and not decision:
         # Sell it all if you get a sell signal
         amt = interface.account[state.base_asset]['available']
-        interface.market_order(symbol, 'sell', blankly.trunc(amt * price, 2))
+        interface.market_order(symbol, 'sell', int(amt))
         state.variables['owns_a_position'] = False
 
 

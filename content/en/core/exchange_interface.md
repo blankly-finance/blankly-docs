@@ -373,6 +373,11 @@ Find the limits that the exchange puts on purchases for a specific asset.
   },
   "market_order": {
     "fractionable": True,
+    
+    "base_min_size": .001,
+    "base_max_size": 20,
+    "base_increment": .001,
+                
     "quote_increment": 0.01,
     "buy": {
       "min_funds": 10.0,

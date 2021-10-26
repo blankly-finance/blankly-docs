@@ -9,15 +9,4 @@ order_docs: orders/order
 
 The market order response inherits from the `order` object, found [here](/orders/order). This means that all the functions described in that document will also work here.
 
-# Functions
-
-## `get_funds() -> float`
-
-Get the amount of funds exchanged in the order. This will include fees.
-
-### Response
-
-| Description                                       | Examples     | Type  |
-| ------------------------------------------------- | ------------ | ----- |
-| The funds exchanged after fees in a market order. | `9.98502246` | float |
-
+This used to have internal functions, but we have simplified it into a wrapper object!

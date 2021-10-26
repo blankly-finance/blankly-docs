@@ -72,12 +72,12 @@ def price_event(price, symbol, state: StrategyState):
     if decision == 0:
         curr_value = interface.account[symbol].available * price
         # call pricing model to determine how much to buy
-        amt_to_buy = pricing_model(price, symbol, interface.cash, curr_value)
-        interface.market_order(symbol, 'buy', amt_to_buy)
+        size_to_buy = pricing_model(price, symbol, interface.cash, curr_value)
+        interface.market_order(symbol, 'buy', size_to_buy)
     elif decision == 1:
         curr_value = interface.account[symbol].available * price
-        amt_to_sell = pricing_model(price, symbol, interface.cash, curr_value)
-        interface.market_order(symbol, 'sell', amt_to_sell)
+        size_to_sell = pricing_model(price, symbol, interface.cash, curr_value)
+        interface.market_order(symbol, 'sell', size_to_sell)
 ```
 
 ### Adding it All Together
@@ -113,12 +113,12 @@ def price_event(price, symbol, state: StrategyState):
     if decision == 0:
         curr_value = interface.account[symbol].available * price
         # call pricing model to determine how much to buy
-        amt_to_buy = pricing_model(price, symbol, interface.cash, curr_value)
-        interface.market_order(symbol, 'buy', amt_to_buy)
+        size_to_buy = pricing_model(price, symbol, interface.cash, curr_value)
+        interface.market_order(symbol, 'buy', size_to_buy)
     elif decision == 1:
         curr_value = interface.account[symbol].available * price
-        amt_to_sell = pricing_model(price, symbol, interface.cash, curr_value)
-        interface.market_order(symbol, 'sell', amt_to_sell)
+        size_to_sell = pricing_model(price, symbol, interface.cash, curr_value)
+        interface.market_order(symbol, 'sell', size_to_sell)
 
 
 alpaca = Alpaca()
