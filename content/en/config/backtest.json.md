@@ -30,7 +30,8 @@ This file can be placed in version control.
     "continuous_caching": true,
     "resample_account_value_for_metrics": "1d",
     "quote_account_value_in": "USD",
-    "ignore_user_exceptions": true
+    "ignore_user_exceptions": true,
+    "risk_free_return_rate": 0.0
   }
 }
 ```
@@ -56,4 +57,5 @@ This file can be placed in version control.
 | resample_account_value_for_metrics | Because backtest data can be input at a variety of resolutions, account value often needs to be recalculated at consistent intervals for use in metrics & indicators. This setting allows the specification of that consistent interval. The value can be set to `False` to skip any recalculation. | str or bool |
 | quote_account_value_in             | Specify what quote value should be used when calculating the account value. This valuation can only be done for accounts that have price data that has been downloaded | str         |
 | ignore_user_exceptions             | If enabled, this will treat exceptions in the backtesting class identically to how they're treated by a strategy. This means excepting any general exception and printing the traceback. If the setting is `False` the backtest will immediately exit on error and metrics will be generated. | bool        |
+| risk_free_return_rate              | Specify a theoretical guaranteed return rate.                | float       |
 
