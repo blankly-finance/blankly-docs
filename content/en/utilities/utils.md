@@ -124,4 +124,37 @@ Cleanly truncate a number to a certain number of decimals. This is very useful f
 
 | Description                             | Examples                              | Type  |
 | --------------------------------------- | ------------------------------------- | ----- |
-| A truncated version of the input number | `blankly.trunc(2.3453243, 2) == 2.34` | Float |
+| A truncated version of the input number | `blankly.trunc(2.3453243, 2) == 2.34` | float |
+
+## `aggregate_candles(history: pd.DataFrame, aggregation_size: int)`
+
+Given a set of high resolution candles, turn them into low resolution candles at a different interval. For example, turn 15 1-minute bars into 1 15-minute bar. Any remainder candles that don't evenly fit an interval are still aggregated into a final bar (which of course represents less data).
+
+### Arguments
+
+| Arg              | Description                                             | Examples                              | Type         |
+| ---------------- | ------------------------------------------------------- | ------------------------------------- | ------------ |
+| history          | A dataframe with `open, high, low, close, volume, time` | `open, high, low close, volume, time` | pd.DataFrame |
+| aggregation_size | Number of bars to put into a single bar                 | `2` or `15`                           | int          |
+
+### Response
+
+| Description                                                  | Examples                              | Type         |
+| ------------------------------------------------------------ | ------------------------------------- | ------------ |
+| A dataframe with the original candles aggregated at the `aggregation_size` | `open, high, low close, volume, time` | pd.Dataframe |
+
+## `count_decimals(number) -> int`
+
+A simple & very useful function especially for order filters. Given a number such as `3.141` this will return the number of decimals of that number `3.141 -> 3`. An integer will give a zero value.
+
+### Arguments
+
+| Arg    | Description                                             | Examples         | Type         |
+| ------ | ------------------------------------------------------- | ---------------- | ------------ |
+| number | A float or integer value to find the number of decimals | `3.141` or `143` | int or float |
+
+### Response
+
+| Description                                 | Examples   | Type |
+| ------------------------------------------- | ---------- | ---- |
+| The number of decimals in the passed number | `4` or `0` | int  |
