@@ -8,6 +8,11 @@ Install dependencies:
 yarn install
 ```
 
+### For Updated Font
+
+For our specific font, make sure you go and update `./node_modules/@nuxt/content-theme-docs/src/tailwind.config.js`
+with the `./tailwind.config.js`.
+
 ## Development
 
 ```bash

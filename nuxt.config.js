@@ -4,6 +4,9 @@ export default theme({
   docs: {
     primaryColor: '#79eea6'
   },
+  tailwindcss: {
+    configPath: '~~/tailwind.config.js',
+  },
   head: {
     title: "Build Quant Models with Blankly | Documentation",
     meta: [
@@ -42,7 +45,8 @@ export default theme({
       },
     ],
     link: [
-      { rel: 'stylesheet', href: 'https://cdn.jsdelivr.net/npm/katex@0.11.0/dist/katex.min.css' }
+      { rel: 'stylesheet', href: 'https://cdn.jsdelivr.net/npm/katex@0.11.0/dist/katex.min.css' },
+      { rel: 'stylesheet', href: 'https://rsms.me/inter/inter.css' },
     ],
     script: [
       {
