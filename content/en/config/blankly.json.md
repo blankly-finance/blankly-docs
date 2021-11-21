@@ -20,6 +20,7 @@ This file can be placed in version control.
   "python_version": "3.7",
   "requirements": "./requirements.txt",
   "working_directory": "."
+  "ignore_files": []
 }
 ```
 
@@ -31,3 +32,4 @@ This file can be placed in version control.
 | binance_tld            | This specifies the binance ending. Some examples include `us` or `com` for `binance.us` and `binance.com` respectively | str   |
 | websocket_buffer_size  | This setting limits the amount of history that a websocket can hold to limit memory usage. For example, `10000` means that it can only hold 10,000 of the most recent messages before the old messages begin to get deleted. | int   |
 | cash                   | This is the account that `.cash` corresponds to when running `interface.cash` (`interface` corresponds to an interface type object). This is a shortcut used for simplified buying/selling. If this were set to `USD` then running `interface.cash` on Coinbase Pro, it would give how much `USD` (size) is in the account to purchase with. See [here](/core/exchange_interface#cash---dict). | float |
+| ignore_files           | Path to files in which to skip uploads for. These are referenced from where the deploy command was executed | list  |

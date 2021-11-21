@@ -21,9 +21,9 @@ Any ticker connections to the supported exchanges will give this information for
 {
 	'price': 51714.73, 
 	'time': 1630896526.812199, 
-	'trade_id': 208225105, 
-  'symbol': 'BTC-USD', 
-  'size': 0.0153549
+    'trade_id': 208225105, 
+    'symbol': 'BTC-USD', 
+    'size': 0.0153549
 }
 ```
 

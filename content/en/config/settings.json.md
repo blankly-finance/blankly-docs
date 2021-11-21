@@ -18,9 +18,10 @@ This file can be placed in version control.
 {
   "settings": {
     "account_update_time": 5000,
-    "use_sandbox": true,
+    "use_sandbox": false,
     "use_sandbox_websockets": false,
     "websocket_buffer_size": 10000,
+    "test_connectivity_on_auth": true,
 
     "coinbase_pro": {
       "cash": "USD"
@@ -37,11 +38,13 @@ This file can be placed in version control.
 }
 ```
 
-| Key                    | Description                                                  | Type  |
-| ---------------------- | ------------------------------------------------------------ | ----- |
-| account_update_time    | For multiprocessing. This describes how often should the process check the exchange to report status (unit is milliseconds). | float |
-| use_sandbox            | Use your exchange's sandbox network for all REST calls. There is more info below for each exchange. | bool  |
-| use_sandbox_websockets | Because the volume can be incredibly low on sandbox servers, this is a separate setting to allow test REST requests while still working with high volume on the non-sandbox exchange. Coinbase Pro also occasionally turns off their websocket servers for the sandbox while leaving on the REST servers. | bool  |
-| binance_tld            | This specifies the binance ending. Some examples include `us` or `com` for `binance.us` and `binance.com` respectively | str   |
-| websocket_buffer_size  | This setting limits the amount of history that a websocket can hold to limit memory usage. For example, `10000` means that it can only hold 10,000 of the most recent messages before the old messages begin to get deleted. | int   |
-| cash                   | This is the account that `.cash` corresponds to when running `interface.cash` (`interface` corresponds to an interface type object). This is a shortcut used for simplified buying/selling. If this were set to `USD` then running `interface.cash` on Coinbase Pro, it would give how much `USD` (size) is in the account to purchase with. See [here](/core/exchange_interface#cash---dict). | float |
+| Key                       | Description                                                  | Type  |
+| ------------------------- | ------------------------------------------------------------ | ----- |
+| account_update_time       | For multiprocessing. This describes how often should the process check the exchange to report status (unit is milliseconds). | float |
+| use_sandbox               | Use your exchange's sandbox network for all REST calls. There is more info below for each exchange. | bool  |
+| use_sandbox_websockets    | Because the volume can be incredibly low on sandbox servers, this is a separate setting to allow test REST requests while still working with high volume on the non-sandbox exchange. Coinbase Pro also occasionally turns off their websocket servers for the sandbox while leaving on the REST servers. | bool  |
+| binance_tld               | This specifies the binance ending. Some examples include `us` or `com` for `binance.us` and `binance.com` respectively | str   |
+| websocket_buffer_size     | This setting limits the amount of history that a websocket can hold to limit memory usage. For example, `10000` means that it can only hold 10,000 of the most recent messages before the old messages begin to get deleted. | int   |
+| test_connectivity_on_auth | This will enable/disable an initialization function that checks if the connection is correct and loads things like an internal products list. If disabled, interfaces objects can be constructed extremely rapidly. | bool  |
+| cash                      | This is the account that `.cash` corresponds to when running `interface.cash` (`interface` corresponds to an interface type object). This is a shortcut used for simplified buying/selling. If this were set to `USD` then running `interface.cash` on Coinbase Pro, it would give how much `USD` (size) is in the account to purchase with. See [here](/core/exchange_interface#cash---dict). | float |
+| websocket_stream          | Alpaca internal websocket stream setting. If you upgrade your data feed through alpaca you can take advantage of it here. | str   |

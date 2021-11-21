@@ -170,13 +170,13 @@ def buy_or_sell(price, symbol, state: StrategyState):
         cash = blankly.trunc(interface.cash, 2)
 
         # buy using all of our cash (to 2 safety decimals)
-        interface.market_order(symbol=symbol, side='buy', funds=cash)
+        interface.market_order(symbol=symbol, side='buy', int(cash/price))
         # store order amount for sell order
         state.variables['own_position'] = True
     elif state.variables['own_position'] and not decision:
         # sell if we have decided to sell
         base_owned = interface.get_account(state.base_asset)['available']
-        interface.market_order(symbol=symbol, side='sell', funds=blankly.trunc(base_owned * price, 2))
+        interface.market_order(symbol=symbol, side='sell', int(base_owned))
         state.variables['own_position'] = False
 
 a = blankly.Alpaca()
@@ -202,8 +202,8 @@ Blankly's build and test environments are exactly the same, we can simply take o
 
 a = Alpaca()
 s = Strategy(a)
-s.add_price_event(buy_or_sell, currency_pair='MSFT', resolution='1d')
-s.add_price_event(buy_or_sell, currency_pair='AAPL', resolution='1d')
+s.add_price_event(buy_or_sell, symbol='MSFT', resolution='1d')
+s.add_price_event(buy_or_sell, symbol='AAPL', resolution='1d')
 
 # Testing
 s.backtest(to='1y')

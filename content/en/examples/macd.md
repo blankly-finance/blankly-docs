@@ -108,12 +108,11 @@ def price_event(price, symbol, state: StrategyState):
     is_cross_down = slope_macd < 0 and curr_macd <= curr_signal_macd < prev_macd
     if is_cross_up and not variables['has_bought']:
         # buy with all available cash
-        interface.market_order(symbol, 'buy', interface.cash)
+        interface.market_order(symbol, 'buy', int(interface.cash/price))
         variables['has_bought'] = True
     elif is_cross_down and variables['has_bought']:
         # sell all of the position
-        curr_value = trunc(interface.account[symbol].available * price, 2)
-        interface.market_order(symbol, 'sell', curr_value)
+        interface.market_order(symbol, 'sell', int(interface.account[symbol].available))
         variables['has_bought'] = False
 ```
 
@@ -173,12 +172,11 @@ def price_event(price, symbol, state: StrategyState):
     is_cross_down = slope_macd < 0 and curr_macd <= curr_signal_macd < prev_macd
     if is_cross_up and not variables['has_bought']:
         # buy with all available cash
-        interface.market_order(symbol, 'buy', interface.cash)
+        interface.market_order(symbol, 'buy', int(interface.cash/price))
         variables['has_bought'] = True
     elif is_cross_down and variables['has_bought']:
         # sell all of the position
-        curr_value = trunc(interface.account[symbol].available * price, 2)
-        interface.market_order(symbol, 'sell', curr_value)
+        interface.market_order(symbol, 'sell', int(interface.account[symbol].available))
         variables['has_bought'] = False
 
 
@@ -188,3 +186,4 @@ s.add_price_event(price_event, 'MSFT', resolution='1d', init=init)
 s.backtest(initial_values={'USD': 10000}, to='2y')
 
 ```
+
