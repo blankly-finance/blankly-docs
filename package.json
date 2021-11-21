@@ -6,8 +6,9 @@
     "dev": "MINIMAL=1 CSB=1 nuxt",
     "build": "nuxt build",
     "start": "nuxt start",
-    "generate": "nuxt generate",
-    "deploy": "nuxt generate && firebase deploy"
+    "update-tailwind": "rm ./node_modules/@nuxt/content-theme-docs/src/tailwind.config.js && cp ./tailwind.config.js ./node_modules/@nuxt/content-theme-docs/src/tailwind.config.js",
+    "generate": "npm run update-tailwind && nuxt generate",
+    "deploy": "npm run generate && firebase deploy"
   },
   "dependencies": {
     "@babel/preset-env": "7.12.17",
