@@ -79,9 +79,6 @@ module.exports = ({ docsOptions, nuxt }) => ({
           'h3 code': {
             fontWeight: '600'
           },
-          'pre code': {
-            fontFamily: 'DM Mono'
-          }
         }
       },
       dark: {

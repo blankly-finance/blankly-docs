@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "MINIMAL=1 CSB=1 nuxt",
+    "dev": "npm run update-tailwind && MINIMAL=1 CSB=1 nuxt",
     "build": "nuxt build",
     "start": "nuxt start",
     "update-tailwind": "rm ./node_modules/@nuxt/content-theme-docs/src/tailwind.config.js && cp ./tailwind.config.js ./node_modules/@nuxt/content-theme-docs/src/tailwind.config.js",
