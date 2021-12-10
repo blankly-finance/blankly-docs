@@ -10,7 +10,7 @@ category: Getting Started
 
 ## The Quick Run-Down
 
-Blankly is a package that allows you to rapidly build and deploy trading models at scale in the cloud. We're built the platform that enables you to backtest, paper trade, sandbox test, and deploy live cross-exchange without modifying a single line of trading logic.
+Blankly is a package that allows you to rapidly build and deploy trading models at scale in the cloud. We've built the platform that enables you to backtest, paper trade, sandbox test, and deploy live cross-exchange without modifying a single line of trading logic.
 
 We abstract away all the code related to connecting to exchanges (i.e. Coinbase Pro, Binance, and Stock Exchanges), order submission, and order book and price data (historical and real-time at your designated resolution) so that you can focus on building your models. 
 
@@ -24,8 +24,7 @@ Our goal is to take what originally takes 3-4 months of scrounging for data, con
 Blankly is the only package on the market that allows you to build a model once and allow it to run on any supported exchange and trading multiple entities at a time.
 Write logic once and trade `MSFT`, `AAPL`, and `BTC-USD` from the same file. 
 
-We support all the major cryptocurrencies through Coinbase and Binance along with all equity markets through Alpaca (we'll be adding support for Forex through OANDA soon). 
-Blankly makes it as simple as one line to convert an existing strategy or bot trading on one exchange into another. 
+We support all the major cryptocurrencies through Coinbase and Binance, all equity markets through Alpaca, and Forex through OANDA. Blankly makes it as simple as one line to convert an existing strategy or bot trading on one exchange into another. 
 
 ### Optimized for Performance at Scale
 
@@ -92,7 +91,7 @@ Don't worry about importing another library or configuring your model to fit int
 
 ### Customization for Any Level
 
-Whether you are new to quantitative finance, need a simple integration, want to deploy your models as fast as possible, or customize Blankly for your needs. We make it extremely useful for you to extend Blankly and adapt it for your use cases. We've modularized Blankly and optimized it for as many use cases as possible. 
+Whether you are new to quantitative finance, need a simple integration, want to deploy your models as fast as possible, or customize Blankly for your needs, we make it extremely useful for you to extend Blankly and adapt it for your use cases. We've modularized Blankly and optimized it for as many use cases as possible. 
 
 ## Goals
 ### Any Exchange
