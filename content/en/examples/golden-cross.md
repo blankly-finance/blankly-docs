@@ -107,8 +107,7 @@ def price_event(price, symbol, state: StrategyState):
 Now that we've gotten everything, let's bring it all together
 
 ```python
-from blankly import Strategy, StrategyState, Interface
-from blankly import Alpaca
+from blankly import Alpaca, Interface, Strategy, StrategyState
 from blankly.indicators import sma
 
 
@@ -117,8 +116,8 @@ def init(symbol, state: StrategyState):
     resolution: float = state.resolution
     variables = state.variables
     # initialize the historical data
-    variables['history'] = interface.history(symbol, 800, resolution)['close']
-    variables['has_bought'] = False
+    variables["history"] = interface.history(symbol, 800, resolution, return_as='deque')["close"]
+    variables["has_bought"] = False
 
 
 def price_event(price, symbol, state: StrategyState):
@@ -127,28 +126,33 @@ def price_event(price, symbol, state: StrategyState):
     resolution: float = state.resolution
     variables = state.variables
 
-    variables['history'].append(price)
+    variables["history"].append(price)
 
-    sma50 = sma(variables['history'], period=50)
-    sma200 = sma(variables['history'], period=200)
+    sma200 = sma(variables["history"], period=20)
+    sma50 = sma(variables["history"], period=10)[-len(sma200):]
     diff = sma200 - sma50
-    slope_sma50 = (sma50[-1] - sma50[-5]) / 5 # get the slope of the last 5 SMA50 Data Points
+    slope_sma50 = (
+        sma50[-1] - sma50[-5]
+    ) / 5  # get the slope of the last 5 SMA50 Data Points
     prev_diff = diff[-2]
     curr_diff = diff[-1]
     is_cross_up = slope_sma50 > 0 and curr_diff >= 0 and prev_diff < 0
     is_cross_down = slope_sma50 < 0 and curr_diff <= 0 and prev_diff > 0
     # comparing prev diff with current diff will show a cross
-    if is_cross_up and not variables['has_bought']:
-        interface.market_order('buy', symbol, int(interface.cash/price))
-        variables['has_bought'] = True
-    elif is_cross_down and variables['has_bought']:
-        interface.market_order('sell', symbol, int(interface.account[symbol].available))
-        variables['has_bought'] = False
+    if is_cross_up and not variables["has_bought"]:
+        interface.market_order(symbol, 'buy', int(interface.cash / price))
+        variables["has_bought"] = True
+    elif is_cross_down and variables["has_bought"]:
+        interface.market_order(
+            symbol, 'sell', int(interface.account[symbol].available)
+        )
+        variables["has_bought"] = False
 
 
-alpaca = Alpaca()
-s = Strategy(alpaca)
-s.add_price_event(price_event, 'MSFT', resolution='1d', init=init)
-s.backtest(initial_values={'USD': 10000}, to='2y')
+if __name__ == "__main__":
+    alpaca = Alpaca()
+    s = Strategy(alpaca)
+    s.add_price_event(price_event, "MSFT", resolution="1d", init=init)
+    s.backtest(initial_values={"USD": 10000}, to="2y")
 ```
 
