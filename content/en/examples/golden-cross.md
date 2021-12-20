@@ -19,7 +19,7 @@ We choose to buy a stock when the 50-day SMA crosses the 200-day SMA in an upwar
 ### Boilerplate Code
 
 <alert>
-To get started, make sure you have already [set up](/getting-started/installation) your environment along with the necssary keys and settings. 
+To get started, make sure you have already [set up](/getting-started/installation) your environment along with the necessary keys and settings. 
 </alert>
 
 We will be implementing the golden cross using `Blankly.Strategy` that allows for a quick and easy way of building out our golden cross. We'll also be utilizing `blankly.indicators` to quickly implement moving average calculations. 
