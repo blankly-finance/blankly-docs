@@ -18,7 +18,7 @@ The RSI typically has two bounds set: an upper bound of 70 and a lower bound of 
 ### Boilerplate Code
 
 <alert>
-To get started, make sure you have already [set up](/getting-started/installation) your environment along with the necssary keys and settings. 
+To get started, make sure you have already <a href="/getting-started/installation">set up</a> your environment along with the necssary keys and settings. 
 </alert>
 
 We will be implementing this strategy using `Blankly.Strategy` that allows for a quick and easy way of building out our golden cross. We'll also be utilizing `blankly.indicators` to quickly implement moving average calculations. 
