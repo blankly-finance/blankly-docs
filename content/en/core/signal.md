@@ -6,7 +6,7 @@ version: 1.0
 category: Framework
 ---
 
-The signal class is designed for algorithms that run on a "set" of stocks. Some useful use cases include: 
+The signal class is designed for algorithms that run on a "set" of assets. Some useful use cases include: 
 
 1. Long term and reliable marketing abilities. Instead of running on a single symbol, a signal will provide logic for a large number of symbols.
 2. Portfolio Balancing (Useful if you already know what's in your portfolio and you simply want to use Blankly to do portfolio optimization each month)
@@ -119,7 +119,7 @@ def init(state):
 def formatter(results, state: SignalState):
   # here we can format the results on a per ticker basis
 alpaca = Alpaca() # initialize our interface
-signal = Signal(alpaca, is_stock_buy, symbols=tickers, init=init)
+signal = Signal(alpaca, is_stock_buy, symbols=tickers, init=init, resolution='1d')
 signal.notify()
 ```
 
