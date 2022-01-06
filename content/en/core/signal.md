@@ -110,7 +110,7 @@ This is pretty straightforward as we will see:
 ```python
 from blankly import Signal, Alpaca, SignalState
 
-tickers = ['AAPL', 'GME', 'MSFT' ... ] # any stocks that you may want
+tickers = ['AAPL', 'GME', 'MSFT'] # any stocks that you may want
 # This function is our evaluator and runs per stock
 def is_stock_buy(symbol, state: SignalState):
   # in here we can get the price data, do anything else that we may need
@@ -130,7 +130,7 @@ To do this, we use our RSI indicator that is built into Blankly. First, let's ge
 ```python
 def is_stock_buy(symbol, state: SignalState):
   # get the most recent price from the exchange
-  prices = state.interface.history(symbol, 40, resolution=state.resolution) # get past 40 data points
+  prices = state.interface.history(symbol, 40, resolution=state.resolution, return_as='list') # get past 40 data points
 	...
 ```
 
@@ -140,7 +140,8 @@ Okay, now that's set up. Let's actually do the evaluator and see if the stocks a
 from blankly.indicators import rsi
 def is_stock_buy(symbol, state: SignalState):
   # This runs per stock
-  prices = state.interface.history(symbol, 40, resolution=state.resolution) # get past 40 data points
+  prices = state.interface.history(symbol, 40, resolution=state.resolution, return_as='list') # get past 40 data points
+  price = state.interface.get_price(symbol)
   rsi_values = rsi(prices['close'], 14)
   return { 'is_oversold': rsi_values[-1] < 30, 'price': price, 'symbol': symbol }
 ```
@@ -152,12 +153,12 @@ We can now use this to format output and notify the people that are connected to
 Now that we have the function that is continually checking if the stocks in our universe are oversold. Now we just need to format our results. 
 
 ```python
-def formatter(results, state: SymbolState):
+def formatter(results, state: SignalState):
   # results is a dictionary on a per symbol basis
   email_str = 'These are all the stocks that are currently oversold: \n'
-  for result in results:
-		if result['is_oversold']:
-      email_str += '{} is currently oversold at a price of {}\n\n'.format(symbol, price)
+  for symbol in results:
+		if result[symbol]['is_oversold']:
+      email_str += '{} is currently oversold at a price of {}\n\n'.format(symbol, result[symbol]['price'])
   return email_str
 ```
 
