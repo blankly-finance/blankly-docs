@@ -7,6 +7,8 @@ category: Getting Started
 features:
     - Full REST API support for non-margin accounts on listed exchanges
     - Ticker websocket support
+    - Full Support for Jupyter Notebooks and Google Colab Environments
+    - Easy Optimizations with Integrations with Optuna and Hyeropt
     - Order book websocket support
     - Fully multiprocessed bots with flexible arguments
     - Quickstart access for interacting with exchanges

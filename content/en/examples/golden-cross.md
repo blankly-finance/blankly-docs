@@ -10,6 +10,8 @@ category: Examples
 The golden cross is perhaps one of the most initial trading algorithms out there. It takes items such as moving averages into play and makes a quick decision on when to buy and when to sell. 
 Typically speaking, it utilizes the `50-Day SMA` and the `200-Day SMA` to determine whether or not to buy or sell a stock. 
 
+**Want to use a jupyter notebook? Check it out [here](https://firebasestorage.googleapis.com/v0/b/blankly-6ada5.appspot.com/o/notebooks%2FGolden%20Cross%20with%20Blankly.ipynb?alt=media&token=de189da5-d493-4c65-975e-a1500fc30588)**
+
 ### The Buy/Sell Condition
 
 We choose to buy a stock when the 50-day SMA crosses the 200-day SMA in an upward direction (typically signifying change in sentiment or stock movement) and sell when the 50-day recrosses the 200-day SMA in a downwards direction. 
