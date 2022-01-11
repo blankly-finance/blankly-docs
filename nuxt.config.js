@@ -71,6 +71,9 @@ export default theme({
   modules: [
     '@nuxtjs/sitemap'
   ],
+  sitemap: {
+    hostname: 'https://docs.blankly.finance'
+  },
   content: {
     markdown: {
       remarkPlugins: [
