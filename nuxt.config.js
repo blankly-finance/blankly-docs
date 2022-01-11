@@ -68,6 +68,9 @@ export default theme({
       },
     ]
   },
+  modules: [
+    '@nuxtjs/sitemap'
+  ],
   content: {
     markdown: {
       remarkPlugins: [
