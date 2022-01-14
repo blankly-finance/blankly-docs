@@ -55,6 +55,8 @@ Note that Signals DO NOT store state across cycles (i.e. it's as if the entire p
 | resolution | Specific Strategy Event Resolution (`None` for Orderbook Event). This is the number of seconds between runs if defined. | `resolution = state.resolution` | float             |
 | symbols    | The symbols that this signal runs on                         | `symbols = state.symbols`       | str[]             |
 | time       | The current epoch time (if in backtest mode or in real-time) | `time = state.time`             | Int               |
+| raw_results    |  The results returned by the filter "raw" so not done through format function | `results = signal.raw_results` | dict | 
+| formatted_results | The results returned by the formatter (i.e. the format function) | `results = signal.formatted_results` | dict |
 | notify     | A function that allows users to send notification emails on a per symbol basis (you can use this in your evaluator function) | `state.notify(message)`         | Function          |
 
 ### Common Use Cases
@@ -120,7 +122,8 @@ def formatter(results, state: SignalState):
   # here we can format the results on a per ticker basis
 alpaca = Alpaca() # initialize our interface
 signal = Signal(alpaca, is_stock_buy, symbols=tickers, init=init, resolution='1d')
-signal.notify()
+# signal.notify() send notification by email
+print(signal.formatted_results)
 ```
 
 ### Find All Stocks that Are Oversold using RSI
