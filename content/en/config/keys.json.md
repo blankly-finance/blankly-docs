@@ -32,6 +32,24 @@ This should be left out of version control.
             "API_KEY": "********************",
             "API_SECRET": "****************************************"
         }
+    },
+    "oanda": {
+        "oanda test portfolio": {
+            "ACCOUNT_ID": "********************",
+            "PERSONAL_ACCESS_TOKEN": "*****************************************************************"
+        }
+    },
+    "ftx": {
+        "ftx cool portfolio": {
+            "API_KEY": "********************",
+            "API_SECRET": "****************************************"
+        }
+    },
+    "kucoin": {
+        "kucoin cool portfolio": {
+            "API_KEY": "********************",
+            "API_SECRET": "****************************************"
+        }
     }
 }
 ```

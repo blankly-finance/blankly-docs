@@ -17,7 +17,6 @@ This file can be placed in version control.
 ```json[settings.json]
 {
   "settings": {
-    "account_update_time": 5000,
     "use_sandbox": false,
     "use_sandbox_websockets": false,
     "websocket_buffer_size": 10000,
@@ -32,7 +31,18 @@ This file can be placed in version control.
     },
     "alpaca": {
       "websocket_stream": "iex",
+      "cash": "USD",
+      "enable_shorting": true,
+      "use_yfinance": false
+    },
+    "oanda": {
       "cash": "USD"
+    },
+    "ftx": {
+      "cash": "USDT"
+    },
+    "kucoin": {
+      "cash": "USDT"
     }
   }
 }
