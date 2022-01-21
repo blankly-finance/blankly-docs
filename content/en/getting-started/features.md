@@ -25,6 +25,7 @@ features:
     - Run scheduled functions natively
     - Logs for websocket feeds
     - Status management for purchases
+    - Event Driven Framework so Testing and Live Environments are the Same
     - Create strategies using an event-based framework
     - Instantly backtest your strategies (`strategy.backtest(to='1y')`) without changing your code
     - Automatic price downloads & caching for use in backtests

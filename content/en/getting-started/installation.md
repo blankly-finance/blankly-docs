@@ -20,6 +20,19 @@ Make sure you're using a supported version of python. The module is currently te
 - Python 3.7
 - Python 3.9
 
+### Initializing with Your Exchange
+
+The blankly package comes in with a super easy CLI to initialize all the required files (you can see more below or in the config section). 
+All you have to do is run: 
+
+```bash
+$ blankly init
+```
+
+And this will initialize the current directory that you are in with all the files to get started. 
+
+From there! All you have to do is start building your algorithm! 
+
 ### Required Files
 
 In the working directory of your project (normally the root), Blankly needs two files:
