@@ -58,7 +58,7 @@ If you're an international Binance user, you must also make sure you change your
 Because we support both paper-trading environments and live trading, we allow users to input not just live keys but also sandbox keys that utilize various exchange's sandbox mode.
 
 <alert type="info">
-    Note, not all of the exchanges support sandbox mode (FTX for example does not). In this case, Blankly has a different wayt to do paper trading. 
+    Note, not all of the exchanges support sandbox mode (FTX for example does not). In this case, Blankly has a <a href="/API/sandbox_trading">different way</a> to do paper trading for these exchanges. 
 </alert>
 
 Thus, ensuring that you properly have `use_sandbox` to be `true` or `false` is critical in the `settings.json`. Blankly will also throw an error if it detect sandbox keys. 
