@@ -7,7 +7,7 @@ category: Examples
 
 ## Overview
 
-Let's analyze RSI (Relative Strength Index) to build a screener tha we can easily use to filter a universe of assets (say the NYSE or all assets on Coinbase). It is a common oscillator that is used to indicate whether or not an asset is overbought or oversold by analyzing the average price gains and losses for a given time period. 
+Let's analyze RSI (Relative Strength Index) to build a screener that we can easily use to filter a universe of assets (say the NYSE or all assets on Coinbase). It is a common oscillator that is used to indicate whether or not an asset is overbought or oversold by analyzing the average price gains and losses for a given time period. 
 
 ### What is a screener?
 
