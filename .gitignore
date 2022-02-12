@@ -10,3 +10,4 @@ sw.*
 .env
 /dist/_nuxt/
 *.cache
+/dist/
