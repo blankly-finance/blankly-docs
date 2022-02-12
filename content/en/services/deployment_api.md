@@ -6,7 +6,7 @@ version: 1.0
 category: Services
 ---
 
-# Role of Deployment API
+# Deployment API
 
 ​	Take a look at the python implementation of the API [here](https://github.com/Blankly-Finance/Blankly/blob/main/blankly/deployment/api.py#L114)!
 
