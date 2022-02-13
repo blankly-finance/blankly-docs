@@ -35,11 +35,9 @@ https://events.blankly.finance
 
 ### Optional
 
-| Arg           | Description                                                  | Examples                                | Type   |
-| ------------- | ------------------------------------------------------------ | --------------------------------------- | ------ |
-| time          | Optionally provide a time which will be used for every event timestamp. **If not provided then server time will be used**. Format in epoch seconds as a string or in some way compatible with `Date.parse()` | `'1644682832.742'`                      | string |
-| backtesting   | A value specifying if the incoming request belongs to a backtest. Must be sent with `backtestingid` | `'1'` or `'0'` or `'true'` or `'false'` | string |
-| backtestingid | Must be sent with `backtesting`. This is some identifier to  | `'8dv8bowjn39b9wh'`                     | string |
+| Arg  | Description                                                  | Examples           | Type   |
+| ---- | ------------------------------------------------------------ | ------------------ | ------ |
+| time | Optionally provide a time which will be used for every event timestamp. **If not provided then server time will be used**. Format in epoch seconds as a string or in some way compatible with `Date.parse()` | `'1644682832.742'` | string |
 
 ## Lifecycle
 
@@ -51,7 +49,7 @@ Update the lifecycle of this particular model. This includes when the model star
 
 | Arg     | Description                                                  | Examples                                              | Type    |
 | ------- | ------------------------------------------------------------ | ----------------------------------------------------- | ------- |
-| message | Optional key to override the message of the model status`    | `'Running'`, `'Stopped'`, `'Installing Dependencies'` | string  |
+| message | Optional key to override the message of the model status | ``'Running'``, `'Stopped'`, `'Installing Dependencies'` |String|
 | startAt | Optional key to override the start time of the model in epoch seconds | `1644682832.742`                                      | float   |
 | endAt   | Optional key to override the end time of the model in epoch seconds | `1644682832.742`                                      | float   |
 | running | Optional boolean to specify if the model is running or not   | `true` or `false`                                     | boolean |
@@ -129,6 +127,31 @@ A basic limit order done on a spot exchange (no leverage, margin, or shorting).T
 | price      | The price the limit order is set for execution               | `2532.43`                                | float  |
 | annotation | An optional reasoning or context for this action             | `'RSI low'`                              | string |
 
+## Screener
+
+### `POST /v1/live/screener-result`
+
+Run your model across symbols & markets to view inside the platform
+
+| Arg     | Description                      | Examples                     | Type |
+| ------- | -------------------------------- | ---------------------------- | ---- |
+| results | A dictionary with keys as symbol | `"BTC-USD": {"value": 10.3}` | dict |
+
+```json
+{
+  "results": {
+    "AAPL": { // Organize by symbol
+      "RSI": 29.5, // Keep the same keys internally across all symbols
+      "buy_signal": true // Keep same keys
+		},
+    "MSFT": {
+      "RSI": 54.3, // Nesting beyond this level is not supported
+      "buy_signal": false
+		}
+  }
+}
+```
+
 ## Logs
 
 Send typed logs to the platform so you can monitor your model remotely
@@ -146,6 +169,18 @@ Blankly supports viewing for multi symbol backtest orders, account values, metri
 
 ### `POST /v1/backtest/backtest-result`
 
+| Arg            | Description                                                  | Examples                                                     | Type   |
+| -------------- | ------------------------------------------------------------ | ------------------------------------------------------------ | ------ |
+| symbols        | A list of symbols as strings that were used in the backtest  | `["NCLH", "MSFT", "AAPL"]`                                   | list   |
+| quote_asset    | The asset you used to quote your account in                  | `"USD"` or `"EUR"`                                           | string |
+| start_time     | Where in time the backtest began in epoch seconds            | `1577836800`                                                 | float  |
+| stop_time      | Where in time the backtest ended in epoch seconds            | `1609459200`                                                 | float  |
+| backtest_id    | The identifier for the backtest. Match this with backtest status | `"4j4n2399vh23kfjijk"`                                       | string |
+| account_values | An array of dictionaries specifying account values over time. | `'[{"time": 1613174400.0, "value": 10000.0}]'`               | list   |
+| trades         | A list of dictionaries with the same keys specified above    | `{"symbol": "BTC-USD", "size": 1.0, "side": "buy", "id": "uuid", "time": 1609459200, "annotation": "RSI Low"}` | list   |
+| metrics        | Single point metrics for your backtest such as `cagr`        | `"cagr": {"value": 14, "display_name": "Compound annual growth rate", "type": "percent"}` | dict   |
+| indicators     | Time series indicators used by your model                    | See example below                                            | dict   |
+
 #### Example
 
 ```json
@@ -154,6 +189,7 @@ Blankly supports viewing for multi symbol backtest orders, account values, metri
   "quote_asset": "USD", // The asset to quote from, what is you account value in?
   "start_time": 1577836800, // When the backtest started
   "stop_time": 1609459200, // When the backtest ended
+  "backtest_id": "4j4n2399vh23kfjijk"
   "account_values": [ // The total value of the account over time
     {"time": 1613174400.0, "value": 10000.0},
     {"time": 1621209600.0, "value": 9952.061}
@@ -196,6 +232,14 @@ Blankly supports viewing for multi symbol backtest orders, account values, metri
 ### `POST /v1/backtest/backtest-status`
 
 This route is used to specify the lifecycle of the current  backtest runner.
+
+| Arg            | Description                                                  | Examples                               | Type   |
+| -------------- | ------------------------------------------------------------ | -------------------------------------- | ------ |
+| successful     | A boolean specifying if the backtest has succeeded or not    | `true` or `false`                      | bool   |
+| status_summary | Any message about its success or an error                    | `'Completed'` or `'Error'`             | string |
+| status_details | Any longer description about the status or a failure error   | `""` or `"KeyError: price on line 25"` | string |
+| time_elapsed   | The amount of time in seconds it took to run the backtest    | `9.5` or `63`                          | float  |
+| backtest_id    | An identifier for this backtest. Match this with the backtest result. | `"4j4n2399vh23kfjijk"`                 | String |
 
 ```json
 {
