@@ -1,4 +1,3 @@
-[TOC]
 ---
 title: Events API
 description: 'Detached events logging for non-platform users'
@@ -6,8 +5,6 @@ position: 36
 version: 1.0
 category: Services
 ---
-
-# Events API
 
 ​	The events API enables developers from any framework to send model events, logs, trades and notifications to the blankly platform for private, secure, but still sharable viewing & interaction. This is the missing frontend for developers who want to monetize their algorithms or investors that want to have a better view of how their money is used.
 
@@ -54,10 +51,26 @@ Update the lifecycle of this particular model. This includes when the model star
 
 | Arg     | Description                                                  | Examples                                              | Type    |
 | ------- | ------------------------------------------------------------ | ----------------------------------------------------- | ------- |
-| message | Optional key to override the message of the model status     | `'Running'`, `'Stopped'`, `'Installing Dependencies'` | string  |
+| message | Optional key to override the message of the model status`    | `'Running'`, `'Stopped'`, `'Installing Dependencies'` | string  |
 | startAt | Optional key to override the start time of the model in epoch seconds | `1644682832.742`                                      | float   |
 | endAt   | Optional key to override the end time of the model in epoch seconds | `1644682832.742`                                      | float   |
 | running | Optional boolean to specify if the model is running or not   | `true` or `false`                                     | boolean |
+
+## Monitoring
+
+Post a wide variety of attributes of your model to the platform for a more complete & accurate view
+
+### `POST /v1/model/used-symbol`
+
+| Arg    | Description                                  | Examples              | Type   |
+| ------ | -------------------------------------------- | --------------------- | ------ |
+| symbol | Symbol to add to the platform for this model | `'BTC-USD'`, `'AAPL'` | string |
+
+### `POST /v1/model/used-exchange`
+
+| Arg      | Description                                    | Examples                     | Type   |
+| -------- | ---------------------------------------------- | ---------------------------- | ------ |
+| exchange | Exchange to add to the platform for this model | `'alpaca'`, `'coinbase_pro'` | string |
 
 ## Event
 
@@ -115,6 +128,17 @@ A basic limit order done on a spot exchange (no leverage, margin, or shorting).T
 | active     | The stop activation price of the order                       | `53532.24`                               | float  |
 | price      | The price the limit order is set for execution               | `2532.43`                                | float  |
 | annotation | An optional reasoning or context for this action             | `'RSI low'`                              | string |
+
+## Logs
+
+Send typed logs to the platform so you can monitor your model remotely
+
+### `POST /v1/live/log`
+
+| Arg  | Description                        | Examples                            | Type   |
+| ---- | ---------------------------------- | ----------------------------------- | ------ |
+| line | The data to write                  | `'Executed market buy for 2.1 BTC'` | string |
+| type | Any type specification for the log | `'stdout'`, `'stderr'`, `'warning'` | string |
 
 ## Backtests
 

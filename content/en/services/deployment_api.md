@@ -6,8 +6,6 @@ version: 1.0
 category: Services
 ---
 
-# Deployment API
-
 ​	Take a look at the python implementation of the API [here](https://github.com/Blankly-Finance/Blankly/blob/main/blankly/deployment/api.py#L114)!
 
 ​	The deployment API acts as a service to allow users or developers to send models to the cloud. Writing wrappers or directly calling the deployment API is a way to remove any interaction with the blankly Command Line Interface (CLI).
