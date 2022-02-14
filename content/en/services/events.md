@@ -50,8 +50,8 @@ Update the lifecycle of this particular model. This includes when the model star
 | Arg     | Description                                                  | Examples                                              | Type    |
 | ------- | ------------------------------------------------------------ | ----------------------------------------------------- | ------- |
 | message | Optional key to override the message of the model status | ``'Running'``, `'Stopped'`, `'Installing Dependencies'` |String|
-| startAt | Optional key to override the start time of the model in epoch seconds | `1644682832.742`                                      | float   |
-| endAt   | Optional key to override the end time of the model in epoch seconds | `1644682832.742`                                      | float   |
+| start_at | Optional key to override the start time of the model in epoch seconds | `1644682832.742`                                      | float   |
+| end_at | Optional key to override the end time of the model in epoch seconds | `1644682832.742`                                      | float   |
 | running | Optional boolean to specify if the model is running or not   | `true` or `false`                                     | boolean |
 
 ## Monitoring
@@ -133,13 +133,13 @@ A basic limit order done on a spot exchange (no leverage, margin, or shorting).T
 
 Run your model across symbols & markets to view inside the platform
 
-| Arg     | Description                      | Examples                     | Type |
-| ------- | -------------------------------- | ---------------------------- | ---- |
-| results | A dictionary with keys as symbol | `"BTC-USD": {"value": 10.3}` | dict |
+| Arg    | Description                      | Examples                     | Type |
+| ------ | -------------------------------- | ---------------------------- | ---- |
+| result | A dictionary with keys as symbol | `"BTC-USD": {"value": 10.3}` | dict |
 
 ```json
 {
-  "results": {
+  "result": {
     "AAPL": { // Organize by symbol
       "RSI": 29.5, // Keep the same keys internally across all symbols
       "buy_signal": true // Keep same keys
@@ -167,7 +167,7 @@ Send typed logs to the platform so you can monitor your model remotely
 
 Blankly supports viewing for multi symbol backtest orders, account values, metrics and custom events and indicator time series to make understanding, improving and sharing your model even easier.
 
-### `POST /v1/backtest/backtest-result`
+### `POST /v1/backtest/result`
 
 | Arg            | Description                                                  | Examples                                                     | Type   |
 | -------------- | ------------------------------------------------------------ | ------------------------------------------------------------ | ------ |
@@ -189,7 +189,7 @@ Blankly supports viewing for multi symbol backtest orders, account values, metri
   "quote_asset": "USD", // The asset to quote from, what is you account value in?
   "start_time": 1577836800, // When the backtest started
   "stop_time": 1609459200, // When the backtest ended
-  "backtest_id": "4j4n2399vh23kfjijk"
+  "backtest_id": "4j4n2399vh23kfjijk",
   "account_values": [ // The total value of the account over time
     {"time": 1613174400.0, "value": 10000.0},
     {"time": 1621209600.0, "value": 9952.061}
@@ -229,7 +229,7 @@ Blankly supports viewing for multi symbol backtest orders, account values, metri
 }
 ```
 
-### `POST /v1/backtest/backtest-status`
+### `POST /v1/backtest/status`
 
 This route is used to specify the lifecycle of the current  backtest runner.
 
@@ -239,7 +239,7 @@ This route is used to specify the lifecycle of the current  backtest runner.
 | status_summary | Any message about its success or an error                    | `'Completed'` or `'Error'`             | string |
 | status_details | Any longer description about the status or a failure error   | `""` or `"KeyError: price on line 25"` | string |
 | time_elapsed   | The amount of time in seconds it took to run the backtest    | `9.5` or `63`                          | float  |
-| backtest_id    | An identifier for this backtest. Match this with the backtest result. | `"4j4n2399vh23kfjijk"`                 | String |
+| backtest_id    | An identifier for this backtest. Match this with the backtest result. | `"4j4n2399vh23kfjijk"`                 | string |
 
 ```json
 {
@@ -250,6 +250,16 @@ This route is used to specify the lifecycle of the current  backtest runner.
   "backtest_id": "4j4n2399vh23kfjijk"
 }
 ```
+
+### `POST /v1/backtest/log`
+
+Add a log specifically to this backtest
+
+| Arg         | Description                                            | Examples                            | Type   |
+| ----------- | ------------------------------------------------------ | ----------------------------------- | ------ |
+| line        | The data to write                                      | `'Executed market buy for 2.1 BTC'` | string |
+| type        | Any type specification for the log                     | `'stdout'`, `'stderr'`, `'warning'` | string |
+| backtest_id | The backtest identifier to register this backtest with | `"4j4n2399vh23kfjijk"`              | string |
 
 # Base Routes
 
