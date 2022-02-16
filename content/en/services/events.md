@@ -92,6 +92,7 @@ A basic market order done on a spot exchange (no leverage, margin, or shorting).
 | Arg        | Description                                                  | Examples                                 | Type   |
 | ---------- | ------------------------------------------------------------ | ---------------------------------------- | ------ |
 | symbol     | The order symbol                                             | `'BTC-USD'` or `'AAPL'`                  | string |
+| exchange   | The name of the exchange the order is executed on            | `'alpaca'` or `'coinbase_pro'`           | string |
 | size       | The quantity of the order (2 BTC). Cannot be sent with `funds`. | `2` or `8.3`                             | float  |
 | funds      | The amount of quote currency used in the order (183 dollars). Cannot be sent with `size`. | `129.32` or `542.22`                     | float  |
 | id         | The exchange-given order id                                  | `'2ebbda7c-5ce1-4b1d-81fd-b1beab7553a7'` | string |
@@ -105,6 +106,7 @@ A basic limit order done on a spot exchange (no leverage, margin, or shorting).T
 | Arg        | Description                                                  | Examples                                 | Type   |
 | ---------- | ------------------------------------------------------------ | ---------------------------------------- | ------ |
 | symbol     | The order symbol                                             | `'BTC-USD'` or `'AAPL'`                  | string |
+| exchange   | The name of the exchange the order is executed on            | `'alpaca'` or `'coinbase_pro'`           | string |
 | size       | The quantity of the order (2 BTC). Cannot be sent with `funds`. | `2` or `8.3`                             | float  |
 | funds      | The amount of quote currency used in the order (183 dollars). Cannot be sent with `size`. | `129.32` or `542.22`                     | float  |
 | id         | The exchange-given order id                                  | `'2ebbda7c-5ce1-4b1d-81fd-b1beab7553a7'` | string |
@@ -119,6 +121,7 @@ A basic limit order done on a spot exchange (no leverage, margin, or shorting).T
 | Arg        | Description                                                  | Examples                                 | Type   |
 | ---------- | ------------------------------------------------------------ | ---------------------------------------- | ------ |
 | symbol     | The order symbol                                             | `'BTC-USD'` or `'AAPL'`                  | string |
+| exchange   | The name of the exchange the order is executed on            | `'alpaca'` or `'coinbase_pro'`           | string |
 | size       | The quantity of the order (2 BTC). Cannot be sent with `funds`. | `2` or `8.3`                             | float  |
 | funds      | The amount of quote currency used in the order (183 dollars). Cannot be sent with `size`. | `129.32` or `542.22`                     | float  |
 | id         | The exchange-given order id                                  | `'2ebbda7c-5ce1-4b1d-81fd-b1beab7553a7'` | string |
@@ -126,6 +129,15 @@ A basic limit order done on a spot exchange (no leverage, margin, or shorting).T
 | active     | The stop activation price of the order                       | `53532.24`                               | float  |
 | price      | The price the limit order is set for execution               | `2532.43`                                | float  |
 | annotation | An optional reasoning or context for this action             | `'RSI low'`                              | string |
+
+### `POST /v1/live/update-trade`
+
+Update an existing trade with any values relevant. This can include updating a limit or market order with the execution price or viewing the status of large and long term orders
+
+| Arg  | Description                 | Examples                                                | Type            |
+| ---- | --------------------------- | ------------------------------------------------------- | --------------- |
+| id   | The exchange-given order id | `'2ebbda7c-5ce1-4b1d-81fd-b1beab7553a7'`                | string          |
+|      | Add any other keys          | `executionPrice: 54` or `executionTime: 1644682832.742` | json compatible |
 
 ## Screener
 
