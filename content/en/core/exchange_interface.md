@@ -285,9 +285,9 @@ Download historical data with rows of *at least* `time (epoch seconds)`, `low`',
 #### Arguments
 
 | Arg        | Description                                                  | Examples                        | Type                 |
-| ---------- | ------------------------------------------------------------ | ------------------------------- | -------------------- |
+| ---------- | ------------------------------------------------------------ | ------------------------------- |----------------------|
 | symbol     | The identifier for the product to order                      | "BTC-USD" or "XLM-USD"          | str                  |
-| to         | Time from exactly now to begin downloading from (`'1y'` would download the last year of data at the granularity resolution). | 86453 or `'1y'` or '`2h`'       | float or str         |
+| to         | Time from exactly now to begin downloading from (`'1y'` would download the last year of data at the granularity resolution). If passed an integer that will be the number of bars instead of a length of time. | 86453 or `'1y'` or '`2h`'       | int or str            |
 | resolution | Resolution as a time string (`1m`, `4h`, `1d`, `1y`)         | `1m`, `1d`, `4h`                | str                  |
 | start_date | Starts history collection at a given start date (must have an `end_date` associated with it). This can be a datetime, a date string or an epoch timestamp | `'2018-05-02'`, `123849`        | str, float, datetime |
 | end_date   | End Date for history collection, can be used in conjunction with `start_date` or `to` | `'2018-05-02'`, `123849`        | str, float, datetime |
