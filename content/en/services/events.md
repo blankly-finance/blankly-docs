@@ -139,6 +139,15 @@ Update an existing trade with any values relevant. This can include updating a l
 | id   | The exchange-given order id | `'2ebbda7c-5ce1-4b1d-81fd-b1beab7553a7'`                | string          |
 |      | Add any other keys          | `executionPrice: 54` or `executionTime: 1644682832.742` | json compatible |
 
+### `POST /v1/live/update-annotation`
+
+Retroactively update an existing annotation or add a new one without sending along a full order body. This is extremely useful for changing contexts or giving better insights of how the algo views current orders.
+
+| Arg        | Description                            | Examples                                 | Type   |
+| ---------- | -------------------------------------- | ---------------------------------------- | ------ |
+| id         | The exchange-given order id            | `'2ebbda7c-5ce1-4b1d-81fd-b1beab7553a7'` | string |
+| annotation | The new or updated annotation to write | `'RSI Low Buy'`                          | string |
+
 ## Screener
 
 ### `POST /v1/live/screener-result`
