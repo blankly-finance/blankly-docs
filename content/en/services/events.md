@@ -26,12 +26,11 @@ https://events.blankly.finance
 
 ### Required
 
-| Arg       | Description                                   | Examples             | Type   |
-| --------- | --------------------------------------------- | -------------------- | ------ |
-| projectid | The project id of the model to push to        | `890f0b89e0vjops09d` | string |
-| modelid   | The model id of the model to push to          | `9v9b089bokwekn93d2` | string |
-| versionid | The version id of the model to push to        | `ke9bsj3jtn9b39fgbn` | string |
-| token     | The given token for this version of the model | `******************` | string |
+| Arg      | Description                            | Examples             | Type   |
+| -------- | -------------------------------------- | -------------------- | ------ |
+| model_id | The model id of the model to push to   | `9v9b089bokwekn93d2` | string |
+| api_key  | The api key generated on the platform  | `ke9bsj3jtn9b39fgbn` | string |
+| api_pass | The api pass generated on the platform | `******************` | string |
 
 ### Optional
 
