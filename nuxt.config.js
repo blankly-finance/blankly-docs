@@ -8,7 +8,7 @@ export default theme({
     configPath: '~~/tailwind.config.js',
   },
   head: {
-    title: "Build Quant Models with Blankly | Documentation",
+    title: "Build Trading Algorithms with Blankly | Documentation",
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
