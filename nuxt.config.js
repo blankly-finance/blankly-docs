@@ -47,7 +47,7 @@ export default theme({
     link: [
       { rel: 'stylesheet', href: 'https://cdn.jsdelivr.net/npm/katex@0.11.0/dist/katex.min.css' },
       { rel: 'stylesheet', href: 'https://rsms.me/inter/inter.css' },
-      { rel: 'stylesheet', href: 'https://firebasestorage.googleapis.com/v0/b/blankly-6ada5.appspot.com/o/container.css?alt=media&token=0e3d3118-f873-44aa-920e-190469d34a64'}
+      { rel: 'stylesheet', href: '/container.css'}
     ],
     script: [
       {

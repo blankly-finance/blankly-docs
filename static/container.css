@@ -1,0 +1,9 @@
+.container {
+    max-width: 85% !important;
+}
+
+code[class*="language-"],
+pre[class*="language-"] {
+    font-size: 0.85rem !important;
+    font-family: ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace !important;
+}
