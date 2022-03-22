@@ -1,5 +1,7 @@
-.container {
-    max-width: 85% !important;
+@media screen and (min-width: 1200px) {
+    .container {
+        max-width: 85% !important;
+    }
 }
 
 code[class*="language-"],
