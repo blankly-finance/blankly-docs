@@ -18,7 +18,19 @@ pip install blankly
 
 Make sure you're using a supported version of python. The module is currently tested on these versions:
 - Python 3.7
+- Python 3.8
 - Python 3.9
+- Python 3.10
+
+### Logging in with Blankly Slate
+
+Blankly Slate is our platform offering that integrates directly with your local development so that you get benchmarking, additional metrics, visualization, backtest storing, and live deployments all in one place. You can easily get set up by running.
+
+Want to learn more about [Blankly Slate](https://blankly.finance). Check out this [demo model](https://app.blankly.finance/5Z9MWfnUzwIyy9Qv385a/1Ss7zybwN8aMAbWb3lSH/overview)
+
+```bash
+$ blankly login
+```
 
 ### Initializing with Your Exchange
 
@@ -30,6 +42,15 @@ $ blankly init
 ```
 
 And this will initialize the current directory that you are in with all the files to get started. 
+
+You can also initialize with the specific exchange that you'd like by simply adding that exchange: 
+
+```bash
+$ blankly init binance
+$ blankly init ftx
+$ blankly init alpaca
+...
+```
 
 From there! All you have to do is start building your algorithm! 
 

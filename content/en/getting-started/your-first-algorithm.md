@@ -9,9 +9,40 @@ category: Getting Started
 
 Let's analyze RSI (Relative Strength Index). It is a common oscillator that is used to indicate whether or not an asset is overbought or oversold by analyzing the average price gains and losses for a given time period. 
 
+Want to see what you'll make by the end of this? Check [this out](https://app.blankly.finance/5Z9MWfnUzwIyy9Qv385a/1Ss7zybwN8aMAbWb3lSH/overview)
+
 ### The Buy/Sell Condition
 
 The RSI typically has two bounds set: an upper bound of 70 and a lower bound of 30 (see [Investopedia](https://www.investopedia.com/terms/r/rsi.asp)). Specifically, when the asset hits below 30, then we want to buy in, and when the asset hits above 70, we want to sell. 
+
+## Setting Up Your Environment with Blankly
+
+To get up and running, all we have to do is install blankly and initialize our directory. 
+
+### Installation
+
+```bash
+$ pip install blankly
+```
+
+### Linking with Blankly Slate (Platform)
+
+If you're using the platform (there's a free plan), then you'll get more access to backtest metrics, results, visualizations, and the ability to easily deploy live. We'll easily login here.
+
+```bash
+$ blankly login
+```
+
+### Initializing Directory
+Now, all we need to do is initialize our directory and follow the prompts to get all set up (if you're using Blankly Slate, feel free to create a new model here called "RSI Bots")
+```bash
+$ blankly init
+```
+
+### Adding Alpaca Keys
+We're going to use Alpaca for this tutorial, but feel free to use whatever you'd like. The video below links how to set up Alpaca keys with Blankly
+
+<iframe className="mx-auto m-10 rounded-md shadow-xl" width="560" height="315" src="https://www.youtube.com/embed/videoseries?list=PLH05sP51Q8g8uumn2mSphApnK9FLxIpPC" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
 
 ## Implementing in Blankly
 
@@ -33,11 +64,12 @@ Strategies can have as many price events and combinations as you'd like. You're 
 
 ![Strategy Visually](https://firebasestorage.googleapis.com/v0/b/blankly-docs-images.appspot.com/o/strategy%2Fblankly-strategy.png?alt=media&token=e5d7879e-ece3-4ee7-bf9d-b5adb8220994)
 
-### Boilerplate Code
+### Setting Up Our Python File
 
-<alert>
-To get started, make sure you have already <a href="/getting-started/installation">set up</a> your environment along with the necssary keys and settings. 
-</alert>
+
+`blankly init` provides us a bot.py but we're going to utilize our own and call it `rsi_bot.py`
+
+### Boilerplate Code
 
 We will be implementing this strategy using `Blankly.Strategy` that allows for a quick and easy way of building out our RSI strategy. We'll also be utilizing `blankly.indicators` to quickly implement the RSI calculations. 
 
@@ -151,3 +183,27 @@ if __name__ == "__main__":
     print(results)
 
 ```
+
+Now just run 
+
+```bash
+$ python rsi_bot.py
+```
+
+If you're using Blankly Slate, your backtest should now be visualized in the platform! 
+
+You'll also get output in your terminal! 
+
+Awesome! We just successfully ran our first model 
+
+## Deploying It
+
+If you want to test it out, let's put it into a live paper trading environment using Blankly Slate (if you're following with Blankly Slate).
+
+Now all you have to do is run
+
+```bash
+$ blankly deploy
+```
+
+See the final result that you'll actually get [here](https://app.blankly.finance/5Z9MWfnUzwIyy9Qv385a/1Ss7zybwN8aMAbWb3lSH/overview) 
