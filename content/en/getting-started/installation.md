@@ -35,6 +35,8 @@ From there! All you have to do is start building your algorithm!
 
 ### Required Files
 
+![required_files](https://firebasestorage.googleapis.com/v0/b/blankly-docs-images.appspot.com/o/strategy%2Fblankly-directory.png?alt=media&token=f4764ee6-ee2e-4c7e-96df-a4bbecf4bba8)
+
 In the working directory of your project (normally the root), Blankly needs two files:
 1. settings.json
 ```json[settings.json]
