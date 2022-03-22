@@ -1,8 +1,8 @@
 ---
-title: RSI
+title: Your First Blankly Algorithm
 description: 'Detecting overbuying and overselling using RSI'
-position: 11
-category: Examples
+position: 24
+category: Getting Started
 ---
 
 ## Overview
@@ -14,6 +14,24 @@ Let's analyze RSI (Relative Strength Index). It is a common oscillator that is u
 The RSI typically has two bounds set: an upper bound of 70 and a lower bound of 30 (see [Investopedia](https://www.investopedia.com/terms/r/rsi.asp)). Specifically, when the asset hits below 30, then we want to buy in, and when the asset hits above 70, we want to sell. 
 
 ## Implementing in Blankly
+
+### The `blankly.Strategy` Object
+
+The strategy class is the heart of the Blankly development framework. The goal when developing this class was to create something that could seamlessly integrate with the powerful user-objects that Blankly provides, while also giving an experience that barely goes beyond basic python. This means that functions can be asynchronous and multithreaded without the user ever noticing, while taking advantage of highly integrated exchange interfaces to make model development incredibly clean & simple.
+
+Similar to many modern packages that follow more of a functional and declarative format such as [Keras](https://keras.io/), we wanted to model our Strategy class so that anyone can easily [integrate their models](https://docs.blankly.finance/examples/custom-model) and custom price events. 
+
+More details, check out the [Blankly Strategy Docs](/core/strategy)
+
+Strategies created using the class can be instantly ***backtested, paper traded, sandbox tested, and deployed by only changing a single line*.**
+
+<alert>
+
+Strategies can have as many price events and combinations as you'd like. You're able to run a single price event on multiple resolutions and symbols and or run many-to-many.
+
+</alert>
+
+![Strategy Visually](https://firebasestorage.googleapis.com/v0/b/blankly-docs-images.appspot.com/o/strategy%2Fblankly-strategy.png?alt=media&token=e5d7879e-ece3-4ee7-bf9d-b5adb8220994)
 
 ### Boilerplate Code
 

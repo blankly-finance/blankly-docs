@@ -1,7 +1,7 @@
 ---
 title: An RSI Screener
 description: 'Screening a set of assets for oversold signals'
-position: 23
+position: 10
 category: Examples
 ---
 
@@ -11,7 +11,7 @@ Let's analyze RSI (Relative Strength Index) to build a screener that we can easi
 
 ### What is a screener?
 
-A screener is a "filter", here at Blankly, we like to call it a "signal". Instead of like a [strategy](/core/strategy)  that runs on a specific asset (like `BTC-USD`), a [signal](/core/signal) runs on a **set of assets** (so giving it an array such as `['BTC-USD', 'ETH-USD']`). This makes it extremely useful to evaluate and analyze multiple assets all at once and instead of "trading" each individually, we will make decisions based on the signal output **across** all of the assets. 
+A screener is a "filter", here at Blankly, we like to call it a "signal". Instead of like a [strategy](/core/strategy)  that runs on a specific asset (like `BTC-USD`), a [screener](/core/screener) runs on a **set of assets** (so giving it an array such as `['BTC-USD', 'ETH-USD']`). This makes it extremely useful to evaluate and analyze multiple assets all at once and instead of "trading" each individually, we will make decisions based on the signal output **across** all of the assets. 
 
 ### When should I use a Signal vs a Strategy
 
@@ -42,20 +42,20 @@ We will be implementing this strategy using `Blankly.Signal` that allows for a q
 ### Create Signal
 
 ```python
-from blankly import Signal, Alpaca, SignalState
+from blankly import Screener, Alpaca, ScreenerState
 
 tickers = ['AAPL', 'GME', 'MSFT' ... ] # any stocks that you may want
 # This function is our evaluator and runs per stock
-def is_stock_buy(symbol, state: SignalState):
+def is_stock_buy(symbol, state: ScreenerState):
   # in here we can get the price data, do anything else that we may need
 def init(state):
   # initialize price data for example (so price queries are faster)
-def formatter(results, state: SignalState):
+def formatter(results, state: ScreenerState):
   # here we can format the results on a per ticker basis
   
 alpaca = Alpaca() # initialize our interface
-signal = Signal(alpaca, is_stock_buy, symbols=tickers, init=init, resolution="1d") # run this every day
-signal.notify()
+signal = Screener(alpaca, is_stock_buy, symbols=tickers, init=init, resolution="1d") # run this every day
+screener.notify()
 ```
 
 ### Implementing the Evaluator Function
@@ -64,7 +64,7 @@ Now that we've set up our signal. Let's build out our "buy condition", i.e. when
 
 
 ```python
-def is_stock_buy(symbol, state: SignalState):
+def is_stock_buy(symbol, state: ScreenerState):
   # This runs per stock
   prices = state.interface.history(symbol, 40, resolution=state.resolution) # get past 40 data points
   rsi_values = rsi(prices['close'], 14)
@@ -96,20 +96,20 @@ One thing you'll begin to realize as you continue to develop with Blankly is tha
 </alert>
 
 ```python
-from blankly import Signal, Alpaca, SignalState
+from blankly import Screener, Alpaca, ScreenerState
 from blankly.indicators import rsi
 
 tickers = ['AAPL', 'GME', 'MSFT'] # any stocks that you may want
 
 # This function is our evaluator and runs per stock
-def is_stock_buy(symbol, state: SignalState):
+def is_stock_buy(symbol, state: ScreenerState):
   # This runs per stock
   prices = state.interface.history(symbol, 40, resolution=state.resolution, return_as='list') # get past 40 data points
   price = state.interface.get_price(symbol)
   rsi_values = rsi(prices['close'], 14)
   return { 'is_oversold': rsi_values[-1] < 30, 'price': price, 'symbol': symbol }
 
-def formatter(results, state: SignalState):
+def formatter(results, state: ScreenerState):
   # results is a dictionary on a per symbol basis
   result_string = 'These are all the stocks that are currently oversold: \n'
   for symbol in results:
@@ -118,8 +118,8 @@ def formatter(results, state: SignalState):
   return result_string
   
 alpaca = Alpaca() # initialize our interface
-signal = Signal(alpaca, is_stock_buy, symbols=tickers, formatter=formatter, resolution='1d') # find oversold every day
-signal.notify()
+screener = Screener(alpaca, is_stock_buy, symbols=tickers, formatter=formatter, resolution='1d') # find oversold every day
+screener.notify()
 ```
 
 ## Output

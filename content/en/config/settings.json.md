@@ -1,7 +1,7 @@
 ---
 title: settings.json
 description: 'Key/value descriptions for settings.json'
-position: 5
+position: 39
 version: 1.0
 category: Config
 ---

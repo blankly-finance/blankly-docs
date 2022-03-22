@@ -3,7 +3,7 @@ title: Sandbox Trading
 description: 'Information on the construction & usage of a sandbox object'
 position: 34
 version: 1.0
-category: API
+category: Getting Started
 ---
 
 The sandbox interface object allows users to realistically sandbox trade on any of our exchanges. By default, sandboxes allow:
@@ -31,6 +31,9 @@ paper_trade = blankly.PaperTrade(coinbase_pro)
 
 # Get the interface like usual:
 interface = paper_trade.get_interface()
+
+s = blankly.Strategy(paper_trade) # strategy that can now run on paper trade
+s.start() # running live but paper trading
 ```
 
 ### Arguments
