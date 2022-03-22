@@ -18,6 +18,8 @@ We abstract away all the code related to connecting to exchanges (i.e. Coinbase 
 Our goal is to take what originally takes 3-4 months of scrounging for data, connecting endpoints, and more, and make it only a few lines of code so that your workflow is optimized and easy
 </alert>
 
+![Overview Image](https://firebasestorage.googleapis.com/v0/b/blankly-docs-images.appspot.com/o/overview%2Fpackage-overview.png?alt=media&token=917d757f-1c02-4d91-9b04-d8891291ed05)
+
 
 ### One Codebase, Cross-Exchange, Trading Multiple Entities
 

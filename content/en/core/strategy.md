@@ -20,6 +20,8 @@ Strategies can have as many price events and combinations as you'd like. You're 
 
 ## The Strategy Object
 
+![Strategy Visually](https://firebasestorage.googleapis.com/v0/b/blankly-docs-images.appspot.com/o/strategy%2Fblankly-strategy.png?alt=media&token=e5d7879e-ece3-4ee7-bf9d-b5adb8220994)
+
 The object requires an authenticated [`exchange`](/core/exchange) object to function:
 
 ```python
