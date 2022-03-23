@@ -10,8 +10,9 @@
   "defaultDir": "",
   "defaultBranch": "master",
   "algolia": {
-    "apiKey": "07112c525faa27964ce89df4a86063d2",
+    "apiKey": "36088f03875bdd010bd0e41695a299fd",
+    "appId": "L75D6O5SU8",
     "indexName": "blankly",
-    "language": "lang"
+    "langAttribute": "lang"
   }
 }
