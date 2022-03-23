@@ -12,6 +12,5 @@
   "algolia": {
     "apiKey": "07112c525faa27964ce89df4a86063d2",
     "indexName": "blankly",
-    "langAttribute": "en"
   }
 }
