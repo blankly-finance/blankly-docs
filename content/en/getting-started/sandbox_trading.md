@@ -16,6 +16,10 @@ The sandbox interface object allows users to realistically sandbox trade on any 
 
 This creates a very powerful & dynamic paper trading experience. Our goal was to make it almost impossible to distinguish the difference between live trading and paper trading.
 
+<alert>
+Note: We highly recommend sandbox trading for at least one to two weeks before going fully live with your algorithm. We make our sandbox trading as accurate as possible
+</alert>
+
 ## Creation
 
 To create a paper trading object simply wrap an existing exchange object with a paper trade constructor:

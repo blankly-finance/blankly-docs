@@ -8,6 +8,8 @@ category: Getting Started
 
 <blockquote> Blankly is making quantitative finance more accessible for everyone </blockquote>
 
+<iframe className="mx-auto m-10 rounded-md shadow-xl" width="100%" height="400" src="https://www.youtube.com/embed/qyST9CxLNPY" title="YouTube video player" frameBorder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+
 ## The Quick Run-Down
 
 Blankly is a package that allows you to rapidly build and deploy trading models at scale in the cloud. We've built the platform that enables you to backtest, paper trade, sandbox test, and deploy live cross-exchange without modifying a single line of trading logic.
