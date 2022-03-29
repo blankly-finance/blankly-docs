@@ -182,7 +182,7 @@ def price_event(price, symbol, state: StrategyState):
 
 alpaca = Alpaca()
 s = Strategy(alpaca)
-s.add_price_event(price_event, 'MSFT', resolution='1d', init=init)
+s.add_price_event(price_event, 'MSFT', resolution='30m', init=init)
 s.backtest(initial_values={'USD': 10000}, to='2y')
 
 ```
