@@ -183,7 +183,7 @@ The KAMA adjusts its weighting relative to the current market conditions of nois
 
 | Description                    | Examples                   | Type                       |
 | ------------------------------ | -------------------------- | -------------------------- |
-| Array-Like of The MACD signals | [-2.25, 0, 2.25, 1.25 ...] | Float[], np.arr, pd.Series |
+| Array of Array-Like of The MACD signals | [[-2.25, 0, 2.25, 1.25 ... ]] | List[Float[], np.arr, pd.Series] |
 
 The MACD (Moving Average Convergence and Divergence) is a way of looking at two different moving averages and identifying key characteristics of price movements relative to the crossing and diverging of the two moving averages. It utilizes the exponential moving average, subtracting the `long_period` from the `short_period` and using that to compare against the `signal_period`. Check out this in [Investopedia](https://www.investopedia.com/terms/m/macd.asp).
 
