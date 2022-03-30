@@ -5,7 +5,7 @@ position: 4
 category: Getting Started
 ---
 
-We started Blankly because we knew that the traditional way of doing things was simply frustrating. Whether it was building your model and connecting it to exchanges, getting historical data, or even just implementing metrics, backtesting, and indicators. Here, we'll show you how Blankly makes the current way of doing things seem so outdated. 
+We started Blankly because we knew that the traditional way of doing things was simply frustrating. Whether it was building your model and connecting it to exchanges, getting historical data, or even just implementing metrics, backtesting, and indicators, building and testing trading models was tedious and error-prone. Here, we'll show you how Blankly makes the current way of doing things seem so outdated. 
 
 
 ## Gathering Data
@@ -16,7 +16,7 @@ Current methods involve heavily using third-party packages including `yfinance` 
 
 ### Using Blankly
 
-Blankly makes it extremely easy by integrating with our interfaces that run on any exchange.
+Blankly makes it extremely easy to gather data by integrating with our interfaces that run on any exchange.
 
 <alert type="warning">
     Most recent data will be delayed by 15 minutes with Alpaca if a premium key is not specified in your keys.json. 
@@ -43,12 +43,12 @@ interface.history('AAPL', 50, resolution='1d')
     If you're not familiar with portfolio metrics, please check out our <a href="/metrics/metrics">metrics docs</a>
 </alert>
 
-Traditionally, building out all the metrics takes a lot of time. Whether it's simply calculating a sharpe or sortino ratio. 
+Traditionally, building out all the metrics takes a lot of time. Even if it's simply calculating a Sharpe or Sortino ratio, the process of doing so typically takes significant work to gather the necessary data and implement the relevant function.
 
 ### Traditionally
 #### Getting Return History
 
-The first step is to get all the price data of a stock
+The first step is to get all the price data of a stock.
 ```python
 from model import Model # model that returns buy or sell signal
 import yfinance as yf
@@ -58,7 +58,7 @@ prices = price_data.history('1y', interval='1d')
 ```
 
 #### Calculating Model Returns
-Now that we have the data, let's make some decisions based on our model on when to buy or sell
+Now that we have the data, let's make some decisions based on our model on when to buy or sell.
 
 ```python
 ... 
@@ -88,7 +88,7 @@ for price in prices:  # loop through each day
 
 #### Calculate the Ratios
 
-Now let's implement the code needed to calculate portfolio returns and ratios. We're going to calculate the sharpe ratio
+Now, let's implement the code needed to calculate portfolio returns and ratios. We're going to calculate the Sharpe ratio.
 
 ```python
 ...
@@ -148,7 +148,7 @@ sharpe_ratio = sharpe(portfolio_value_per_day)
 
 ### Using Blankly
 
-Blankly simplifies this code into just a few lines and better yet, this same code can immediately be used for deployment by simply removing the `.backtest()` call
+Blankly simplifies this code into fewer lines, and even better, allows the same code to immediately be deployed by simply removing the `.backtest()` call.
 
 ```python
 from examples.working_examples.model import my_awesome_model as model
@@ -167,16 +167,13 @@ def buy_or_sell(price, symbol, state: StrategyState):
     interface = state.interface
 
     if decision and not state.variables['own_position']:
-        cash = blankly.trunc(interface.cash, 2)
-
         # buy using all of our cash (to 2 safety decimals)
-        interface.market_order(symbol=symbol, side='buy', int(cash/price))
+        interface.market_order(symbol=symbol, side='buy', int(blankly.trunc(interface.cash, 2)/price))
         # store order amount for sell order
         state.variables['own_position'] = True
     elif state.variables['own_position'] and not decision:
         # sell if we have decided to sell
-        base_owned = interface.get_account(state.base_asset)['available']
-        interface.market_order(symbol=symbol, side='sell', int(base_owned))
+        interface.market_order(symbol=symbol, side='sell', int(interface.get_account(state.base_asset)['available']))
         state.variables['own_position'] = False
 
 a = blankly.Alpaca()
@@ -192,10 +189,13 @@ s.backtest(to='1y', initial_values={'USD': 100000})  # sharpe is already include
 
 ### Traditionally
 
-In order to make our traditional code to work, we would need to create a separate function to work with a python package like `alpaca` or `CoinbasePro` that is completely different from our backtesting code. This leads to 1. a lot of unnecessary code duplication, 2. difficulty of maintaining code especially when switching across exchanges, and 3. makes it almost extremely difficult to make one strategy run on multiple tickers at the same time. 
+In order to make our traditional code work, we would need to create a separate function to work with a Python package like `alpaca` or `CoinbasePro` that is completely different from our backtesting code. This leads to:
+ 1. a lot of unnecessary code duplication
+ 2. difficulty in maintaining code, especially when switching across exchanges
+ 3. difficulty in making one strategy run on multiple tickers at the same time. 
 
 ### Using Blankly
-Blankly's build and test environments are exactly the same, we can simply take our strategy defined in the previous example and immediately use it to run a real model by removing `.backtest()` 
+Blankly's build and test environments are exactly the same, so we can simply take our strategy defined in the previous example and immediately use it to run a real model by removing `.backtest()` 
 
 ```python
 ... 
@@ -257,7 +257,7 @@ Better yet, we run your metrics not only individually per stock but also on the 
 
 ### Traditionally
 
-Traditionally, your price events are tied down to your market orders of a specific ticker or strategy, but we want to change that 
+Traditionally, your price events are tied to your market orders of a specific ticker or strategy, but we want to change that 
 
 ### Using Blankly
 
