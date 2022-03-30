@@ -24,7 +24,7 @@ This page details a bit more about what metrics Blankly provides, what their pur
 
 ## Metrics Use Cases
 
-We offer metrics because we know the importance of testing our models. That's why we've made it extremely easy for you to not only create your own metrics (as we discuss later), but also utilizing our built-in Blankly metrics. Calling `strategy.backtest()` automatically has a wide variety of metrics and built-in ratios including Sharpe, Sortino, Maximum Drawdown, and Cagr to name a few. However, we also provide you the ability to add your own callbacks by simply passing in a callbacks array like so:
+We offer metrics because we know the importance of testing our models. That's why we've made it extremely easy for you to not only create your own metrics (as we discuss later), but also utilizing our built-in Blankly metrics. Calling `strategy.backtest()` automatically provides a wide variety of metrics and built-in ratios, including Sharpe, Sortino, Maximum Drawdown, and CAGR to name a few. However, we also provide you the ability to add your own callbacks by simply passing in a callbacks array like below, where we have an example using a weighted average of the Sharpe and Sortino ratios.
 
 <alert type="danger"> We have already included many metrics built into backtesting (sharpe, sortino, and many more), if you are to add any additional built-in metrics, please wrap them like so. This is to allow for proper integration with all of the backtesting data. </alert> 
 
@@ -72,7 +72,7 @@ Return metrics are as they sound: metrics that tell you how much your model actu
 | ------------------------------- | -------- | ----- |
 | Compound Annualized Growth Rate | 25%, 35% | Float |
 
-Compound Annualized Growth Rate (CAGR) or otherwise known as the Annualized Return is a metric that is utilized to determine the average annual rate at which your money has increased over time. 
+Compound Annualized Growth Rate (CAGR), otherwise known as the Annualized Return is a metric that is utilized to determine the average annual rate at which your money has increased over time. 
 
 **Keep in mind that this is an average and not necessarily what you make every year**
 
@@ -120,7 +120,7 @@ cum_returns(start_value, final_portfolio_value)
 
 ## Risk vs Reward Ratios
 
-Building models is all about risk vs reward, it's important to build models that not only win big, but also lose less than other ones. It's much better (on the heart at least) to have a model that makes a couple of small wins, than one big one (0.5% every day for 365 days is still a whopping 182.5% return). Let's take a look on how quants model this.
+Building models is all about risk vs reward, it's important to build models that not only win big, but also lose less than other ones. It's much better (on the heart at least) to have a model that makes a couple of small wins, than one big one (0.5% every day for 365 days is a whopping 517.5% compounded return). Let's take a look on how quants model this.
 
 ### `sharpe(returns, n=252, risk_free_rate=None)`
 
@@ -138,9 +138,9 @@ Building models is all about risk vs reward, it's important to build models that
 | ------------ | ---------- | ----- |
 | Sharpe Ratio | 2.10, 1.75 | Float |
 
-The sharpe ratio is perhaps one of the most often-used risk vs reward ratios out there. It takes the average returns over a given timespan, subtracts it by the risk free rate (i.e. the rate at which you're guaranteed a certain return, this is typically set at 0.15% for Treasury bills), and divides it by the standard deviation. You can think of it as "how much am I making" over "how much grit do I have to muster". A higher sharpe ratio, the more reward you get for your risk. 
+The sharpe ratio is one of the most used risk vs reward ratios out there. It takes the average returns over a given timespan, subtracts it by the risk free rate (i.e. the rate at which you're guaranteed a certain return, this is typically set at 0.15% for Treasury bills), and divides it by the standard deviation. You can think of it as "how much am I making" over "how much grit do I have to muster". A higher sharpe ratio, the more reward you get for your risk. 
 
-In our implementation, we annualize the sharpe ratio depending on the frequency of your orders, defaulting to 252 (252 trading days for stocks). 
+In our implementation, we annualize the sharpe ratio depending on the frequency of your orders, defaulting to 252 (252 trading days for stocks). For more information, check out [Investopedia](https://www.investopedia.com/terms/s/sharperatio.asp)
 $$
 Annualized \ Sharpe \ Ratio = \sqrt{n} \cdot \frac{avg \ return - risk \ free \ rate}{std \ of 
 \ returns}
@@ -162,9 +162,9 @@ $$
 | ------------- | ---------- | ----- |
 | Sortino Ratio | 2.10, 1.75 | Float |
 
-The sortino ratio is very similar to the sharpe ratio with one key difference: we only compare the volatility of the losing trades. The sortino ratio says "why penalize a model if it's making 2% on this trade and 120% on the next if it's losing only 2% on every bad trade". Thus instead of the standard deviation of all trades (both good and bad), the sortino ratio only looks at the standard deviation of losing trades (sold or covered at a loss). 
+The Sortino ratio is very similar to the sharpe ratio with one key difference: we only consider the volatility of the losing trades. The Sortino ratio says "why penalize a model if it's making 2% on this trade and 120% on the next if it's losing only 2% on every bad trade". Thus instead of the standard deviation of all trades (both good and bad), the Sortino ratio only looks at the standard deviation of losing trades (sold or covered at a loss). 
 
-In our implementation, we annualize the sortino ratio depending on the frequency of your orders, defaulting to 252 (252 trading days for stocks). 
+In our implementation, we annualize the sortino ratio depending on the frequency of your orders, defaulting to 252 (252 trading days for stocks). For more information, check out [Investopedia](https://www.investopedia.com/terms/s/sortinoratio.asp)
 $$
 Annualized \ Sortino \ Ratio = \sqrt{n} \cdot \frac{avg \ return - risk \ free \ rate}{std \ of \ negative  \ returns}
 $$
@@ -185,9 +185,9 @@ $$
 | ------------ | ---------- | ----- |
 | Calmar Ratio | 2.10, 1.75 | Float |
 
-The calmar ratio takes the average returns and compares it to the worst case scenario (i.e. the maximum drawdown if you keep reading) of all the returns. Instead of analyzing all the trades, it primarily looks at the worst case scenario and bases risk on that. If the maximum drawdown is low, then the calmar ratio is fairly high. 
+The Calmar ratio takes the average returns and compares it to the worst case scenario (the maximum drawdown, or the largest decrease from a peak) of all the returns. Instead of analyzing all the trades, it determines risk off of the observed worst outcome. If the maximum drawdown is low, then the Calmar ratio will fairly high. For more information, check out [Investopedia](https://www.investopedia.com/terms/c/calmarratio.asp)
 $$
-Annualized \ Sortino \ Ratio = \sqrt{n} \cdot \frac{avg \ return - risk \ free \ rate}{|maximum \ drawdown|}
+Annualized \ Calmar \ Ratio = \sqrt{n} \cdot \frac{avg \ return - risk \ free \ rate}{|maximum \ drawdown|}
 $$
 
 ### `var(initial_value, returns, alpha)`
@@ -224,7 +224,7 @@ For more information, check out [Investopedia](https://www.investopedia.com/term
 
 | Description                                            | Examples | Type  |
 | ------------------------------------------------------ | -------- | ----- |
-| Conditioanl Value at Risk (at specified `alpha` level) | $25,000  | Float |
+| Conditional Value at Risk (at specified `alpha` level) | $25,000  | Float |
 
 Conditional Value at Risk improves on Value at Risk by determining the expected short fall, i.e. what is the average loss upon exceeding a certain level of confidence (i.e. `alpha`). 
 
@@ -244,7 +244,7 @@ For more information, check out [Investopedia](https://www.investopedia.com/term
 | -------------------- | -------- | ----- |
 | The Maximum Drawdown | -0.25    | Float |
 
-Max drawdown attempts to seek out the largest peak to trough across returns. It helps you determine how big of a swing you're expected to have while trading with your model and is used in calculations including the Calmar Ratio. We take your returns, and determine the largest peak to trough and return it to you. 
+Max drawdown finds the largest peak to trough across returns. It helps you determine how big of a swing you're expected to have while trading with your model and is used in calculations like the Calmar Ratio. We take your returns, and determine the largest peak to trough and return it to you. 
 $$
 Max \ Drawdown = \frac{Trough \ Value - Peak \ Value} {Peak \ Value}
 $$
@@ -295,7 +295,7 @@ We offer the ability to annualize the variance by passing in `n` as a parameter 
 
 #### Arguments
 
-Beta is a way to measure how volatile your model is relative to a base model of returns (i.e. something like the S&P500, a Vanguard Index, etc.), we give you full flexibility of choosing your return base as long as the values are consistent, we then calculate the beta, the beta is defined as the covariance between the returns and their standard deviation. For more information see [Investopedia](https://www.investopedia.com/terms/b/beta.asp)
+Beta is a way to measure how volatile your model is relative to a base model of returns (i.e. something like the S&P500, a Vanguard Index, etc.). We give you full flexibility of choosing your return base as long as the values are consistent. We then calculate the beta,  defined as the covariance between the returns and their standard deviation. For more information see [Investopedia](https://www.investopedia.com/terms/b/beta.asp)
 $$
 \beta = \frac{Cov(returns, market \ returns)}{Var(market \ returns)}
 $$
@@ -304,7 +304,7 @@ $$
 
 ## Building Your Own Metrics
 
-It's pretty easy to build your own metrics to integrate with our backtesting framework. We will pass you all data related to the backtest in a `pd.DataFrame`. Thus, create your metric as shown below:
+It's pretty easy to build your own metrics to integrate with our backtesting framework. We pass you all data related to the backtest in a `pd.DataFrame`. Then, create your metric as shown below:
 
 <code-block label="Python">
 
@@ -324,4 +324,4 @@ s.backtest(callbacks=[your_custom_metric])
 
 We are continually adding more and more metrics as we go, but we'd love for your feedback and help in making more, if you have one that should be included, submit a PR and we'll take a look at it right away. 
 
-We hope that these metrics provide a comprehensive method of determining which models to use and implement. 
+We hope that these metrics provide a comprehensive toolkit to help you iterate and improve models and then determine which models to use and implement. 
