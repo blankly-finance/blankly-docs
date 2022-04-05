@@ -22,15 +22,11 @@ Make sure you're using a supported version of python. The module is currently te
 - Python 3.9
 - Python 3.10
 
-### Logging in with Blankly Slate
+### Blankly Slate
 
-Blankly Slate is our platform offering that integrates directly with your local development so that you get benchmarking, additional metrics, visualization, backtest storing, and live deployments all in one place. You can easily get set up by running.
+Blankly Slate is our platform offering that integrates directly with your local development so that you get benchmarking, additional metrics, visualization, backtest storing, and live deployments all in one place. It's super easy to get set up.
 
 Want to learn more about [Blankly Slate](https://blankly.finance). Check out this [demo model](https://app.blankly.finance/5Z9MWfnUzwIyy9Qv385a/1Ss7zybwN8aMAbWb3lSH/overview)
-
-```bash
-$ blankly login
-```
 
 ### Initializing with Your Exchange
 
@@ -41,18 +37,48 @@ All you have to do is run:
 $ blankly init
 ```
 
-And this will initialize the current directory that you are in with all the files to get started. 
+This will ask you for information about your model and initialize the current directory with all the files you need to get started. 
 
-You can also initialize with the specific exchange that you'd like by simply adding that exchange: 
+From there, all you have to do is start building your algorithm! 
+
+### Backtesting your model
+
+Blankly makes it easy to backtest your models. After initializing your project, you can run
 
 ```bash
-$ blankly init binance
-$ blankly init ftx
-$ blankly init alpaca
-...
+$ python bot.py
 ```
 
-From there! All you have to do is start building your algorithm! 
+to run a backtest. To change backtest parameters like testing dates/times, you can change the `strategy.backtest()` line in `bot.py`.
+
+```python
+strategy.backtest(to='1y', initial_values={'USD': 10000})
+```
+
+### Deploying your model to Blankly Slate
+
+Deploying your model is dead simple. Once you've written and backtested your algorithm, just run :
+
+```bash
+$ blankly deploy
+```
+
+This will deploy your model to the cloud and open a web page for you where you can check on the status of your model, see what trades it is making, compare different metrics, and more.
+
+### Adding Exchange API Keys
+
+`blankly init` will prompt you to add API Keys when you create your model, but in case you skipped that, you can add or remove keys at any time with the `blankly key` command.
+
+```
+$ blankly key add
+? What exchange would you like to add a key for? Binance
+? What TLD are you using? binance.us
+? Give this key a name:  (Optional) blankly-test-key
+? API Secret: ***************************************************************
+? API Key: ***************************************************************
+✔ Checked Binance API Key
+✔ Your API key for Binance was added to this model
+```
 
 ### Required Files
 
