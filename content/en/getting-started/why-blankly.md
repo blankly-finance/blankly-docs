@@ -1,7 +1,7 @@
 ---
 title: Why Blankly?
 description: ''
-position: 4
+position: 5
 category: Getting Started
 ---
 

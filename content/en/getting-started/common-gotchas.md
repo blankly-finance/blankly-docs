@@ -1,7 +1,7 @@
 ---
 title: Common Gotchas
 description: Here are some common gotchas that might cause your code to not work with Blankly
-position: 3
+position: 4
 version: 1.0
 category: Getting Started
 ---
