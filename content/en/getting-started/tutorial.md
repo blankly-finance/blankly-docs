@@ -51,7 +51,7 @@ $ blankly init
 
 ### Connecting to an Exchange
 
-We recommend connecting your model to an Exchange. This will give you better backtesting, live data, and the ability to deploy your model live with `blanklly deploy`.
+We recommend connecting your model to an Exchange. This will give you better backtesting, live data, and the ability to deploy your model live with `blankly deploy`.
 
 ```
 $ blankly init
