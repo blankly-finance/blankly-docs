@@ -1,5 +1,5 @@
 ---
-title: Model
+title: Tweets and Custom Data
 description: 'Build advanced, flexible and event driven strategies'
 position: 37
 version: 1.0

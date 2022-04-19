@@ -6,7 +6,7 @@ version: 1.1
 category: Blankly Strategy
 ---
 
-The strategy class is the heart of the Blankly development framework. The goal when developing this class was to create something that could seamlessly integrate with the powerful user-objects that Blankly provides, while also giving an experience that barely goes beyond basic python. This means that functions can be asynchronous and multithreaded without the user ever noticing, while taking advantage of highly integrated exchange interfaces to make model development incredibly clean & simple.
+The strategy class is built on top of the blankly model class. The goal when developing this class was to create something that could seamlessly integrate with the powerful user-objects that Blankly provides, while also giving an experience that barely goes beyond basic python. This means that functions can be asynchronous and multithreaded without the user ever noticing, while taking advantage of highly integrated exchange interfaces to make model development incredibly clean & simple.
 
 Similar to many modern packages that follow more of a functional and declarative format such as [Keras](https://keras.io/), we wanted to model our Strategy class so that anyone can easily [integrate their models](https://docs.blankly.finance/examples/custom-model) and custom price events. 
 
