@@ -3,7 +3,7 @@ title: Model
 description: 'Build advanced, flexible and event driven strategies'
 position: 37
 version: 1.0
-category: Services
+category: Examples
 ---
 
 ## Overview
