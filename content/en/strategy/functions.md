@@ -10,7 +10,7 @@ As mentioned before. the `Blankly.Strategy` is an extremely versatile way to int
 
 ## Functions
 
-### `add_price_event(callback: typing.Callable, symbol: str, resolution: str or float, init: typing.Callable, teardown: typing.Callable = None, synced: bool = False)`
+### `add_price_event(callback: typing.Callable, symbol: str, resolution: typing.Union[str, float], init: typing.Callable = None, teardown: typing.Callable = None, synced: bool = False, variables: dict = None)`
 
 Adds a price event to the strategy. This will pass a price as well as a `price_event` function with args `(price, symbol)`. Users can access their strategy information within `StrategyState`
 
@@ -24,6 +24,7 @@ Adds a price event to the strategy. This will pass a price as well as a `price_e
 | init       | Fill this with a callback function to allow a setup for the state variable. This is run per price event initialization. | Pass a function like `setup` with arguments that are `setup(currency_pair, state)` | Callable     |
 | teardown   | A function to run when the strategy is stopped or interrupted. Example usages include liquidating     positions, writing or cleaning up data or anything else useful | `teardown(state)`                                            | Callable     |
 | synced     | Whether to start price event in sync with the exchange resolution times (i.e. if it's 15m resolution then run at 12:15, 12:30, 12:45, and 1:00) | True or False                                                | bool         |
+| variables  | A dictionary to initialize the variables dictionary in the state | `{'symbol': 'BTC-USD'}`                                      | dict         |
 
 ### Example Use Case
 
@@ -66,9 +67,38 @@ s.add_price_event(price_event, 'MSFT', resolution='15m', init=init)
 s.start()
 ```
 
-
-
 Check out our [RSI](/examples/rsi), [Golden Cross](/examples/golden-cross) examples as well for more references.
+
+### `add_scheduled_event(callback: typing.Callable, resolution: typing.Union[str, float], init: typing.Callable = None, teardown: typing.Callable = None, synced: bool = False, variables: dict = None)`
+
+This creates an event that will call your function at a regular interval with no extra API calls.
+
+#### Arguments
+
+| Arg        | Description                                                  | Examples                                                     | Type         |
+| ---------- | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------ |
+| callback   | A callback function to add a price event for                 | `price_event`                                                | Callable     |
+| resolution | Resolution to send prices to the user function.              | `3600` or `'15s'`                                            | str or float |
+| init       | Fill this with a callback function to allow a setup for the state variable. This is run per price event initialization. | Pass a function like `setup` with arguments that are `setup(currency_pair, state)` | Callable     |
+| teardown   | A function to run when the strategy is stopped or interrupted. Example usages include liquidating     positions, writing or cleaning up data or anything else useful | `teardown(state)`                                            | Callable     |
+| synced     | Whether to start price event in sync with the exchange resolution times (i.e. if it's 15m resolution then run at 12:15, 12:30, 12:45, and 1:00) | True or False                                                | bool         |
+| variables  | A dictionary to initialize the variables dictionary in the state | `{'symbol': 'BTC-USD'}`                                      | dict         |
+
+### `add_arbitrage_event(callback: typing.Callable, symbols: list, resolution: typing.Union[str, float], init: typing.Callable = None, teardown: typing.Callable = None, synced: bool = False, variables: dict = None)`
+
+This will gather data from multiple symbols and send the prices to your event. When live this will create a thread pool and query each symbol in a different thread to optimize the speed.
+
+#### Arguments
+
+| Arg        | Description                                                  | Examples                                                     | Type         |
+| ---------- | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------ |
+| callback   | A callback function to add a price event for                 | `price_event`                                                | Callable     |
+| symbols    | A list of symbols to grab the price from                     | `['BTC-USD', 'ETH-USD']`                                     | list         |
+| resolution | Resolution to send prices to the user function.              | `3600` or `'15s'`                                            | str or float |
+| init       | Fill this with a callback function to allow a setup for the state variable. This is run per price event initialization. | Pass a function like `setup` with arguments that are `setup(currency_pair, state)` | Callable     |
+| teardown   | A function to run when the strategy is stopped or interrupted. Example usages include liquidating     positions, writing or cleaning up data or anything else useful | `teardown(state)`                                            | Callable     |
+| synced     | Whether to start price event in sync with the exchange resolution times (i.e. if it's 15m resolution then run at 12:15, 12:30, 12:45, and 1:00) | True or False                                                | bool         |
+| variables  | A dictionary to initialize the variables dictionary in the state | `{'symbol': 'BTC-USD'}`                                      | dict         |
 
 ### `add_orderbook_event(callback: typing.Callable, symbol: str, init: typing.Callable = None, teardown: typing.Callable = None)`
 
@@ -140,8 +170,6 @@ a = blankly.Alpaca()
 s = Strategy(a)
 s.add_price_event(some_bar_event, 'MSFT', resolution='15m', init=init)
 ```
-
-
 
 ### `time() -> float` 
 
