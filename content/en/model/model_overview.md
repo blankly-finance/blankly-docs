@@ -60,6 +60,8 @@ class ModelDemo(blankly.Model):
 
 This is especially exciting for arbitrage or tick by tick data. Finally having access to timing this accurate is essential for well tested strategies.
 
+We are adding a `self.backtester.latency('.01s')` to allow global latency.
+
 ### Injecting Data
 
 The model class accepts a few different types of data:
