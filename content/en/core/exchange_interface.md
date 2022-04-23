@@ -165,6 +165,38 @@ Create a new live limit order on your exchange.
 
 A `limit_order` object. Documentation is pending.
 
+### `take_profit_order(symbol, price, size) -> TakeProfitOrder`
+
+Create a new live take-profit order on your exchange. This is a market sell order that will execute when the price reaches a certain high.
+
+#### Arguments
+
+| Arg    | Description                                                  | Examples               | Type  |
+| ------ | ------------------------------------------------------------ | ---------------------- | ----- |
+| symbol | Identifier for the product to order                          | "BTC-USD" or "XLM-EUR" | str   |
+| price  | Price to place the order at. This should be greater than the current asking price | 32000 or 15000 | float |
+| size   | Amount of **base** to sell. This means "BTC" or "XLM."       | 0.1185                 | float |
+
+#### Response
+
+A `TakeProfitOrder` object. Documentation is pending.
+
+### `stop_loss_order(symbol, price, size) -> StopLossOrder`
+
+Create a new live stop-loss order on your exchange. This is a market sell order that will execute when the price reaches a certain low.
+
+#### Arguments
+
+| Arg    | Description                                                  | Examples               | Type  |
+| ------ | ------------------------------------------------------------ | ---------------------- | ----- |
+| symbol | Identifier for the product to order                          | "BTC-USD" or "XLM-EUR" | str   |
+| price  | Price to place the order at. This should be lower than the current asking price | 32000 or 15000 | float |
+| size   | Amount of **base** to sell. This means "BTC" or "XLM."       | 0.1185                 | float |
+
+#### Response
+
+A `StopLossOrder` object. Documentation is pending.
+
 ### `cancel_order(symbol, order_id) -> dict`
 
 Cancel a particular order.
