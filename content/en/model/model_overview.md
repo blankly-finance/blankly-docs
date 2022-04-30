@@ -18,7 +18,7 @@ import blankly
 class ModelDemo(blankly.Model):
   def main(args):
     # Exit when we run out of data
-    if self.has_data:
+    while self.has_data:
       # Print the price every hour
       print(self.interface.get_price('BTC-USD'))
       self.sleep('1h')
@@ -45,7 +45,7 @@ import blankly
 class ModelDemo(blankly.Model):
   def main(args):
     # Exit when we run out of data
-    if self.has_data:
+    while self.has_data:
       self.sleep('1h')
       # Print the price every hour
       print(self.interface.get_price('BTC-USD'))
@@ -79,7 +79,7 @@ import blankly
 class ModelDemo(blankly.Model):
   def main(args):
     # Exit when we run out of data
-    if self.has_data:
+    while self.has_data:
       self.sleep('1h')
       # Print the price every hour
       print(self.interface.get_price('BTC-USD'))
