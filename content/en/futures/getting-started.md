@@ -56,37 +56,41 @@ The Blankly Platform doesn't support Futures trading yet. **Select NO for this o
 
 If all went well, the CLI will have generated a bunch of files that your model needs to run. Open up `bot.py` to get started.
 
-This code is for SPOT markets. We will change two lines to make our model run on perpetual contracts instead:
+This code is for SPOT markets. We will need to change it to make our model run on perpetual contracts instead.
 
-`exchange = blankly.Binance()` -> `exchange = blankly.BinanceFutures()` (If you are using FTX, this is `FTXFutures` instead.)
+Add these two lines at the top of your file:
 
-`strategy = blankly.Strategy(exchange)` -> `strategy = blankly.FuturesStrategy(exchange)`
+```python
+from blankly import futures
+from blankly.futures import FuturesStrategyState
+```
 
-**Important**: For Binance, you likely want to change 'USD' on the last line of the script to 'USDT'.
+And change these two lines:
+
+`exchange = blankly.Binance()` -> `exchange = futures.BinanceFutures()` (If you are using FTX, this is `FTXFutures` instead.)
+
+`strategy = blankly.Strategy(exchange)` -> `strategy = futures.FuturesStrategy(exchange)`
+
+**Important**: For Binance, you likely also want to change 'USD' on the last line of the script to 'USDT'.
 
 # Adding a price event
 
 Price events are very similar to SPOT price events.
 
 ```python
-import blankly
-
 # This function is new!
 # This will get run every day and passed the current price of the contract
 def price_event(price, symbol, state: FuturesStrategyState):
     print('current price:', price)
 
 if __name__ == "__main__":
-    exchange = blankly.BinanceFutures()
-    strategy = blankly.FuturesStrategy(exchange)
+    exchange = futures.BinanceFutures()
+    strategy = futures.FuturesStrategy(exchange)
 
     # This line is new!
     strategy.add_price_event(price_event, symbol='BTC-USDT', resolution='1d')
 
-    if blankly.is_deployed:
-        strategy.start()
-    else:
-        strategy.backtest(to='1y', initial_values={'USDT': 10000})  # This is USDT and not USD because we are trading on Binance
+    ...
 ```
 
 # Placing orders
@@ -101,7 +105,7 @@ def price_event(price, symbol, state: FuturesStrategyState):
 
   # if the price rose more than 1,000 and we don't already have a short position, then short sell
   if not position and price - prev_price >= 1000:
-    order_size = state.interface.cash / price
+    order_size = (state.interface.cash / price) * 0.99
     state.interface.market_order(symbol, Side.SELL, order_size)
 
   # if the price stablized and we *do* have a short position, close our position.
@@ -141,10 +145,6 @@ def close_position(symbol, state: FuturesStrategyState):
 def init(symbol, state: FuturesStrategyState):
     # Sanity check to make sure we don't have any open positions
     close_position(symbol, state)
-
-    # Set initial leverage and margin type
-    state.interface.set_leverage(1, symbol)
-    state.interface.set_margin_type(symbol, MarginType.ISOLATED)
 
     # Give the algo the previous price as context
     last_price = state.interface.history(symbol, to=1, return_as='deque', resolution=state.resolution)['close'][-1]
