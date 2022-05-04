@@ -1,15 +1,19 @@
-# Getting started with Blankly Futures
+---
+title: Getting Started with Futures
+description: Blankly is the first open-source platform to support backtesting futures.
+position: 5
+version: 1.0
+category: Futures
+---
 
 Blankly is the first open-source platform to support backtesting futures.
 
 Getting started with futures trading on blankly is slightly more involved than SPOT markets since it is one of our newest features.
 This page will aim to guide you through it, and in the future we hope to make the process more streamlined so you can focus on building trading algorithms.
 
-# Initializing with the CLI
+## Initializing with the CLI
 
-TODO link to CLI setup page
-
-You will need the blankly CLI installed. If you've already done this you can skip this step. Otherwise the CLI can be installed through `pip`:
+You will need the [blankly CLI installed](/getting-started/installation). If you've already done this you can skip this step. Otherwise the CLI can be installed through `pip`:
 
 ```bash
 $ pip install blankly
@@ -23,9 +27,9 @@ $ cd my-futures-model
 $ blankly init
 ```
 
-If running `blankly` fails with a "command not found" error, this can mean that you don't have your PATH setup properly.
-TODO link to tutorial for fixing this, maybe here: https://www.makeuseof.com/python-windows-path/
-You can also work around this issue by adding `python -m` before the `blankly init` command, so the entire line becomes: `python -m blankly init` (You can do this for any blankly command).
+If running `blankly` fails with a "command not found" error, this can mean that you don't have your PATH setup properly. Check out this [tutorial](https://www.makeuseof.com/python-windows-path/).
+
+Alternatively, you can work around this issue by adding `python -m` before the `blankly init` command, so the entire line becomes: `python -m blankly init` (You can do this for any blankly command).
 
 **Important**
 
@@ -52,7 +56,7 @@ You can always add these later by running `blankly key add`.
 
 The Blankly Platform doesn't support Futures trading yet. **Select NO for this one**.
 
-# Futures Setup
+## Futures Setup
 
 If all went well, the CLI will have generated a bunch of files that your model needs to run. Open up `bot.py` to get started.
 
@@ -73,7 +77,7 @@ And change these two lines:
 
 **Important**: For Binance, you likely also want to change 'USD' on the last line of the script to 'USDT'.
 
-# Adding a price event
+## Adding a price event
 
 Price events are very similar to SPOT price events.
 
@@ -93,7 +97,7 @@ if __name__ == "__main__":
     ...
 ```
 
-# Placing orders
+## Placing orders
 
 Let's buy a short position if the price rises more than $1,000 in a day:
 
@@ -116,7 +120,7 @@ def price_event(price, symbol, state: FuturesStrategyState):
   state.variables['prev_price'] = price
 ```
 
-# Init and teardown
+## Init and teardown
 
 Almost done. 
 Let's add some code to give the algo some context (right now the first call to price_event will always error because `state.variables['prev_price']` doesn't exist yet).
@@ -162,5 +166,5 @@ Then change the strategy.add_price_event line to this:
 strategy.add_price_event(price_event, init=init, teardown=teardown, symbol='BTC-USDT', resolution='1d')
 ```
 
-TODO link to example here (I will add it to the github)
+<!-- TODO link to example here (I will add it to the github) -->
 You've just implemented a super basic Futures strategy! The completed example can be found at
