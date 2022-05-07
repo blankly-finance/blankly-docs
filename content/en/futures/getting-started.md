@@ -62,11 +62,12 @@ If all went well, the CLI will have generated a bunch of files that your model n
 
 This code is for SPOT markets. We will need to change it to make our model run on perpetual contracts instead.
 
-Add these two lines at the top of your file:
+Add these lines at the top of your file:
 
 ```python
 from blankly import futures
 from blankly.futures import FuturesStrategyState
+from blankly.futures.utils import close_position
 ```
 
 And change these two lines:
@@ -124,47 +125,24 @@ def price_event(price, symbol, state: FuturesStrategyState):
 
 Almost done. 
 Let's add some code to give the algo some context (right now the first call to price_event will always error because `state.variables['prev_price']` doesn't exist yet).
-We can also add a function to close our short position after when the algo shuts down or we finish our backtest.
+We can close our short position after when the algo shuts down or we finish our backtest by adding `teardown=close_position` to our price event.
 
-Add these three functions:
+Add our init functions:
 ```python
-# Helper function to close out a position
-def close_position(symbol, state: FuturesStrategyState):
-    position = state.interface.get_position(symbol)
-    if not position:
-        return
-    size = position['size']
-    if size < 0:
-        state.interface.market_order(symbol,
-                                     Side.BUY,
-                                     abs(size),
-                                     reduce_only=True)
-    elif size > 0:
-        state.interface.market_order(symbol,
-                                     Side.SELL,
-                                     abs(size),
-                                     reduce_only=True)
-
 # This function will be run before our algorithm starts
 def init(symbol, state: FuturesStrategyState):
-    # Sanity check to make sure we don't have any open positions
+    # Close any open positions
     close_position(symbol, state)
 
     # Give the algo the previous price as context
     last_price = state.interface.history(symbol, to=1, return_as='deque', resolution=state.resolution)['close'][-1]
     state.variables['prev_price'] = last_price
-
-
-# After our backtest is finished, close all our open positions
-def teardown(symbol, state):
-    close_position(symbol, state)
 ```
 
 Then change the strategy.add_price_event line to this:
 
 ```python
-strategy.add_price_event(price_event, init=init, teardown=teardown, symbol='BTC-USDT', resolution='1d')
+strategy.add_price_event(price_event, init=init, teardown=close_position, symbol='BTC-USDT', resolution='1d')
 ```
 
-<!-- TODO link to example here (I will add it to the github) -->
-You've just implemented a super basic Futures strategy! The completed example can be found at
+You've just implemented a super simple Futures strategy! The completed example can be found [here](https://github.com/blankly-finance/blankly/blob/main/examples/futures_tutorial.py).
