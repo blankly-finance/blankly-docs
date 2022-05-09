@@ -162,7 +162,7 @@ def some_bar_event(bar, symbol, state: StrategyState):
     interface: blankly.Interface = state.interface
     variables = state.variables  # grab the variables state
     variables['history'].append(bar)  # add new price to history
-    oscillation = aroon_oscillator(variables['close'], variables['high'], variables['low'])
+    oscillation = aroon_oscillator(variables['history']['close'], variables['history']['high'], variables['history']['low'])
     # ... do something with the oscillation calculation
 
 
