@@ -119,8 +119,9 @@ Note: Currently Alpaca does not support level II market order data so the orderb
 | resolution | Resolution to send prices to the user function.              | `3600` or `'15s'`                                            | str or float |
 | init       | Fill this with a callback function to allow a setup for the state variable. | Pass a function like `setup` with arguments that are `setup(symbol, state)` | Callable     |
 | teardown   | A function to run when the strategy is stopped or interrupted. Example usages include liquidating     positions, writing or cleaning up data or anything else useful | `teardown(state_object)`                                     | Callable     |
+| variables  | A dictionary to initialize the variables dictionary in the state | `{'symbol': 'BTC-USD'}`                                      | dict         |
 
-### `add_bar_event(callback: typing.Callable, symbol: str, resolution: str or float, init: typing.Callable = None, teardown: typing.Callable = None)`
+### `add_bar_event(callback: typing.Callable, symbol: str, resolution: str or float, init: typing.Callable = None, teardown: typing.Callable = None, variables: dict = None)`
 
 Adds a bar (OHCLV data) event. This is particularly useful for oscillators and indicators that require OHCLV data continuously. 
 
@@ -139,6 +140,7 @@ Bar Events are by definition synced with the exchange so that bucket intervals a
 | resolution | Resolution to send prices to the user function.              | `3600` or `'15s'`                                            | str or float |
 | init       | Fill this with a callback function to allow a setup for the state variable. | Pass a function like `setup` with arguments that are `setup(symbol, state)` | Callable     |
 | teardown   | A function to run when the strategy is stopped or interrupted. Example usages include liquidating     positions, writing or cleaning up data or anything else useful | `teardown(state_object)`                                     | Callable     |
+| variables  | A dictionary to initialize the variables dictionary in the state | `{'symbol': 'BTC-USD'}`                                      | dict         |
 
 #### Example Use Case
 
@@ -181,91 +183,24 @@ Gets the current time depending on if the strategy is in a backtest mode or not.
 | ---- | ------------------------------- | ---- |
 | time | The epoch time that is returned | int  |
 
-### `backtest(initial_values: dict = None, to: str = None, start_date: str = None, end_date: str = None, save: bool = False, settings_path: str = None, callbacks: typing.Callable = None, **kwargs)`
+### `backtest(to: str = None, initial_values: dict = none, start_date: typing.Union[str, float, int] = None, end_date: typing.Union[str, float, int] = None, settings_path: str = None, **kwargs) -> BacktestResult`
 
 This allows the user to backtest the strategy on a given time interval and with various starting values. We have made our backtesting as customizable as possible and also have built-in all [`blankly.metrics`](/metrics/metrics). Users can also create their own custom metrics as well. 
 
 #### Arguments
 
-| Arg            | Description                                                  | Examples                                                     | Type                  |
-| -------------- | ------------------------------------------------------------ | ------------------------------------------------------------ | --------------------- |
-| initial_values | Optional dictionary of initial value sizes                   | `{ 'BTC': 3, 'USD': 5650}`                                   | dict                  |
-| to             | Optionally declare an amount of time before now to backtest  | `'5y'` or `'10h'`                                            | str                   |
-| start_date     | Optionally override argument "to" by specifying a start date | `'03/06/2018'`                                               | str                   |
-| end_date       | Optionally end the backtest at a date                        | `'03/06/2018'`                                               | str                   |
-| save           | Optionally save the price data references to the data required for the backtest as well as     overriden settings | `'True'` or `'False'`                                        | bool                  |
-| settings_path  | Optional path to the backtest.json file.                     | `'./backtest.json'`                                          | str                   |
-| callbacks      | Additional metrics that take in one parameter `backtest_data`. They then return their result back into the backtesting framework for a `BacktestResult` object. More info on the passed argument can be found below. | `custom_metric(dataframes): pass`                            | list[typing.Callable] |
-| **kwargs       | Use these `**kwargs` to set any of the backtesting `settings` defined in [`backtest.json`](/usage/backtest.json). | `strategy.backtest(use_price='open')`. You can also specify `save=True` to write these directly to `backtest.json` for global reuse. | kwarg                 |
+| Arg            | Description                                                  | Examples                                                     | Type  |
+| -------------- | ------------------------------------------------------------ | ------------------------------------------------------------ | ----- |
+| to             | Optionally declare an amount of time before now to backtest  | `'5y'` or `'10h'`                                            | str   |
+| initial_values | Optional dictionary of initial value sizes                   | `{ 'BTC': 3, 'USD': 5650}`                                   | dict  |
+| start_date     | Optionally override argument "to" by specifying a start date | `'03/06/2018'`                                               | str   |
+| end_date       | Optionally end the backtest at a date                        | `'03/06/2018'`                                               | str   |
+| settings_path  | Optional path to the backtest.json file.                     | `'./backtest.json'`                                          | str   |
+| **kwargs       | Use these `**kwargs` to set any of the backtesting `settings` defined in [`backtest.json`](/usage/backtest.json). | `strategy.backtest(use_price='open')`. You can also specify `save=True` to write these directly to `backtest.json` for global reuse. | kwarg |
 
+#### Custom Metrics
 
-
-#### Custom Metrics Function
-
-When implementing custom metrics, we pass a dictionary of values to you:
-
-##### Example
-
-```json
-{
-  'history':
-            BTC   EUR  USD          time   Account Value (USD)
-	0    0.000000   0  100.0  1.591391e+09           100.000000
-	1    0.010332   0    0.0  1.591391e+09            99.919840
-	..        ...  ..    ...           ...                  ...
-	417  0.003566   0    0.0  1.627333e+09           132.932823
-	418  0.003566   0    0.0  1.627420e+09           140.798602
-	[419 rows x 5 columns], 
-
-	'resampled_account_value':              
-	             time       value
-	0    1.591391e+09  100.000000
-	1    1.591477e+09   99.919840
-	..            ...         ...
-	416  1.627333e+09  126.282068
-	417  1.627420e+09  132.932823
-	[418 rows x 2 columns], 
-
-	'returns':              
-	             time     value
-	0    1.591391e+09       NaN
-	1    1.591477e+09 -0.080160
-	..            ...       ...
-	416  1.627333e+09  4.036733
-	417  1.627420e+09  6.650755
-	[418 rows x 2 columns]
-}
-```
-
-### Properties
-
-| Arg                      | Description                                                  | Examples                                      | Type         |
-| ------------------------ | ------------------------------------------------------------ | --------------------------------------------- | ------------ |
-| resampled_account_values | Access to the Strategy Interface                             | `backtest_data['resampled_account_values']`   | pd.Dataframe |
-| history                  | The history of account values                                | `backtest_data['history']`                    | pd.Dataframe |
-| returns                  | Dataframe of Returns, the value of the returns can be accessed by column `returns['value']` | `returns = backtest_data['returns']['value']` | pd.Dataframe |
-
-
-
-Users can use this to define their own custom metrics. F.e., let's say we want to combine the Sharpe and Sortino Ratio:
-
-```python
-from blankly import Strategy, StrategyState, Interface, Alpaca
-from blankly.metrics import sortino, sharpe
-
-
-def custom_backtest_metric(backtest_data):
-    returns = backtest_data['returns']['value']  # get all the returns
-    return sortino(returns) + sharpe(returns)
-
-
-a = Alpaca()
-s = Strategy(a)
-s.add_price_event(custom_backtest_metric, 'MSFT', resolution='15m')
-s.backtest(initial_values={'USD': 10000}, to='2y', callbacks=[custom_backtest_metric])
-```
-
-
+Take advantage of the [BacktestResult](/utilities/backtest_result) object to run custom metrics on your result.
 
 #### Complete Backtest Example Use Case
 
