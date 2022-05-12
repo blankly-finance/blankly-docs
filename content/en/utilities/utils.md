@@ -8,7 +8,7 @@ category: Utilities
 
 These are useful utility functions that simplify interactions with the blankly module.
 
-## `epoch_from_ISO8601(ISO8601) -> float`
+## `epoch_from_ISO8601(iso8601) -> float`
 
 Get the epoch time from an iso string.
 
@@ -16,7 +16,7 @@ Get the epoch time from an iso string.
 
 | Arg     | Description    | Examples             | Type |
 | ------- | -------------- | -------------------- | ---- |
-| ISO8601 | ISO8601 string | 2021-06-06T23:38:27Z | str  |
+| iso8601 | ISO8601 string | 2021-06-06T23:38:27Z | str  |
 
 ### Response
 
@@ -60,7 +60,7 @@ Convert an asset id returned by an exchange to one that can be easily parsed & m
 
 ## `to_exchange_symbol(blankly_symbol, exchange)`
 
-Turn a blankly asset id into one that can be used by other exchanges.
+Turn a blankly asset id into one that can be used by other exchanges. For example this will remove the `-` from `BTC-USDT` if `exchange='binance'`.
 
 ### Arguments
 
@@ -77,7 +77,7 @@ Turn a blankly asset id into one that can be used by other exchanges.
 
 ## `get_base_asset(symbol)`
 
-Get the base asset from the blankly trading pair.
+Get the base asset from the blankly trading pair. This will give the `BTC` of `BTC-USD`
 
 ### Arguments
 
@@ -93,7 +93,7 @@ Get the base asset from the blankly trading pair.
 
 ## `get_quote_asset(symbol)`
 
-Get the quote asset from the blankly trading pair.
+Get the quote asset from the blankly trading pair. This will get the `USD` of `BTC-USD`.
 
 ### Arguments
 
@@ -107,7 +107,7 @@ Get the quote asset from the blankly trading pair.
 | ---------------------------------------------- | ------------------------------------------------------ | ---- |
 | The quote asset of the specified trading pair. | "USD" from "BTC-USD" or "USD" from "XLM-USD" or "MSFT" | str  |
 
-## `trunc(number, decimals) -> float`
+## `trunc(number: float, decimals: int) -> float`
 
 Cleanly truncate a number to a certain number of decimals. This is very useful for interacting with exchange resolutions. 
 
@@ -143,7 +143,7 @@ Given a set of high resolution candles, turn them into low resolution candles at
 | ------------------------------------------------------------ | ------------------------------------- | ------------ |
 | A dataframe with the original candles aggregated at the `aggregation_size` | `open, high, low close, volume, time` | pd.Dataframe |
 
-## `count_decimals(number) -> int`
+## `count_decimals(number: float) -> int`
 
 A simple & very useful function especially for order filters. Given a number such as `3.141` this will return the number of decimals of that number `3.141 -> 3`. An integer will give a zero value.
 
