@@ -107,7 +107,7 @@ https://testnet.binance.vision
 
 In contrast to Coinbase Pro, Binance automatically creates default balances for the test accounts - no depositing necessary.
 
-## Alpaca
+### Alpaca
 
 Alpaca is very easy to obtain sandbox keys from without opening a brokerage account.
 
@@ -115,4 +115,16 @@ Alpaca is very easy to obtain sandbox keys from without opening a brokerage acco
 2. Create an account with just an email
 3. On the Welcome to Alpaca screen below **Individual Account** and **Business Trading Account** buttons, press the hyperlink inside: "Try your *paper trading API* first."
 4. Generate keys on the right hand side
+
+### OANDA
+
+To get the ACCOUNT_ID from OANDA, use the curl command:
+
+```bash
+curl -H "Authorization: Bearer AUTH_TOKEN" https://api-fxpractice.oanda.com/v3/accounts
+```
+
+
+
+Where `AUTH_TOKEN` is the given `AUTH_TOKEN` from the website.
 

@@ -1,12 +1,12 @@
 ---
-title: CLI Tutorial
+title: Installation
 description: 'Demonstration of how to get setup with the blankly CLI'
 position: 2
 version: 1.0
 category: Getting Started
 ---
 
-## Installing the CLI
+## Installing Blankly
 
 Before you do anything, you will need to install the Blankly CLI. If you've already installed the Blankly pip module, you may skip this step.
 
@@ -72,6 +72,10 @@ You can do this later at any time by running `blankly key add` Yes
 ✔ Done! Your model was created. Run `python bot.py` to run a backtest and get started.
 ```
 
+This command should make a directory similar to this
+
+![required_files](https://firebasestorage.googleapis.com/v0/b/blankly-docs-images.appspot.com/o/strategy%2Fblankly-directory.png?alt=media&token=f4764ee6-ee2e-4c7e-96df-a4bbecf4bba8)
+
 ### Blankly Platform
 
 The `blankly init` command will ask you if you wish to connect your model to the Blankly Platform.
@@ -116,3 +120,4 @@ Deploying your model to the cloud with Blankly is dead simple. Just run `blankly
 ```
 
 That's it!
+

@@ -115,16 +115,32 @@ Cleanly truncate a number to a certain number of decimals. This is very useful f
 
 ### Arguments
 
-| Arg      | Description                | Examples                        | Type  |
-| -------- | -------------------------- | ------------------------------- | ----- |
-| number   | A float input              | `2.353244245` or `'459.435322'` | float |
-| decimals | Number of decimals to keep | `2` or `'13'`                   | int   |
+| Arg      | Description                | Examples                      | Type  |
+| -------- | -------------------------- | ----------------------------- | ----- |
+| number   | A float input              | `2.353244245` or `459.435322` | float |
+| decimals | Number of decimals to keep | `2` or `'13'`                 | int   |
 
 ### Response
 
 | Description                             | Examples                              | Type  |
 | --------------------------------------- | ------------------------------------- | ----- |
 | A truncated version of the input number | `blankly.trunc(2.3453243, 2) == 2.34` | float |
+
+## `count_decimals(number: float) -> int`
+
+Count the number of decimals in a number given a float: `1.4335 -> 4 or 3 -> 0`.
+
+### Arguments
+
+| Arg    | Description   | Examples                      | Type  |
+| ------ | ------------- | ----------------------------- | ----- |
+| number | A float input | `2.353244245` or `459.435322` | float |
+
+### Response
+
+| Description                          | Examples     | Type |
+| ------------------------------------ | ------------ | ---- |
+| The number of decimals in the number | `4.545 -> 3` | int  |
 
 ## `aggregate_candles(history: pd.DataFrame, aggregation_size: int)`
 

@@ -189,14 +189,14 @@ This allows the user to backtest the strategy on a given time interval and with 
 
 #### Arguments
 
-| Arg            | Description                                                  | Examples                                                     | Type  |
-| -------------- | ------------------------------------------------------------ | ------------------------------------------------------------ | ----- |
-| to             | Optionally declare an amount of time before now to backtest  | `'5y'` or `'10h'`                                            | str   |
-| initial_values | Optional dictionary of initial value sizes                   | `{ 'BTC': 3, 'USD': 5650}`                                   | dict  |
-| start_date     | Optionally override argument "to" by specifying a start date | `'03/06/2018'`                                               | str   |
-| end_date       | Optionally end the backtest at a date                        | `'03/06/2018'`                                               | str   |
-| settings_path  | Optional path to the backtest.json file.                     | `'./backtest.json'`                                          | str   |
-| **kwargs       | Use these `**kwargs` to set any of the backtesting `settings` defined in [`backtest.json`](/usage/backtest.json). | `strategy.backtest(use_price='open')`. You can also specify `save=True` to write these directly to `backtest.json` for global reuse. | kwarg |
+| Arg            | Description                                                  | Examples                                                     | Type       |
+| -------------- | ------------------------------------------------------------ | ------------------------------------------------------------ | ---------- |
+| to             | Optionally declare an amount of time before now to backtest  | `'5y'` or `'10h'`                                            | str        |
+| initial_values | Optional dictionary of initial value sizes                   | `{ 'BTC': 3, 'USD': 5650}`                                   | dict       |
+| start_date     | Optionally override argument "to" by specifying a start date | `'03/06/2018'` or 1652367852                                 | str or int |
+| end_date       | Optionally end the backtest at a date                        | `'03/06/2018'` or 1652367852                                 | str or int |
+| settings_path  | Optional path to the backtest.json file.                     | `'./backtest.json'`                                          | str        |
+| **kwargs       | Use these `**kwargs` to set any of the backtesting `settings` defined in [`backtest.json`](/usage/backtest.json). | `strategy.backtest(use_price='open')`. You can also specify `save=True` to write these directly to `backtest.json` for global reuse. | kwarg      |
 
 #### Custom Metrics
 
