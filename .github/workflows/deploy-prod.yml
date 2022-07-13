@@ -7,6 +7,7 @@ on:
     # Optionally configure to run only for specific files. For example:
     paths:
     - "content/**"
+  workflow_dispatch:
 
 jobs:
   deploy_live_website:
