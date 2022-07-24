@@ -87,7 +87,7 @@ def price_event(price, symbol, state: StrategyState):
     sma200 = sma(variables['history'], period=200)
     # match up dimensions
     sma50 = sma(variables['history'], period=50)[-len(sma200):]
-    diff = sma200 - sma50
+    diff = sma50 - sma200
     slope_sma50 = (sma50[-1] - sma50[-5]) / 5 # get the slope of the last 5 SMA50 Data Points
     prev_diff = diff[-2]
     curr_diff = diff[-1]
@@ -132,7 +132,7 @@ def price_event(price, symbol, state: StrategyState):
 
     sma200 = sma(variables["history"], period=20)
     sma50 = sma(variables["history"], period=10)[-len(sma200):]
-    diff = sma200 - sma50
+    diff = sma50 - sma200
     slope_sma50 = (
         sma50[-1] - sma50[-5]
     ) / 5  # get the slope of the last 5 SMA50 Data Points
