@@ -40,7 +40,8 @@ Blankly makes it extremely easy to integrate with your existing machine learning
 
 ```python
 import blankly
-from blankly.strategy import Strategy, StrategyState
+from blankly import Strategy, StrategyState
+# Note this is example code and the import below will not work
 from model import my_awesome_model
 
 

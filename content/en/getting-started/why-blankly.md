@@ -151,6 +151,7 @@ sharpe_ratio = sharpe(portfolio_value_per_day)
 Blankly simplifies this code into fewer lines, and even better, allows the same code to immediately be deployed by simply removing the `.backtest()` call.
 
 ```python
+# Note this is example code and the import below will not work
 from examples.working_examples.model import my_awesome_model as model
 
 import blankly
