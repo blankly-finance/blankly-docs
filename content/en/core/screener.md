@@ -120,7 +120,7 @@ def init(state):
 def formatter(results, state: ScreenerState):
   # here we can format the results on a per ticker basis
 alpaca = Alpaca() # initialize our interface
-screener = Screener(alpaca, is_stock_buy, symbols=tickers, init=init, resolution='1d')
+screener = Screener(alpaca, is_stock_buy, symbols=tickers, init=init)
 # Screener.notify() send notification by email
 print(screener.formatted_results)
 ```
