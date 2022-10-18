@@ -24,6 +24,8 @@ When contrasted with a strategy, a Screener is designed to be stopped and starte
 
 All Screener behaviors & execution occurs in the object creation. Any consecutive logic is used to handle the output from the Screener. **The Screener will execute on construction.**
 
+Control the resolution or how frequently the screener runs using the `blankly.json` file. Change the cron job inside the `schedule` tag. 
+
 ### Arguments
 
 | Arg        | Description                                                  | Examples                                                     | Type         |
