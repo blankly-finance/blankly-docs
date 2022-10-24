@@ -170,7 +170,7 @@ def some_bar_event(bar, symbol, state: StrategyState):
 
 a = blankly.Alpaca()
 s = Strategy(a)
-s.add_price_event(some_bar_event, 'MSFT', resolution='15m', init=init)
+s.add_bar_event(some_bar_event, 'MSFT', resolution='15m', init=init)
 ```
 
 ### `time() -> float` 
