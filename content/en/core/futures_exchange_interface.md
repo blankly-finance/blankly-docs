@@ -70,7 +70,7 @@ Get all trading pairs currently on the exchange.
 ### `get_account(symbol=None)`
 
 Gets the current account holdings if symbol is None, otherwise will return the symbol holdings.
-**Important**: You probably want `.get_positions()`. The positions you take when you buy or sell contracts will show up there, `.get_account()` is not very useful in FuturesExchangeInterface.
+**Important**: If you're using futures you may want `.get_positions()`. The positions you take when you buy or sell contracts will show up there, `.get_account()` is not very useful in FuturesExchangeInterface.
 
 #### Arguments
 
