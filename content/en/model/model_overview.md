@@ -15,16 +15,17 @@ Here is a simple example of the model
 ```python
 import blankly
 
+
 class ModelDemo(blankly.Model):
-  def main(args):
-    # Exit when we run out of data
-    while self.has_data:
-      # Print the price every hour
-      print(self.interface.get_price('BTC-USD'))
-      self.sleep('1h')
-      
-      # Also choose when to value the account
-      self.backtester.value_account()
+    def main(args):
+        # Exit when we run out of data
+        while self.has_data:
+            # Print the price every hour
+            print(self.interface.get_price("BTC-USD"))
+            self.sleep("1h")
+
+            # Also choose when to value the account
+            self.backtester.value_account()
 ```
 
 The entry point of the backtester is a simple main function which takes a single parameter `args`. Args can be any python object and you can choose to handle it however. The most interesting portion of this code is the `self.sleep('1h')` call.  While backtesting, this will make the backtester skip 1 hour of data.
@@ -42,20 +43,21 @@ Here is the same example as above, but changed so that it contains a market orde
 ```python
 import blankly
 
+
 class ModelDemo(blankly.Model):
-  def main(args):
-    # Exit when we run out of data
-    while self.has_data:
-      self.sleep('1h')
-      # Print the price every hour
-      print(self.interface.get_price('BTC-USD'))
-			
-      # Inject latency
-      self.sleep('1s')
-      self.interface.market_order('BTC-USD', 'buy', 0.01)
-      
-      # Also choose when to value the account
-      self.backtester.value_account()
+    def main(args):
+        # Exit when we run out of data
+        while self.has_data:
+            self.sleep("1h")
+            # Print the price every hour
+            print(self.interface.get_price("BTC-USD"))
+
+            # Inject latency
+            self.sleep("1s")
+            self.interface.market_order("BTC-USD", "buy", 0.01)
+
+            # Also choose when to value the account
+            self.backtester.value_account()
 ```
 
 This is especially exciting for arbitrage or tick by tick data. Finally having access to timing this accurate is essential for well tested strategies.
@@ -76,48 +78,48 @@ Here are some example that show the use of all of the above:
 ```python
 import blankly
 
+
 class ModelDemo(blankly.Model):
-  def main(args):
-    # Exit when we run out of data
-    while self.has_data:
-      self.sleep('1h')
-      # Print the price every hour
-      print(self.interface.get_price('BTC-USD'))
-			
-      # Inject latency
-      self.sleep('1s')
-      self.interface.market_order('BTC-USD', 'buy', 0.01)
-      
-      # Also choose when to value the account
-      self.backtester.value_account()
-      
-	def event(self, type_: str, data: any):
-    	# Print custom events here
-      print(data)
-      
-  def websocket_update(self, data):
-      # Print websocket data here
-      print(data)
-      
-      
+    def main(args):
+        # Exit when we run out of data
+        while self.has_data:
+            self.sleep("1h")
+            # Print the price every hour
+            print(self.interface.get_price("BTC-USD"))
+
+            # Inject latency
+            self.sleep("1s")
+            self.interface.market_order("BTC-USD", "buy", 0.01)
+
+            # Also choose when to value the account
+            self.backtester.value_account()
+
+    def event(self, type_: str, data: any):
+        # Print custom events here
+        print(data)
+
+    def websocket_update(self, data):
+        # Print websocket data here
+        print(data)
+
+
 if __name__ == "__main__":
-  exchange = blankly.CoinbasePro()
-  model = ModelDemo(exchange)
-  
-  # Add all the bitcoin prices for one year @ 1 hour
-  model.backtester.add_prices('BTC-USD', '1h', '1y')
-  
-  # Read in our custom data using the price reader object
-  price_reader = blankly.data.PriceReader('./btc_data.csv', 'BTC-USD')
-  model.backtester.add_custom_prices(price_reader)
-  
-  # Read in our custome vents using the event reader object
-  events_reader = blankly.data.EventReader('./events.json')
-  model.backtester.add_custom_events(events_reader)
-  
-  # Read in our websocket data through the Tick reader
-  tick_reader = blankly.data.TickReader('./ticks.json', 'BTC-USD')
-  blankly.backtester.add_tick_events(tick_reader)
-  
+    exchange = blankly.CoinbasePro()
+    model = ModelDemo(exchange)
+
+    # Add all the bitcoin prices for one year @ 1 hour
+    model.backtester.add_prices("BTC-USD", "1h", "1y")
+
+    # Read in our custom data using the price reader object
+    price_reader = blankly.data.PriceReader("./btc_data.csv", "BTC-USD")
+    model.backtester.add_custom_prices(price_reader)
+
+    # Read in our custome vents using the event reader object
+    events_reader = blankly.data.EventReader("./events.json")
+    model.backtester.add_custom_events(events_reader)
+
+    # Read in our websocket data through the Tick reader
+    tick_reader = blankly.data.TickReader("./ticks.json", "BTC-USD")
+    blankly.backtester.add_tick_events(tick_reader)
 ```
 
