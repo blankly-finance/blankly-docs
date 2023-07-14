@@ -54,7 +54,7 @@ To use a Coinbase stream, such as `heartbeat`, simply create a general connectio
 ```python
 # Demo callback object
 def callback(message):
-  print(message)
+    print(message)
 
   
 # Create the manager:
@@ -80,7 +80,7 @@ To use a binance stream, such as `"btcusdt@aggTrade"`, simply create a general c
 ```python
 # Demo callback object
 def callback(message):
-  print(message)
+    print(message)
 
   
 # Create the manager):
