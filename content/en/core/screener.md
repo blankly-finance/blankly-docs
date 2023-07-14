@@ -72,10 +72,11 @@ In this case, however, say that we are evaluating each stock and ultimately only
 from blankly import Screener, ScreenerState
 from queue import PriorityQueue
 
+
 def init(state: ScreenerState):
-  # add stock results into this as a tuple (result, ticker)
-  # note you would want to input negative the value if you want a max priority queue vs a min
-  state.variables['top_stocks'] = PriorityQueue(maxsize=20) 
+    # add stock results into this as a tuple (result, ticker)
+    # note you would want to input negative the value if you want a max priority queue vs a min
+    state.variables["top_stocks"] = PriorityQueue(maxsize=20)
 ```
 
 #### Storing Start/Current Positions
@@ -86,8 +87,9 @@ If we want to know which positions we are currently in, we can create a variable
 from blankly import Screener, ScreenerState
 from collections import deque
 
+
 def init(state: ScreenerState):
-	state.variables['positions'] = { } # make an account here using interface.account
+    state.variables["positions"] = {}  # make an account here using interface.account
 ```
 
 
@@ -113,16 +115,25 @@ This is pretty straightforward as we will see:
 ```python
 from blankly import Screener, Alpaca, ScreenerState
 
-tickers = ['AAPL', 'GME', 'MSFT'] # any stocks that you may want
+tickers = ["AAPL", "GME", "MSFT"]  # any stocks that you may want
 # This function is our evaluator and runs per stock
 def is_stock_buy(symbol, state: ScreenerState):
-  # in here we can get the price data, do anything else that we may need
+    # in here we can get the price data, do anything else that we may need
+    pass
+
+
 def init(state):
-  # initialize price data for example (so price queries are faster)
+    # initialize price data for example (so price queries are faster)
+    pass
+
+
 def formatter(results, state: ScreenerState):
-  # here we can format the results on a per ticker basis
-alpaca = Alpaca() # initialize our interface
-screener = Screener(alpaca, is_stock_buy, symbols=tickers, init=init)
+    # here we can format the results on a per ticker basis
+    pass
+
+
+exchange = Alpaca()  # initialize our interface
+screener = Screener(exchange, is_stock_buy, symbols=tickers, init=init)
 # Screener.notify() send notification by email
 print(screener.formatted_results)
 ```
@@ -133,21 +144,27 @@ To do this, we use our RSI indicator that is built into Blankly. First, let's ge
 
 ```python
 def is_stock_buy(symbol, state: ScreenerState):
-  # get the most recent price from the exchange
-  prices = state.interface.history(symbol, 40, resolution=state.resolution, return_as='list') # get past 40 data points
-	...
+    # get the most recent price from the exchange
+    prices = state.interface.history(
+        symbol, 40, resolution=state.resolution, return_as="list"
+    )  # get past 40 data points
+    # ...
 ```
 
 Okay, now that's set up. Let's actually do the evaluator and see if the stocks are oversold or not. In order to do this, we need to get the most recent price each time, add it to the `deque` and calculate the RSI on the new price data. 
 
 ```python
 from blankly.indicators import rsi
+
+
 def is_stock_buy(symbol, state: ScreenerState):
-  # This runs per stock
-  prices = state.interface.history(symbol, 40, resolution=state.resolution, return_as='list') # get past 40 data points
-  price = state.interface.get_price(symbol)
-  rsi_values = rsi(prices['close'], 14)
-  return { 'is_oversold': rsi_values[-1] < 30, 'price': price, 'symbol': symbol }
+    # This runs per stock
+    prices = state.interface.history(
+        symbol, 40, resolution=state.resolution, return_as="list"
+    )  # get past 40 data points
+    price = state.interface.get_price(symbol)
+    rsi_values = rsi(prices["close"], 14)
+    return {"is_oversold": rsi_values[-1] < 30, "price": price, "symbol": symbol}
 ```
 
 We can now use this to format output and notify the people that are connected to this Screener. 
@@ -158,12 +175,14 @@ Now that we have the function that is continually checking if the stocks in our 
 
 ```python
 def formatter(results, state: ScreenerState):
-  # results is a dictionary on a per symbol basis
-  email_str = 'These are all the stocks that are currently oversold: \n'
-  for symbol in results:
-		if result[symbol]['is_oversold']:
-      email_str += '{} is currently oversold at a price of {}\n\n'.format(symbol, result[symbol]['price'])
-  return email_str
+    # results is a dictionary on a per symbol basis
+    email_str = "These are all the stocks that are currently oversold: \n"
+    for symbol in results:
+        if result[symbol]["is_oversold"]:
+            email_str += "{} is currently oversold at a price of {}\n\n".format(
+                symbol, result[symbol]["price"]
+            )
+    return email_str
 ```
 
 Now that we have our results formatted, we now can just run our Screener and that's all we have to do! 
