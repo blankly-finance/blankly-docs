@@ -45,10 +45,10 @@ def price_event(price, symbol, state: StrategyState):
     pass
 
 
-alpaca = Alpaca()
-s = Strategy(alpaca)
-s.add_price_event(price_event, 'MSFT', resolution='1d', init=init)
-s.start()
+exchange = Alpaca()
+strategy = Strategy(exchange)
+strategy.add_price_event(price_event, 'MSFT', resolution='1d', init=init)
+strategy.start()
 ```
 
 ### Initializing Variables and History
@@ -152,9 +152,9 @@ def price_event(price, symbol, state: StrategyState):
 
 
 if __name__ == "__main__":
-    alpaca = Alpaca()
-    s = Strategy(alpaca)
-    s.add_price_event(price_event, "MSFT", resolution="1d", init=init)
-    s.backtest(initial_values={"USD": 10000}, to="2y")
+    exchange = Alpaca()
+    strategy = Strategy(exchange)
+    strategy.add_price_event(price_event, "MSFT", resolution="1d", init=init)
+    strategy.backtest(initial_values={"USD": 10000}, to="2y")
 ```
 
