@@ -37,10 +37,10 @@ def orderbook_event(orderbook, symbol, state):
   	# do something at the orderbook level
 
 # Authenticate coinbase pro strategy
-coinbase_pro = blankly.CoinbasePro()
+exchange = blankly.CoinbasePro()
 
 # Use our strategy helper on coinbase pro
-strategy = blankly.Strategy(coinbase_pro)
+strategy = blankly.Strategy(exchange)
 strategy.add_price_event(custom_price_event, 'BTC-USD', resolution='1h')
 strategy.add_bar_event(custom_bar_event, 'BTC-USD', resolution='1d')
 strategy.add_orderbook_event(custom_bar_event, 'ETH-USD')
