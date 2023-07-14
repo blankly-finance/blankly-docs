@@ -91,10 +91,10 @@ def price_event(price, symbol, state: StrategyState):
     pass
 
 
-alpaca = Alpaca()
-s = Strategy(alpaca)
-s.add_price_event(price_event, 'MSFT', resolution='15m', init=init)
-s.start()
+exchange = Alpaca()
+strategy = Strategy(exchange)
+strategy.add_price_event(price_event, 'MSFT', resolution='15m', init=init)
+strategy.start()
 ```
 
 ### Initializing Variables and History
