@@ -49,10 +49,10 @@ def price_event(price, symbol, state: StrategyState):
     # we'll come back to this soon
     pass
 
-alpaca = Alpaca()
-s = Strategy(alpaca)
-s.add_price_event(price_event, 'MSFT', resolution='1d', init=init)
-s.start()
+exchange = Alpaca()
+strategy = Strategy(exchange)
+strategy.add_price_event(price_event, 'MSFT', resolution='1d', init=init)
+strategy.start()
 ```
 
 ### Implementing the Price Event
@@ -121,12 +121,10 @@ def price_event(price, symbol, state: StrategyState):
         interface.market_order(symbol, 'sell', size_to_sell)
 
 
-alpaca = Alpaca()
-s = Strategy(alpaca)
-s.add_price_event(price_event, 'MSFT', resolution='1d', init=init)
+exchange = Alpaca()
+strategy = Strategy(exchange)
+strategy.add_price_event(price_event, 'MSFT', resolution='1d', init=init)
 # decision_model = OrderDecisionModel() <-- global state can also be accessed in price event functions 
 # pricing_model = OrderPricingModel()
-s.backtest(initial_values={'USD': 10000}, to='2y')
-
-
+strategy.backtest(initial_values={'USD': 10000}, to='2y')
 ```

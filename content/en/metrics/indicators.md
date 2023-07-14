@@ -238,16 +238,19 @@ from blankly.strategy import Strategy
 from blankly import Alpaca, Interface
 from blankly.metrics import aroon_oscillator
 
+
 def price_event(price, symbol, state):
-  interface: Interface = state.interface
-  history = interface.history(symbol, 500, resolution=state.resolution)
-  h = history['high']
-  l = history['low']
-  oscillation = aroon_oscillator(h, l)
-  ...
-a = Alpaca()
-s = Strategy(a)
-s.add_price_event(price_event, resolution='30m')
+    interface: Interface = state.interface
+    history = interface.history(symbol, 500, resolution=state.resolution)
+    h = history["high"]
+    l = history["low"]
+    oscillation = aroon_oscillator(h, l)
+    ...
+
+
+exchange = Alpaca()
+strategy = Strategy(exchange)
+strategy.add_price_event(price_event, resolution="30m")
 ```
 
 ### `chande_momentum_oscillator(data, period=14, use_series=False)` 

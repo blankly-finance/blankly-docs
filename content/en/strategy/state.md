@@ -15,10 +15,10 @@ def custom_price_event(price, symbol, state: StrategyState):
   	# do something here
 
 # Authenticate coinbase pro strategy
-alpaca = blankly.Alpaca()
+exchange = blankly.Alpaca()
 
 # Use our strategy helper on coinbase pro
-strategy = blankly.Strategy(alpaca)
+strategy = blankly.Strategy(exchange)
 strategy.add_price_event(custom_price_event, 'AAPL', resolution='1h')
 strategy.add_price_event(custom_price_event, 'MSFT', resolution='15m')
 

@@ -32,16 +32,16 @@ To create a paper trading object simply wrap an existing exchange object with a 
 import blankly
 
 # Basic exchange construction
-coinbase_pro = blankly.CoinbasePro()
+exchange = blankly.CoinbasePro()
 
 # Create a paper trade exchange:
-paper_trade = blankly.PaperTrade(coinbase_pro)
+paper_trade = blankly.PaperTrade(exchange)
 
 # Get the interface like usual:
 interface = paper_trade.get_interface()
 
-s = blankly.Strategy(paper_trade) # strategy that can now run on paper trade
-s.start() # running live but paper trading
+strategy = blankly.Strategy(paper_trade) # strategy that can now run on paper trade
+strategy.start() # running live but paper trading
 ```
 
 ### Arguments

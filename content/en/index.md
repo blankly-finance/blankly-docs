@@ -74,15 +74,15 @@ def price_event(price: float, symbol: str, state: StrategyState):
         state.variables['owns_a_position'] = False
 
 
-c = blankly.Alpaca()
-s = Strategy(c)
+exchange = blankly.Alpaca()
+strategy = Strategy(exchange)
 
-s.add_price_event(price_event,
+strategy.add_price_event(price_event,
                   symbol='MSFT',
                   resolution='20s',
                   init=init)
 
-s.start()
+strategy.start()
 
 ```
 

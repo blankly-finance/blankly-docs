@@ -105,20 +105,20 @@ Let's buy a short position if the price rises more than $1,000 in a day:
 
 ```python
 def price_event(price, symbol, state: FuturesStrategyState):
-  prev_price = state.variables['prev_price']
-  position = state.interface.get_position(symbol)
+    prev_price = state.variables['prev_price']
+    position = state.interface.get_position(symbol)
 
-  # if the price rose more than 1,000 and we don't already have a short position, then short sell
-  if not position and price - prev_price >= 1000:
-    order_size = (state.interface.cash / price) * 0.99
-    state.interface.market_order(symbol, Side.SELL, order_size)
+    # if the price rose more than 1,000 and we don't already have a short position, then short sell
+    if not position and price - prev_price >= 1000:
+        order_size = (state.interface.cash / price) * 0.99
+        state.interface.market_order(symbol, Side.SELL, order_size)
 
-  # if the price stablized and we *do* have a short position, close our position.
-  elif position and abs(price - prev_price) <= 100:
-    # we use abs(position['size']) here because position['size'] can (and will) be negative, since we have taken a short position.
-    state.interface.market_order(symbol, Side.BUY, abs(position['size']), reduce_only=True)
+    # if the price stablized and we *do* have a short position, close our position.
+    elif position and abs(price - prev_price) <= 100:
+        # we use abs(position['size']) here because position['size'] can (and will) be negative, since we have taken a short position.
+        state.interface.market_order(symbol, Side.BUY, abs(position['size']), reduce_only=True)
 
-  state.variables['prev_price'] = price
+    state.variables['prev_price'] = price
 ```
 
 ## Init and teardown

@@ -94,10 +94,10 @@ def custom_price_event(price, symbol, state: StrategyState):
   	# do something here
 
 # Authenticate coinbase pro strategy
-coinbase_pro = blankly.CoinbasePro()
+exchange = blankly.CoinbasePro()
 
 # Use our strategy helper on coinbase pro
-strategy = blankly.Strategy(coinbase_pro)
+strategy = blankly.Strategy(exchange)
 strategy.add_price_event(custom_price_event, 'BTC-USD', resolution='1h', init=init)
 
 strategy.add_price_event(custom_price_event, 'ETH-USD', resolution='1h', init=init)
@@ -131,10 +131,10 @@ def custom_price_event(price, symbol, state: StrategyState):
   	# do something here
 
 # Authenticate coinbase pro strategy
-coinbase_pro = blankly.CoinbasePro()
+exchange = blankly.CoinbasePro()
 
 # Use our strategy helper on coinbase pro
-strategy = blankly.Strategy(coinbase_pro)
+strategy = blankly.Strategy(exchange)
 strategy.add_price_event(custom_price_event, 'BTC-USD', resolution='1h', init=init, teardown=teardown)
 
 strategy.add_price_event(custom_price_event, 'ETH-USD', resolution='1h', init=init, teardown=teardown)

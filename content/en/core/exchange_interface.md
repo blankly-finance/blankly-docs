@@ -338,7 +338,7 @@ Or if `return_as` is set to `list`:
 
 ```python
 {
-	'time': [1591110000, 1591113600],
+  'time': [1591110000, 1591113600],
   'low': [9270.0, 9417.38],
   'open': [9583.36, 9464.44],
   'close': [9464.46, 9478.95],
@@ -349,8 +349,8 @@ Or if `return_as` is set to `list`:
 #### Example Use Case
 
 ```python
-a = Alpaca()
-interface = a.Interface
+exchange = Alpaca()
+interface = exchange.get_interface()
 interface.history('MSFT', to=300, resolution='15m', end_date='2020-05-03') # get 300 points from May 3rd, 2020 as a dataframe
 interface.history('MSFT', to=300, resolution='15m', end_date='2020-05-03', return_as='list')['close'] # get 300 points from May 3rd, 2020 as a dictionary of np.arrays
 ```
