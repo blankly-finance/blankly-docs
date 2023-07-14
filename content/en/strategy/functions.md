@@ -60,11 +60,11 @@ def price_event(price, symbol, state: StrategyState):
         state.variables['has_bought'] = False
 
 
-a = Alpaca()
-s = Strategy(a)
-s.add_price_event(price_event, 'MSFT', resolution='15m', init=init)
+exchange = Alpaca()
+strategy = Strategy(exchange)
+strategy.add_price_event(price_event, 'MSFT', resolution='15m', init=init)
 
-s.start()
+strategy.start()
 ```
 
 Check out our [RSI](/examples/rsi), [Golden Cross](/examples/golden-cross) examples as well for more references.
@@ -168,9 +168,9 @@ def some_bar_event(bar, symbol, state: StrategyState):
     # ... do something with the oscillation calculation
 
 
-a = blankly.Alpaca()
-s = Strategy(a)
-s.add_bar_event(some_bar_event, 'MSFT', resolution='15m', init=init)
+exchange = blankly.Alpaca()
+strategy = Strategy(exchange)
+strategy.add_bar_event(some_bar_event, 'MSFT', resolution='15m', init=init)
 ```
 
 ### `time() -> float` 
@@ -233,10 +233,10 @@ def custom_sharpe_sortino(backtest_data):
     return sortino(returns) + sharpe(returns)
 
 
-a = blankly.Alpaca()
-s = Strategy(a)
-s.add_price_event(price_event, 'MSFT', resolution='15m', init=init)
-result = s.backtest(initial_values={'MSFT': 10000},
+exchange = blankly.Alpaca()
+strategy = Strategy(exchange)
+strategy.add_price_event(price_event, 'MSFT', resolution='15m', init=init)
+result = strategy.backtest(initial_values={'MSFT': 10000},
                     start_date='2015-09-25',
                     end_date='2016-08-25',
                     callbacks=[custom_sharpe_sortino])
