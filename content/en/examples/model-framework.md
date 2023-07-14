@@ -21,14 +21,14 @@ import blankly
 
 
 class TwitterBot(blankly.Model):
-  def main(self, args):
-    # Because everything is event based just create an empty main
-    while self.has_data:
-      self.sleep(3600)
-     
-  def event(self, type_: str, data: any):
-    # This is where the events come in
-    pass
+    def main(self, args):
+        # Because everything is event based just create an empty main
+        while self.has_data:
+            self.sleep(3600)
+
+    def event(self, type_: str, data: any):
+        # This is where the events come in
+        pass
 ```
 
 Next we'll create a dataset. The backtester accepts input formats in this format:
@@ -71,7 +71,7 @@ class TwitterBot(blankly.Model):
     def main(self, args):
         # Because everything is event based just create an empty main
         while self.has_data:
-            self.sleep('1h')
+            self.sleep("1h")
             # Value the account every hour
             self.backtester.value_account()
 
@@ -79,12 +79,13 @@ class TwitterBot(blankly.Model):
     def event(self, type_: str, data: str):
         # Now check if it's a tweet about twitter
         if type_ == "tweet":
-            if 'twitter' in data.lower():
+            if "twitter" in data.lower():
                 price = self.interface.get_price("TWTR")
                 # If it is then go ahead and buy with 20% of available cash
                 print("Buying twitter...")
-                self.interface.market_order('TWTR', 'buy', blankly.trunc(
-                    (self.interface.cash/price) * .2, 2))
+                self.interface.market_order(
+                    "TWTR", "buy", blankly.trunc((self.interface.cash / price) * 0.2, 2)
+                )
             else:
                 print("Message did not contain twitter")
 
@@ -95,11 +96,11 @@ if __name__ == "__main__":
     model = TwitterBot(exchange)
 
     # Add the tweets json here
-    model.backtester.add_custom_events(blankly.data.EventReader('./tweets.json'))
+    model.backtester.add_custom_events(blankly.data.EventReader("./tweets.json"))
     # Now add some underlying prices at 1 month
-    model.backtester.add_prices('TWTR', '1h', start_date='3/20/22', stop_date='4/15/22')
+    model.backtester.add_prices("TWTR", "1h", start_date="3/20/22", stop_date="4/15/22")
 
-    print(model.backtest(args=None, initial_values={'USD': 10000}))
+    print(model.backtest(args=None, initial_values={"USD": 10000}))
 
 ```
 
